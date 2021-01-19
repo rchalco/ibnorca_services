@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Main.Modulo01
+namespace Domain.Main.sample
 {
     public class PersonReport
     {
-        public long Id { get; set; }
-        public string NamePerson { get; set; }
-        public string LastNamePerson { get; set; }
+        public long idperson { get; set; }
+        public string name { get; set; }
+        public string lastname { get; set; }
         public string FullName { get; set; }
     }
 }

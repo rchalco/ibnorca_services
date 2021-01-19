@@ -1,5 +1,4 @@
 ﻿using Business.Main.DbContextMySQL;
-using Business.Main.DbContextSample;
 using CoreAccesLayer.Interface;
 using Domain.Main.Wraper;
 using PlumbingProps.Exceptions;
@@ -13,11 +12,9 @@ namespace Business.Main.Base
 {
     public abstract class BaseManager
     {
-        internal IRepository repositoryPostreSql { get; set; } = null;
         internal IRepository repositoryMySql { get; set; } = null;
         public BaseManager()
         {
-            repositoryPostreSql = FactoryDataInterfaz.CreateRepository<sample_dbContext>("postgresql");
             repositoryMySql = FactoryDataInterfaz.CreateRepository<ibnorca_mokContext>("mysql");
         }
 

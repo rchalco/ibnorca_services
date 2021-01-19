@@ -13,20 +13,7 @@ namespace CoreAccesLayer.Interface
     {
         public static IRepository CreateRepository<T>(string provider) where T : DbContext, new()
         {
-            IRepository repository = new PostgreSQLRepository<T>();
-            switch (provider)
-            {
-                case "postgresql":
-                    repository = new PostgreSQLRepository<T>();
-                    break;
-                case "mysql":
-                    repository = new MySQLRepository<T>();
-                    break;
-                default:
-                    repository = new PostgreSQLRepository<T>();
-                    break;
-            }
-            
+            IRepository repository = new MySQLRepository<T>();            
             return repository;
         }
 

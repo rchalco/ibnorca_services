@@ -1,7 +1,7 @@
 ﻿using Business.Main.Base;
-using Business.Main.DbContextSample;
+using Business.Main.DbContextMySQL;
 using CoreAccesLayer.Wraper;
-using Domain.Main.Modulo01;
+using Domain.Main.sample;
 using Domain.Main.Wraper;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Business.Main.Modulo01
+namespace Business.Main.ModuloSample
 {
     public class PersonManager : BaseManager
     {
@@ -27,7 +27,7 @@ namespace Business.Main.Modulo01
                     response.Code = "404";
                     return response;
                 }
-                if (person.Name.Length < 2 || person.LastName.Length < 2)
+                if (person.Name.Length < 2 || person.Lastname.Length < 2)
                 {
                     response.State = ResponseType.Warning;
                     response.Message = "el nombre y apellido deben tener mas de dos caracteres";
@@ -36,11 +36,11 @@ namespace Business.Main.Modulo01
                     return response;
                 }
                 Entity<Person> entity = new Entity<Person> { EntityDB = person, stateEntity = StateEntity.add };
-                if (person.PersonId != 0)
+                if (person.Idperson != 0)
                 {
                     entity.stateEntity = StateEntity.modify;
                 }
-                repositoryPostreSql.SaveObject<Person>(entity);
+                repositoryMySql.SaveObject<Person>(entity);
                 response.State = ResponseType.Success;
                 response.Message = "La persona fue registrada correctamente";
                 response.Object = person;
@@ -68,7 +68,7 @@ namespace Business.Main.Modulo01
                     return response;
                 }
                 Entity<Person> entity = new Entity<Person> { EntityDB = person, stateEntity = StateEntity.remove };
-                repositoryPostreSql.SaveObject<Person>(entity);
+                repositoryMySql.SaveObject<Person>(entity);
                 response.State = ResponseType.Success;
                 response.Message = "La persona fue eliminada correctamente";
                 response.Object = person;
@@ -87,9 +87,9 @@ namespace Business.Main.Modulo01
             try
             {
                 //Logica del negocio
-                response.ListEntities =  repositoryPostreSql.GetDataByProcedure<PersonReport>("\"getPersons\"", name);
+                response.ListEntities = repositoryMySql.GetDataByProcedure<PersonReport>("SearchPerson", name);
                 response.State = ResponseType.Success;
-                response.Message = "Personas obtenidas correctamente";                
+                response.Message = "Personas obtenidas correctamente";
             }
             catch (Exception ex)
             {

@@ -1,6 +1,6 @@
-﻿using Business.Main.DbContextSample;
-using Business.Main.Modulo01;
-using Domain.Main.Modulo01;
+﻿using Business.Main.DbContextMySQL;
+using Business.Main.ModuloSample;
+using Domain.Main.sample;
 using Domain.Main.Wraper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
