@@ -2,6 +2,7 @@
 using Business.Main.ModuloSample;
 using Domain.Main.sample;
 using Domain.Main.Wraper;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PlumbingProps.Logger;
@@ -23,6 +24,7 @@ namespace BackgroundAPIRest.Controllers
         }
 
         [HttpGet("GetPersonsTest")]
+        [EnableCors("MyPolicy")]
         public ResponseQuery<PersonReport> GetPersonsTest(string name)
         {
             Binnacle.ProcessEvent(new Event { category = Event.Category.Information, description = $"Metodo GetPersonsTest llamdo con parametro {name}" });
