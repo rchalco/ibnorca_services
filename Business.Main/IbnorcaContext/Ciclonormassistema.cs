@@ -5,15 +5,15 @@ using System.Collections.Generic;
 
 namespace Business.Main.IbnorcaContext
 {
-    public partial class Ciclocronograma
+    public partial class Ciclonormassistema
     {
-        public long IdCiclosCronogramas { get; set; }
+        public long IdCicloNormaSistema { get; set; }
         public long? IdCicloProgAuditoria { get; set; }
-        public int? CantidadDeDiasTotal { get; set; }
-        public short? MesProgramado { get; set; }
-        public short? MesReprogramado { get; set; }
-        public DateTime? FechaInicioDeEjecucionDeAuditoria { get; set; }
-        public DateTime? FechaDeFinDeEjecucionAuditoria { get; set; }
+        public int? IdpNorma { get; set; }
+        public string Alcance { get; set; }
+        public DateTime? FechaEmisionPrimerCertificado { get; set; }
+        public DateTime? FechaVencimientoUltimoCertificado { get; set; }
+        public string NumeroDeCertificacion { get; set; }
         public string UsuarioRegistro { get; set; }
         public DateTime? FechaDesde { get; set; }
         public DateTime? FechaHasta { get; set; }

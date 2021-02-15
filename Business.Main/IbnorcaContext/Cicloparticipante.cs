@@ -15,5 +15,7 @@ namespace Business.Main.IbnorcaContext
         public string UsuarioRegistro { get; set; }
         public DateTime? FechaDesde { get; set; }
         public short? IdpEstadoParticipante { get; set; }
+
+        public virtual Ciclosprogauditorium IdCicloProgAuditoriaNavigation { get; set; }
     }
 }

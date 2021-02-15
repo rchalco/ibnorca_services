@@ -18,11 +18,11 @@ namespace Business.Main.IbnorcaContext
         }
 
         public virtual DbSet<Ciclocronograma> Ciclocronogramas { get; set; }
+        public virtual DbSet<Ciclonormassistema> Ciclonormassistemas { get; set; }
         public virtual DbSet<Cicloparticipante> Cicloparticipantes { get; set; }
         public virtual DbSet<Ciclosprogauditorium> Ciclosprogauditoria { get; set; }
         public virtual DbSet<Direccionespaproducto> Direccionespaproductos { get; set; }
         public virtual DbSet<Direccionespasistema> Direccionespasistemas { get; set; }
-        public virtual DbSet<Direccionespasistema1> Direccionespasistemas1 { get; set; }
         public virtual DbSet<Parea> Pareas { get; set; }
         public virtual DbSet<Pcargosparticipante> Pcargosparticipantes { get; set; }
         public virtual DbSet<Pdepartamento> Pdepartamentos { get; set; }
@@ -52,6 +52,8 @@ namespace Business.Main.IbnorcaContext
 
                 entity.ToTable("ciclocronogramas");
 
+                entity.HasIndex(e => e.IdCicloProgAuditoria, "FK_CicloCronograma");
+
                 entity.Property(e => e.IdCiclosCronogramas).HasColumnName("idCiclosCronogramas");
 
                 entity.Property(e => e.FechaDeFinDeEjecucionAuditoria).HasColumnType("datetime");
@@ -68,6 +70,55 @@ namespace Business.Main.IbnorcaContext
                     .HasColumnType("varchar(50)")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.HasOne(d => d.IdCicloProgAuditoriaNavigation)
+                    .WithMany(p => p.Ciclocronogramas)
+                    .HasForeignKey(d => d.IdCicloProgAuditoria)
+                    .HasConstraintName("FK_CicloCronograma");
+            });
+
+            modelBuilder.Entity<Ciclonormassistema>(entity =>
+            {
+                entity.HasKey(e => e.IdCicloNormaSistema)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("ciclonormassistema");
+
+                entity.HasIndex(e => e.IdCicloProgAuditoria, "FK_CicloNormaSistema");
+
+                entity.Property(e => e.IdCicloNormaSistema).HasColumnName("idCicloNormaSistema");
+
+                entity.Property(e => e.Alcance)
+                    .HasColumnType("varchar(500)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.Property(e => e.FechaDesde).HasColumnType("datetime");
+
+                entity.Property(e => e.FechaEmisionPrimerCertificado).HasColumnType("datetime");
+
+                entity.Property(e => e.FechaHasta).HasColumnType("datetime");
+
+                entity.Property(e => e.FechaVencimientoUltimoCertificado).HasColumnType("datetime");
+
+                entity.Property(e => e.IdCicloProgAuditoria).HasColumnName("idCicloProgAuditoria");
+
+                entity.Property(e => e.IdpNorma).HasColumnName("idpNorma");
+
+                entity.Property(e => e.NumeroDeCertificacion)
+                    .HasColumnType("varchar(100)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.Property(e => e.UsuarioRegistro)
+                    .HasColumnType("varchar(50)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.HasOne(d => d.IdCicloProgAuditoriaNavigation)
+                    .WithMany(p => p.Ciclonormassistemas)
+                    .HasForeignKey(d => d.IdCicloProgAuditoria)
+                    .HasConstraintName("FK_CicloNormaSistema");
             });
 
             modelBuilder.Entity<Cicloparticipante>(entity =>
@@ -76,6 +127,8 @@ namespace Business.Main.IbnorcaContext
                     .HasName("PRIMARY");
 
                 entity.ToTable("cicloparticipantes");
+
+                entity.HasIndex(e => e.IdCicloProgAuditoria, "FK_CicloParticipantes");
 
                 entity.Property(e => e.IdCicloParticipante).HasColumnName("idCicloParticipante");
 
@@ -101,6 +154,11 @@ namespace Business.Main.IbnorcaContext
                     .HasColumnType("varchar(50)")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.HasOne(d => d.IdCicloProgAuditoriaNavigation)
+                    .WithMany(p => p.Cicloparticipantes)
+                    .HasForeignKey(d => d.IdCicloProgAuditoria)
+                    .HasConstraintName("FK_CicloParticipantes");
             });
 
             modelBuilder.Entity<Ciclosprogauditorium>(entity =>
@@ -109,6 +167,8 @@ namespace Business.Main.IbnorcaContext
                     .HasName("PRIMARY");
 
                 entity.ToTable("ciclosprogauditorium");
+
+                entity.HasIndex(e => e.IdProgramaAuditoria, "FK_CicloPrograma");
 
                 entity.Property(e => e.IdCicloProgAuditoria).HasColumnName("idCicloProgAuditoria");
 
@@ -129,6 +189,11 @@ namespace Business.Main.IbnorcaContext
                     .HasColumnType("varchar(50)")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.HasOne(d => d.IdProgramaAuditoriaNavigation)
+                    .WithMany(p => p.Ciclosprogauditoria)
+                    .HasForeignKey(d => d.IdProgramaAuditoria)
+                    .HasConstraintName("FK_CicloPrograma");
             });
 
             modelBuilder.Entity<Direccionespaproducto>(entity =>
@@ -137,6 +202,8 @@ namespace Business.Main.IbnorcaContext
                     .HasName("PRIMARY");
 
                 entity.ToTable("direccionespaproducto");
+
+                entity.HasIndex(e => e.IdCicloProgAuditoria, "FK_CicloDireccionesProducto");
 
                 entity.Property(e => e.IdDireccionPaproducto).HasColumnName("idDireccionPAProducto");
 
@@ -185,6 +252,11 @@ namespace Business.Main.IbnorcaContext
                     .HasColumnType("varchar(50)")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.HasOne(d => d.IdCicloProgAuditoriaNavigation)
+                    .WithMany(p => p.Direccionespaproductos)
+                    .HasForeignKey(d => d.IdCicloProgAuditoria)
+                    .HasConstraintName("FK_CicloDireccionesProducto");
             });
 
             modelBuilder.Entity<Direccionespasistema>(entity =>
@@ -193,6 +265,8 @@ namespace Business.Main.IbnorcaContext
                     .HasName("PRIMARY");
 
                 entity.ToTable("direccionespasistema");
+
+                entity.HasIndex(e => e.IdCicloProgAuditoria, "FK_CicloDireccionesSistema");
 
                 entity.Property(e => e.IdDireccionPasistema).HasColumnName("idDireccionPASistema");
 
@@ -225,41 +299,11 @@ namespace Business.Main.IbnorcaContext
                     .HasColumnType("varchar(50)")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
-            });
 
-            modelBuilder.Entity<Direccionespasistema1>(entity =>
-            {
-                entity.HasKey(e => e.IdDireccionPasistema)
-                    .HasName("PRIMARY");
-
-                entity.ToTable("direccionespasistemas");
-
-                entity.Property(e => e.IdDireccionPasistema).HasColumnName("idDireccionPASistema");
-
-                entity.Property(e => e.Ciudad)
-                    .HasColumnType("varchar(100)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
-
-                entity.Property(e => e.Direccion)
-                    .HasColumnType("varchar(150)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
-
-                entity.Property(e => e.FechaUltimaModificacion).HasColumnType("datetime");
-
-                entity.Property(e => e.IdCicloProgAuditoria).HasColumnName("idCicloProgAuditoria");
-
-                entity.Property(e => e.IdDepartamento).HasColumnName("idDepartamento");
-
-                entity.Property(e => e.IdPais).HasColumnName("idPais");
-
-                entity.Property(e => e.IdUsuarioUltimoCambio).HasColumnName("idUsuarioUltimoCambio");
-
-                entity.Property(e => e.Nombre)
-                    .HasColumnType("varchar(150)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.HasOne(d => d.IdCicloProgAuditoriaNavigation)
+                    .WithMany(p => p.Direccionespasistemas)
+                    .HasForeignKey(d => d.IdCicloProgAuditoria)
+                    .HasConstraintName("FK_CicloDireccionesSistema");
             });
 
             modelBuilder.Entity<Parea>(entity =>

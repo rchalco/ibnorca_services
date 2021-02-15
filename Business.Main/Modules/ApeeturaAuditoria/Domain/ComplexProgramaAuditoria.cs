@@ -10,8 +10,8 @@ namespace Domain.Main.AperturaAuditoria
     public class ComplexProgramaAuditoria
     {
         public Programasdeauditorium reqPrograma { get; set; }
-        public List<Ciclosprogauditorium> reqCiclosProgramaAudi { get; set; }
-        public List<Ciclocronograma> reqCiclosCronograma { get; set; }
+        public Ciclosprogauditorium reqCiclosProgramaAudi { get; set; }
+        public Ciclocronograma reqCiclosCronograma { get; set; }
         public Cicloparticipante reqCiclosParticipantes { get; set; }
         public Direccionespaproducto reqDireccionesProducto { get; set; }
         public Direccionespasistema reqDireccionesPASistema { get; set; }

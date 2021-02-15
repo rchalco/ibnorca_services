@@ -7,6 +7,11 @@ namespace Business.Main.IbnorcaContext
 {
     public partial class Programasdeauditorium
     {
+        public Programasdeauditorium()
+        {
+            Ciclosprogauditoria = new HashSet<Ciclosprogauditorium>();
+        }
+
         public long IdProgramaAuditoria { get; set; }
         public short? IdpArea { get; set; }
         public string IdExternalsWs { get; set; }
@@ -25,5 +30,7 @@ namespace Business.Main.IbnorcaContext
         public string UsuarioRegistro { get; set; }
         public DateTime? FechaDesde { get; set; }
         public DateTime? FechaHasta { get; set; }
+
+        public virtual ICollection<Ciclosprogauditorium> Ciclosprogauditoria { get; set; }
     }
 }

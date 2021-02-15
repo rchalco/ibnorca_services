@@ -27,9 +27,20 @@ namespace CoreAccesLayer.Implement.MySQL
             return true;
         }
 
+        public bool Commit()
+        {
+            _dbContext.SaveChanges();
+            return true;
+        }
+
         public List<T> GetDataByProcedure<T>(string nameProcedure, params object[] parameters) where T : class, new()
         {
             return mysqlDataInterface.GetListByProcedure<T>(nameProcedure, parameters);
+        }
+
+        public bool Rollback()
+        {
+            throw new NotImplementedException();
         }
 
         public bool SaveObject<T>(Entity<T> entity) where T : class, new()

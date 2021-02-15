@@ -15,14 +15,8 @@ namespace NUnitBusinessMain
     public class TestProgramaAuditoria
     {
         [Test]
-        public void RegisterTest() {
-
-            /*
-             * PersonManager personManager = new PersonManager();
-            Person person = new Person { Idperson = 0, Name = "Dario", Lastname = "Chalco" };
-            var resul = personManager.RegisterPerson(person);
-            Assert.AreEqual(resul.State, ResponseType.Success);
-             * */
+        public void RegisterTest01()
+        {
 
             AperturaAuditoriaManager objProgramaAudi = new AperturaAuditoriaManager();
             ComplexProgramaAuditoria objComplex = new ComplexProgramaAuditoria();
@@ -45,65 +39,95 @@ namespace NUnitBusinessMain
                 FechaDesde = DateTime.Now,
                 FechaHasta = null
             };
-            objComplex.reqPrograma = objPrograma;
 
-            var resul = objProgramaAudi.RegisterProgramaAuditoria(objComplex);
-            Assert.AreEqual(resul.State, ResponseType.Success);
+            Ciclosprogauditorium ciclosprogauditorium = new Ciclosprogauditorium
+            {
+                UsuarioRegistro = "ivan.vilela",
+                FechaDesde = DateTime.Now,
+                FechaHasta = null,
+                Ano = 2000,
+                IdpTipoAuditoria = 1,
+                NombreOrganizacionCertificado = "nombre que va en el certificado"
 
-            /*
-            Ciclosprogauditorium objCicloPa = new Ciclosprogauditorium {  IdpTipoAuditoria=1,Ano=1 }; //seguimiento, etapa i, etapa ii
-            objComplex.reqCiclosProg = objCicloPa;
+            };
+            objPrograma.Ciclosprogauditoria.Add(ciclosprogauditorium);
 
-            Ciclocronograma objCicloCrono = new Ciclocronograma { 
-                IdCicloProgAuditoria = 1, 
-                CantidadDeDiasTotal=5,
-                MesProgramado=1,
-                MesReprogramado=3,
-                FechaInicioDeEjecucionDeAuditoria = DateTime.Now, 
+           ciclosprogauditorium = new Ciclosprogauditorium
+            {
+                UsuarioRegistro = "ivan.vilela",
+                FechaDesde = DateTime.Now,
+                FechaHasta = null,
+                Ano = 2001,
+                IdpTipoAuditoria = 1,
+                NombreOrganizacionCertificado = "nombre que va en el certificado"
+
+            };
+            objPrograma.Ciclosprogauditoria.Add(ciclosprogauditorium);
+            ciclosprogauditorium = new Ciclosprogauditorium
+            {
+                UsuarioRegistro = "ivan.vilela",
+                FechaDesde = DateTime.Now,
+                FechaHasta = null,
+                Ano = 2002,
+                IdpTipoAuditoria = 1,
+                NombreOrganizacionCertificado = "nombre que va en el certificado"
+
+            };
+            
+
+            Ciclocronograma objCicloCrono = new Ciclocronograma
+            {
+                IdCicloProgAuditoria = 1,
+                CantidadDeDiasTotal = 5,
+                MesProgramado = 1,
+                MesReprogramado = 3,
+                FechaInicioDeEjecucionDeAuditoria = DateTime.Now,
                 FechaDeFinDeEjecucionAuditoria = DateTime.Now,
                 UsuarioRegistro = "ivan.vilela",
                 FechaDesde = DateTime.Now,
                 FechaHasta = null
 
             }; //doble tipo de auditoria, se repite en la cabecera por sis ac los dos
-
-            objComplex.reqCronograma = objCicloCrono;
-
-            Cicloparticipante objParticipante = new Cicloparticipante { 
-                IdCicloProgAuditoria=1,
-                IdParticipanteWs="1WS",
-                ParticipanteContextWs="Ruben - Manager",
+            ciclosprogauditorium.Ciclocronogramas.Add(objCicloCrono);
+            //Participante
+            Cicloparticipante objParticipante = new Cicloparticipante
+            {
+                IdCicloProgAuditoria = 1,
+                IdParticipanteWs = "1WS",
+                ParticipanteContextWs = "{\"NOmbre\":\"ruben\"}",
                 UsuarioRegistro = "ivan.vilela",
                 FechaDesde = DateTime.Now,
-                IdpEstadoParticipante= 1 ///baja  - vigente
+                IdpEstadoParticipante = 1 ///baja  - vigente
             };
-            objComplex.reqParticipante = objParticipante;
+            ciclosprogauditorium.Cicloparticipantes.Add(objParticipante);
 
-            Direccionespaproducto objDirProd = new Direccionespaproducto {
-                IdCicloProgAuditoria=1,
-                Nombre="cemento Portland", 
-                Direccion="Planta industrial Viacha",
-                Marca="NB", 
-                Sello=1,IdPais=1, 
-                IdDepartamento=1,
-                Ciudad="el alto",
-                FechaEmisionPrimerCertificado= DateTime.Now,
-                FechaVencimientoUltimoCertificado=DateTime.Now,
-                FechaVencimientoCertificado =DateTime.Now,
+            //Productos
+            Direccionespaproducto objDirProd = new Direccionespaproducto
+            {
+                IdCicloProgAuditoria = 1,
+                Nombre = "cemento Portland",
+                Direccion = "Planta industrial Viacha",
+                Marca = "NB",
+                Sello = 1,
+                IdPais = 1,
+                IdDepartamento = 1,
+                Ciudad = "el alto",
+                FechaEmisionPrimerCertificado = DateTime.Now,
+                FechaVencimientoUltimoCertificado = DateTime.Now,
+                FechaVencimientoCertificado = DateTime.Now,
                 UsuarioRegistro = "ivan.vilela",
                 FechaDesde = DateTime.Now,
                 FechaHasta = null
             };
-            objComplex.reqDireccionesProducto = objDirProd;
+            ciclosprogauditorium.Direccionespaproductos.Add(objDirProd);
 
-            Direccionespasistema objDirSis = new Direccionespasistema { };
-            objComplex.reqDireccionesPASistema = objDirSis;
+            objPrograma.Ciclosprogauditoria.Add(ciclosprogauditorium);
+            objComplex.reqPrograma = objPrograma;
 
             var resul = objProgramaAudi.RegisterProgramaAuditoria(objComplex);
             Assert.AreEqual(resul.State, ResponseType.Success);
-            */
+                        
         }
-
         [Test]
         public void GetParametricas()
         {

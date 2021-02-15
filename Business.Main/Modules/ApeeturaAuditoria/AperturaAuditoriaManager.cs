@@ -31,60 +31,12 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                 //full validacion
 
                 Entity<Programasdeauditorium> entity = new Entity<Programasdeauditorium> { EntityDB = req.reqPrograma, stateEntity = StateEntity.add };
-                /*if (req.reqPrograma.IdProgramaAuditoria != 0)
+                if (req.reqPrograma.IdProgramaAuditoria != 0)
                 {
                     entity.stateEntity = StateEntity.modify;
-                }*/
+                }
 
                 repositoryMySql.SaveObject<Programasdeauditorium>(entity);
-
-
-                //if (response. == null)
-                //{
-                //}
-                //ciclos 
-                req.reqCiclosProg.IdProgramaAuditoria = req.reqPrograma.IdProgramaAuditoria;
-                Entity<Ciclosprogauditorium> entityCiclos = new Entity<Ciclosprogauditorium> { EntityDB = req.reqCiclosProg, stateEntity = StateEntity.add };
-                
-                repositoryMySql.SaveObject<Ciclosprogauditorium>(entityCiclos);
-
-                //Cronograma  
-                req.reqCronograma.IdCicloProgAuditoria = req.reqCiclosProg.IdCicloProgAuditoria;
-                Entity<Ciclocronograma> entityCronograma = new Entity<Ciclocronograma> { EntityDB = req.reqCronograma, stateEntity = StateEntity.add };
-                if (req.reqPrograma.IdProgramaAuditoria != 0)
-                {
-                    entity.stateEntity = StateEntity.modify;
-                }
-                repositoryMySql.SaveObject<Ciclocronograma>(entityCronograma);
-
-                // Participantes
-                req.reqParticipante.IdCicloProgAuditoria = req.reqCiclosProg.IdCicloProgAuditoria;
-                Entity<Cicloparticipante> entityParticipante = new Entity<Cicloparticipante> { EntityDB = req.reqParticipante, stateEntity = StateEntity.add };
-                if (req.reqPrograma.IdProgramaAuditoria != 0)
-                {
-                    entity.stateEntity = StateEntity.modify;
-                }
-                repositoryMySql.SaveObject<Cicloparticipante>(entityParticipante);
-
-
-                //PROUCTOS
-                req.reqDireccionesProducto.IdCicloProgAuditoria = req.reqCiclosProg.IdCicloProgAuditoria;
-                Entity<Direccionespaproducto> entityProd = new Entity<Direccionespaproducto> { EntityDB = req.reqDireccionesProducto, stateEntity = StateEntity.add };
-                if (req.reqDireccionesProducto.IdDireccionPaproducto != 0)
-                {
-                    entity.stateEntity = StateEntity.modify;
-                }
-                repositoryMySql.SaveObject<Direccionespaproducto>(entityProd);
-
-
-                Entity<Direccionespasistema> entitySis = new Entity<Direccionespasistema> { EntityDB = req.reqDireccionesPASistema, stateEntity = StateEntity.add };
-                if (req.reqDireccionesProducto.IdDireccionPaproducto != 0)
-                {
-                    entity.stateEntity = StateEntity.modify;
-                }
-                
-                repositoryMySql.SaveObject<Direccionespasistema>(entitySis);
-                */
 
                 response.State = ResponseType.Success;
                 response.Message = "El programa fue grabado";
