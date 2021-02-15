@@ -1,4 +1,4 @@
-﻿using Business.Main.DbContextMySQL;
+﻿//using Business.Main.IbnorcaContext;
 using Business.Main.ModuloSample;
 using Domain.Main.sample;
 using Domain.Main.Wraper;
@@ -23,27 +23,27 @@ namespace BackgroundAPIRest.Controllers
             return "API para la gestion de personas";
         }
 
-        [HttpGet("GetPersonsTest")]
-        [EnableCors("MyPolicy")]
-        public ResponseQuery<PersonReport> GetPersonsTest(string name)
-        {
-            Binnacle.ProcessEvent(new Event { category = Event.Category.Information, description = $"Metodo GetPersonsTest llamdo con parametro {name}" });
-            PersonManager personManager = new PersonManager();
-            return personManager.GetPersons(name);
-        }
+        //[HttpGet("GetPersonsTest")]
+        //[EnableCors("MyPolicy")]
+        //public ResponseQuery<PersonReport> GetPersonsTest(string name)
+        //{
+        //    Binnacle.ProcessEvent(new Event { category = Event.Category.Information, description = $"Metodo GetPersonsTest llamdo con parametro {name}" });
+        //    PersonManager personManager = new PersonManager();
+        //    return personManager.GetPersons(name);
+        //}
 
-        [HttpPost("PersonRegisterTest")]
-        public ResponseObject<Person> PersonRegisterTest(Person person)
-        {
-            PersonManager personManager = new PersonManager();
-            return personManager.RegisterPerson(person);
-        }
+        //[HttpPost("PersonRegisterTest")]
+        //public ResponseObject<Person> PersonRegisterTest(Person person)
+        //{
+        //    PersonManager personManager = new PersonManager();
+        //    return personManager.RegisterPerson(person);
+        //}
 
-        [HttpPost("DeletePerson")]
-        public ResponseObject<Person> DeletePerson(Person person)
-        {
-            PersonManager personManager = new PersonManager();
-            return personManager.DeletePerson(person);
-        }
+        //[HttpPost("DeletePerson")]
+        //public ResponseObject<Person> DeletePerson(Person person)
+        //{
+        //    PersonManager personManager = new PersonManager();
+        //    return personManager.DeletePerson(person);
+        //}
     }
 }

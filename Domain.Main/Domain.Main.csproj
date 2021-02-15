@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="AperturaAuditoria\" />
     <Folder Include="Wraper\" />
   </ItemGroup>
 

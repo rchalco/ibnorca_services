@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace Business.Main.DbContextMySQL
+namespace Business.Main.IbnorcaContext
 {
     public partial class Person
     {

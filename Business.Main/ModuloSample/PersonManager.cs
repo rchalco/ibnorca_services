@@ -1,5 +1,5 @@
 ﻿using Business.Main.Base;
-using Business.Main.DbContextMySQL;
+using Business.Main.IbnorcaContext;
 using CoreAccesLayer.Wraper;
 using Domain.Main.sample;
 using Domain.Main.Wraper;

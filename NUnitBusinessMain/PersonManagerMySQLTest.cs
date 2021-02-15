@@ -1,4 +1,5 @@
-using Business.Main.DbContextMySQL;
+
+using Business.Main.IbnorcaContext;
 using Business.Main.ModuloSample;
 using Domain.Main.Wraper;
 using NUnit.Framework;
@@ -13,7 +14,7 @@ namespace NUnitBusinessMain
         }
 
         [Test]
-        public void PersonRegisterTest()
+        public void PersonRegisterTest()        
         {
             PersonManager personManager = new PersonManager();
             Person person = new Person { Idperson = 0, Name = "Dario", Lastname = "Chalco" };
@@ -24,7 +25,7 @@ namespace NUnitBusinessMain
         [Test]
         public void PersonRemoveTest()
         {
-            PersonManager personManager = new PersonManager();
+            PersonManager personManager = new PersonManager();  
             Person person = new Person { Idperson = 2};
             var resul = personManager.DeletePerson(person);
             Assert.AreEqual(resul.State, ResponseType.Success);
