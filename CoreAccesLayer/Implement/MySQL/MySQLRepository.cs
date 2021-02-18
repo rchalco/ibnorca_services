@@ -43,6 +43,11 @@ namespace CoreAccesLayer.Implement.MySQL
             throw new NotImplementedException();
         }
 
+        public List<T> SimpleSelect<T>((string, object) parameterFilter) where T : class, new()
+        {
+            return mysqlDataInterface.SimpleSelect<T>(parameterFilter);
+        }
+
         public bool SaveObject<T>(Entity<T> entity) where T : class, new()
         {
             if (entity == null)
