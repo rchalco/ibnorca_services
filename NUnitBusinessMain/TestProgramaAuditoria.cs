@@ -20,7 +20,7 @@ namespace NUnitBusinessMain
 
             AperturaAuditoriaManager objProgramaAudi = new AperturaAuditoriaManager();
             ComplexProgramaAuditoria objComplex = new ComplexProgramaAuditoria();
-            Programasdeauditorium objPrograma = new Programasdeauditorium
+            Praprogramasdeauditorium objPrograma = new Praprogramasdeauditorium
             {
                 IdpArea = 1, // /*SISTEMA - PRODUCTO*/
                 Nit = "123456",
@@ -40,7 +40,7 @@ namespace NUnitBusinessMain
                 FechaHasta = null
             };
 
-            Ciclosprogauditorium ciclosprogauditorium = new Ciclosprogauditorium
+            Praciclosprogauditorium ciclosprogauditorium = new Praciclosprogauditorium
             {
                 UsuarioRegistro = "ivan.vilela",
                 FechaDesde = DateTime.Now,
@@ -50,9 +50,9 @@ namespace NUnitBusinessMain
                 NombreOrganizacionCertificado = "nombre que va en el certificado"
 
             };
-            objPrograma.Ciclosprogauditoria.Add(ciclosprogauditorium);
+            objPrograma.Praciclosprogauditoria.Add(ciclosprogauditorium);
 
-           ciclosprogauditorium = new Ciclosprogauditorium
+            ciclosprogauditorium = new Praciclosprogauditorium
             {
                 UsuarioRegistro = "ivan.vilela",
                 FechaDesde = DateTime.Now,
@@ -62,8 +62,8 @@ namespace NUnitBusinessMain
                 NombreOrganizacionCertificado = "nombre que va en el certificado"
 
             };
-            objPrograma.Ciclosprogauditoria.Add(ciclosprogauditorium);
-            ciclosprogauditorium = new Ciclosprogauditorium
+            objPrograma.Praciclosprogauditoria.Add(ciclosprogauditorium);
+            ciclosprogauditorium = new Praciclosprogauditorium
             {
                 UsuarioRegistro = "ivan.vilela",
                 FechaDesde = DateTime.Now,
@@ -73,11 +73,11 @@ namespace NUnitBusinessMain
                 NombreOrganizacionCertificado = "nombre que va en el certificado"
 
             };
-            
 
-            Ciclocronograma objCicloCrono = new Ciclocronograma
+
+            Praciclocronograma objCicloCrono = new Praciclocronograma
             {
-                IdCicloProgAuditoria = 1,
+                IdPrAcicloProgAuditoria = 1,
                 CantidadDeDiasTotal = 5,
                 MesProgramado = 1,
                 MesReprogramado = 3,
@@ -88,23 +88,24 @@ namespace NUnitBusinessMain
                 FechaHasta = null
 
             }; //doble tipo de auditoria, se repite en la cabecera por sis ac los dos
-            ciclosprogauditorium.Ciclocronogramas.Add(objCicloCrono);
+
+            ciclosprogauditorium.Praciclocronogramas.Add(objCicloCrono);
             //Participante
-            Cicloparticipante objParticipante = new Cicloparticipante
+            Pracicloparticipante objParticipante = new Pracicloparticipante
             {
-                IdCicloProgAuditoria = 1,
+                IdPrAcicloProgAuditoria = 1,
                 IdParticipanteWs = "1WS",
                 ParticipanteContextWs = "{\"NOmbre\":\"ruben\"}",
                 UsuarioRegistro = "ivan.vilela",
                 FechaDesde = DateTime.Now,
                 IdpEstadoParticipante = 1 ///baja  - vigente
             };
-            ciclosprogauditorium.Cicloparticipantes.Add(objParticipante);
+            ciclosprogauditorium.Pracicloparticipantes.Add(objParticipante);
 
             //Productos
-            Direccionespaproducto objDirProd = new Direccionespaproducto
+            Pradireccionespaproducto objDirProd = new Pradireccionespaproducto
             {
-                IdCicloProgAuditoria = 1,
+                IdPrAcicloProgAuditoria = 1,
                 Nombre = "cemento Portland",
                 Direccion = "Planta industrial Viacha",
                 Marca = "NB",
@@ -119,12 +120,12 @@ namespace NUnitBusinessMain
                 FechaDesde = DateTime.Now,
                 FechaHasta = null
             };
-            ciclosprogauditorium.Direccionespaproductos.Add(objDirProd);
+            ciclosprogauditorium.Pradireccionespaproductos.Add(objDirProd);
 
-            objPrograma.Ciclosprogauditoria.Add(ciclosprogauditorium);
-            objComplex.reqPrograma = objPrograma;
+            objPrograma.Praciclosprogauditoria.Add(ciclosprogauditorium);
+            //objComplex.reqPrograma = objPrograma;
 
-            var resul = objProgramaAudi.RegisterProgramaAuditoria(objComplex);
+            var resul = objProgramaAudi.RegisterProgramaAuditoria(objPrograma);
             Assert.AreEqual(resul.State, ResponseType.Success);
                         
         }

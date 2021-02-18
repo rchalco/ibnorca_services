@@ -5,10 +5,10 @@ using System.Collections.Generic;
 
 namespace Business.Main.IbnorcaContext
 {
-    public partial class Ciclocronograma
+    public partial class Praciclocronograma
     {
         public long IdCiclosCronogramas { get; set; }
-        public long? IdCicloProgAuditoria { get; set; }
+        public long? IdPrAcicloProgAuditoria { get; set; }
         public int? CantidadDeDiasTotal { get; set; }
         public short? MesProgramado { get; set; }
         public short? MesReprogramado { get; set; }
@@ -18,6 +18,6 @@ namespace Business.Main.IbnorcaContext
         public DateTime? FechaDesde { get; set; }
         public DateTime? FechaHasta { get; set; }
 
-        public virtual Ciclosprogauditorium IdCicloProgAuditoriaNavigation { get; set; }
+        public virtual Praciclosprogauditorium IdPrAcicloProgAuditoriaNavigation { get; set; }
     }
 }

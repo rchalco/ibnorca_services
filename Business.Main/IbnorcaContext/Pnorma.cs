@@ -11,6 +11,7 @@ namespace Business.Main.IbnorcaContext
         public string CodigoDeNorma { get; set; }
         public string Norma { get; set; }
         public short? IdpArea { get; set; }
+        public string PathNorma { get; set; }
         public DateTime? FechaRegistro { get; set; }
     }
 }

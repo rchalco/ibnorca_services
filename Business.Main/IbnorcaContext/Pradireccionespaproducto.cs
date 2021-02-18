@@ -5,10 +5,10 @@ using System.Collections.Generic;
 
 namespace Business.Main.IbnorcaContext
 {
-    public partial class Direccionespaproducto
+    public partial class Pradireccionespaproducto
     {
         public short IdDireccionPaproducto { get; set; }
-        public long? IdCicloProgAuditoria { get; set; }
+        public long? IdPrAcicloProgAuditoria { get; set; }
         public string Nombre { get; set; }
         public string Direccion { get; set; }
         public string Marca { get; set; }
@@ -24,6 +24,6 @@ namespace Business.Main.IbnorcaContext
         public DateTime? FechaDesde { get; set; }
         public DateTime? FechaHasta { get; set; }
 
-        public virtual Ciclosprogauditorium IdCicloProgAuditoriaNavigation { get; set; }
+        public virtual Praciclosprogauditorium IdPrAcicloProgAuditoriaNavigation { get; set; }
     }
 }

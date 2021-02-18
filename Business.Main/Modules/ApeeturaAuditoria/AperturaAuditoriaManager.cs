@@ -14,9 +14,9 @@ namespace Business.Main.Modules.ApeeturaAuditoria
 {
     public class AperturaAuditoriaManager : BaseManager
     {
-        public ResponseObject<ComplexProgramaAuditoria> RegisterProgramaAuditoria(ComplexProgramaAuditoria req)
+        public ResponseObject<Praprogramasdeauditorium> RegisterProgramaAuditoria(Praprogramasdeauditorium req)
         {
-            ResponseObject<ComplexProgramaAuditoria> response = new ResponseObject<ComplexProgramaAuditoria>();
+            ResponseObject<Praprogramasdeauditorium> response = new ResponseObject<Praprogramasdeauditorium>();
             try
             {
                 //Logica del negocio
@@ -30,13 +30,13 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                 }
                 //full validacion
 
-                Entity<Programasdeauditorium> entity = new Entity<Programasdeauditorium> { EntityDB = req.reqPrograma, stateEntity = StateEntity.add };
-                if (req.reqPrograma.IdProgramaAuditoria != 0)
+                Entity<Praprogramasdeauditorium> entity = new Entity<Praprogramasdeauditorium> { EntityDB = req, stateEntity = StateEntity.add };
+                if (req.IdPrAprogramaAuditoria != 0)
                 {
                     entity.stateEntity = StateEntity.modify;
                 }
 
-                repositoryMySql.SaveObject<Programasdeauditorium>(entity);
+                repositoryMySql.SaveObject<Praprogramasdeauditorium>(entity);
 
                 response.State = ResponseType.Success;
                 response.Message = "El programa fue grabado";
@@ -58,15 +58,15 @@ namespace Business.Main.Modules.ApeeturaAuditoria
             ResponseObject<ComplexProgramaAuditoria> resul = new ResponseObject<ComplexProgramaAuditoria>();
             try
             {
-                var resulDB = repositoryMySql.GetDataByProcedure<Programasdeauditorium>("spGetProgramaAuditoriaByIdServicio", IdServicios);
+                var resulDB = repositoryMySql.GetDataByProcedure<Praprogramasdeauditorium>("spGetProgramaAuditoriaByIdServicio", IdServicios);
                 if (resulDB.Count == 0)
                 {
-                    resul.Object = new ComplexProgramaAuditoria { reqPrograma = new Programasdeauditorium() };
+                    //resul.Object = new ComplexProgramaAuditoria { reqPrograma = new Praprogramasdeauditorium() };
                     //aqui llenamos los datos con ws
                 }
                 else
                 {
-                    var resulCiclos = repositoryMySql.SimpleSelect<Ciclosprogauditorium>(("IdProgramaAuditoria", 11));
+                    //var resulCiclos = repositoryMySql.SimpleSelect<Ciclosprogauditorium>(("IdProgramaAuditoria", 11));
                 }
 
             }

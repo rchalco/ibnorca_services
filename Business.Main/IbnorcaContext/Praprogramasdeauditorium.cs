@@ -5,14 +5,14 @@ using System.Collections.Generic;
 
 namespace Business.Main.IbnorcaContext
 {
-    public partial class Programasdeauditorium
+    public partial class Praprogramasdeauditorium
     {
-        public Programasdeauditorium()
+        public Praprogramasdeauditorium()
         {
-            Ciclosprogauditoria = new HashSet<Ciclosprogauditorium>();
+            Praciclosprogauditoria = new HashSet<Praciclosprogauditorium>();
         }
 
-        public long IdProgramaAuditoria { get; set; }
+        public long IdPrAprogramaAuditoria { get; set; }
         public short? IdpArea { get; set; }
         public string IdExternalsWs { get; set; }
         public string Nit { get; set; }
@@ -31,6 +31,6 @@ namespace Business.Main.IbnorcaContext
         public DateTime? FechaDesde { get; set; }
         public DateTime? FechaHasta { get; set; }
 
-        public virtual ICollection<Ciclosprogauditorium> Ciclosprogauditoria { get; set; }
+        public virtual ICollection<Praciclosprogauditorium> Praciclosprogauditoria { get; set; }
     }
 }

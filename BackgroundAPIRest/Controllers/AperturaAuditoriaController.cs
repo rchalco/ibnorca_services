@@ -1,4 +1,5 @@
-﻿using Business.Main.Modules.ApeeturaAuditoria;
+﻿using Business.Main.IbnorcaContext;
+using Business.Main.Modules.ApeeturaAuditoria;
 using Domain.Main.AperturaAuditoria;
 using Domain.Main.Wraper;
 using Microsoft.AspNetCore.Cors;
@@ -25,7 +26,7 @@ namespace BackgroundAPIRest.Controllers
 
         [HttpPost("RegisterProgramaAuditoria")]
         [EnableCors("MyPolicy")]
-        public ResponseObject<ComplexProgramaAuditoria> RegisterProgramaAuditoria(ComplexProgramaAuditoria req)
+        public ResponseObject<Praprogramasdeauditorium> RegisterProgramaAuditoria(Praprogramasdeauditorium req)
         {
 
             Binnacle.ProcessEvent(new Event { category = Event.Category.Information, description = $"Metodo GetPersonsTest llamdo con parametro {JsonConvert.SerializeObject(req)}" });
