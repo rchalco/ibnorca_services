@@ -29,8 +29,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Modules\ElaboracionAuditoria\" />
-    <Folder Include="Modules\TomaDecision\" />
     <Folder Include="IbnorcaContext\" />
   </ItemGroup>
 

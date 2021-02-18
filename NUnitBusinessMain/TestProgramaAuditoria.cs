@@ -137,6 +137,11 @@ namespace NUnitBusinessMain
             Assert.AreEqual(resul.State, ResponseType.Success);
 
         }
+        [Test]
+        public void ObtenerProgramaAuditoriaTest() {
+            AperturaAuditoriaManager aperturaAuditoriaManager = new AperturaAuditoriaManager();
+            var resul = aperturaAuditoriaManager.ObtenerProgramaAuditoria(11);
+        }
 
     }
 }

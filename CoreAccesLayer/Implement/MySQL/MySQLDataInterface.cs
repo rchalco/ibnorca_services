@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using MySqlConnector;
@@ -127,8 +128,6 @@ namespace CoreAccesLayer.Implement.MySQL
 
         public void CallProcedure<T>(string nameProcedure, params object[] parameters) where T : class, new()
         {
-
-
             gCommand = new MySqlCommand();
             gCommand.CommandText = nameProcedure;
             gCommand.Connection = gConnection;
@@ -226,6 +225,32 @@ namespace CoreAccesLayer.Implement.MySQL
             DisposeConnection();
         }
 
+        public List<T> SimpleSelect<T>((string, object) parameterFilter) where T : class, new()
+        {
+            T seed = new T();
+            List<T> resul = new List<T>();
+            string comandSQL = $@"Select * from {seed.GetType().Name}";
+            gCommand = new MySqlCommand();
+
+            if (!string.IsNullOrEmpty(parameterFilter.Item1))
+            {
+                comandSQL += " where ";
+                comandSQL += $" {parameterFilter.Item1} = @param{gCommand.Parameters.Count.ToString()}";
+                AddParameter(parameterFilter.Item2, gCommand);
+            }
+            gCommand.CommandText = comandSQL;
+
+            IDataReader dr = GetList(gCommand);
+
+            while (dr.Read())
+            {
+                resul.Add(FactoryEntity<T>(ref dr));
+            }
+            DisposeReader(ref dr);
+            DisposeConnection();
+            return resul;
+        }
+
         private IDataReader GetList(MySqlCommand pCommand)
         {
             IDataReader vDataReader = null;
@@ -243,6 +268,7 @@ namespace CoreAccesLayer.Implement.MySQL
             }
             return vDataReader;
         }
+
         private void OpenConnection()
         {
             try
@@ -299,7 +325,6 @@ namespace CoreAccesLayer.Implement.MySQL
                 throw;
             }
         }
-
 
         private T FactoryEntity<T>(ref IDataReader pDataReader) where T : class, new()
         {
@@ -369,6 +394,74 @@ namespace CoreAccesLayer.Implement.MySQL
             }
 
             return vEntity;
+        }
+
+        private void AddParameter(object item, MySqlCommand mySqlCommand)
+        {
+            MySqlParameter parametro = null;
+
+            if (item == null)
+            {
+                gCommand.CommandText += ",";
+                gCommand.Parameters.Add(parametro);
+            }
+
+            parametro = new MySqlParameter
+            {
+                ParameterName = "@param" + mySqlCommand.Parameters.Count.ToString(),
+                Direction = ParameterDirection.Input
+            };
+
+            string typeParameter = item.GetType().Name;
+            if (item is IEnumerable)
+            {
+                parametro.Value = item;
+            }
+            else
+            {
+                switch (typeParameter)
+                {
+                    case "Int32":
+                        parametro.MySqlDbType = MySqlDbType.Int32;
+                        parametro.Value = item;
+                        break;
+
+                    case "Int64":
+                        parametro.MySqlDbType = MySqlDbType.Int64;
+                        parametro.Value = item;
+                        break;
+
+                    case "Decimal":
+                        parametro.MySqlDbType = MySqlDbType.Decimal;
+                        parametro.Value = item;
+                        break;
+
+                    case "String":
+                        parametro.MySqlDbType = MySqlDbType.VarChar;
+                        parametro.Value = item;
+                        break;
+
+                    case "Boolean":
+                        parametro.MySqlDbType = MySqlDbType.Bit;
+                        parametro.Value = Convert.ToBoolean((item));
+                        break;
+
+                    case "DateTime":
+                        parametro.MySqlDbType = MySqlDbType.DateTime;
+                        parametro.Value = item;
+                        break;
+                    case "Byte[]":
+                        parametro.MySqlDbType = MySqlDbType.Byte;
+                        parametro.Value = item;
+                        break;
+
+                    default:
+                        break;
+                }
+
+            }
+
+            mySqlCommand.Parameters.Add(parametro);
         }
     }
 }

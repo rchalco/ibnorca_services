@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Business.Main.Modules.ApeeturaAuditoria
 {
-    public class AperturaAuditoriaManager: BaseManager
+    public class AperturaAuditoriaManager : BaseManager
     {
         public ResponseObject<ComplexProgramaAuditoria> RegisterProgramaAuditoria(ComplexProgramaAuditoria req)
         {
@@ -51,6 +51,30 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                 ProcessError(ex, response);
             }
             return response;
+        }
+
+        public ResponseObject<ComplexProgramaAuditoria> ObtenerProgramaAuditoria(int IdServicios)
+        {
+            ResponseObject<ComplexProgramaAuditoria> resul = new ResponseObject<ComplexProgramaAuditoria>();
+            try
+            {
+                var resulDB = repositoryMySql.GetDataByProcedure<Programasdeauditorium>("spGetProgramaAuditoriaByIdServicio", IdServicios);
+                if (resulDB.Count == 0)
+                {
+                    resul.Object = new ComplexProgramaAuditoria { reqPrograma = new Programasdeauditorium() };
+                    //aqui llenamos los datos con ws
+                }
+                else
+                {
+                    var resulCiclos = repositoryMySql.SimpleSelect<Ciclosprogauditorium>(("IdProgramaAuditoria", 11));
+                }
+
+            }
+            catch (Exception ex)
+            {
+                ProcessError(ex, resul);
+            }
+            return resul;
         }
 
         public ResponseObject<ComplexParametricas> GetParametricas(ComplexParametricas req)

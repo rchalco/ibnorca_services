@@ -12,6 +12,7 @@ namespace CoreAccesLayer.Interface
         bool SaveObject<T>(Entity<T> entity) where T : class, new();
         bool CallProcedure<T>(string nameProcedure, params object[] parameters) where T : class, new();
         List<T> GetDataByProcedure<T>(string nameProcedure, params object[] parameters) where T : class, new();
+        List<T> SimpleSelect<T>((string, object) parameterFilter) where T : class, new();
         bool Commit();
         bool Rollback();
 
