@@ -59,7 +59,16 @@ namespace Business.Main.Modules.ApeeturaAuditoria
             try
             {
                 var resulDB = repositoryMySql.GetDataByProcedure<Programasdeauditorium>("spGetProgramaAuditoriaByIdServicio", IdServicios);
-                var resulCiclos = repositoryMySql.SimpleSelect<Ciclosprogauditorium>(("IdProgramaAuditoria", 11));
+                if (resulDB.Count == 0)
+                {
+                    resul.Object = new ComplexProgramaAuditoria { reqPrograma = new Programasdeauditorium() };
+                    //aqui llenamos los datos con ws
+                }
+                else
+                {
+                    var resulCiclos = repositoryMySql.SimpleSelect<Ciclosprogauditorium>(("IdProgramaAuditoria", 11));
+                }
+
             }
             catch (Exception ex)
             {
