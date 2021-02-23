@@ -53,22 +53,32 @@ namespace Business.Main.Modules.ApeeturaAuditoria
             return response;
         }
 
-        public ResponseObject<ComplexProgramaAuditoria> ObtenerProgramaAuditoria(int IdServicios)
+        public ResponseObject<Praprogramasdeauditorium> ObtenerProgramaAuditoria(int IdServicios)
         {
-            ResponseObject<ComplexProgramaAuditoria> resul = new ResponseObject<ComplexProgramaAuditoria>();
+            ResponseObject<Praprogramasdeauditorium> resul = new ResponseObject<Praprogramasdeauditorium> { Object = new Praprogramasdeauditorium(), Code = "000", Message = "Programa obtenido correctamente", State = ResponseType.Success };
             try
             {
                 var resulDB = repositoryMySql.GetDataByProcedure<Praprogramasdeauditorium>("spGetProgramaAuditoriaByIdServicio", IdServicios);
                 if (resulDB.Count == 0)
                 {
-                    //resul.Object = new ComplexProgramaAuditoria { reqPrograma = new Praprogramasdeauditorium() };
-                    //aqui llenamos los datos con ws
+                    //aqui llenamos los datos con ws para llenar la primera instancia y guardar en la BD
+
+
                 }
                 else
                 {
-                    //var resulCiclos = repositoryMySql.SimpleSelect<Ciclosprogauditorium>(("IdProgramaAuditoria", 11));
+                    resul.Object = resulDB[0];
+                    resul.Object.Praciclosprogauditoria = repositoryMySql.SimpleSelect<Praciclosprogauditorium>(("IdPrAprogramaAuditoria", resul.Object.IdPrAprogramaAuditoria));
+                    List<Praciclosprogauditorium> lAuxiliar = resul.Object.Praciclosprogauditoria.ToList();
+                    lAuxiliar.ForEach(x => { 
+                        x.Praciclocronogramas = repositoryMySql.SimpleSelect<Praciclocronograma>(("IdPrAcicloProgAuditoria", x.IdPrAcicloProgAuditoria));                        
+                        x.Praciclonormassistemas = repositoryMySql.SimpleSelect<Praciclonormassistema>(("IdPrAcicloProgAuditoria", x.IdPrAcicloProgAuditoria));
+                        x.Pracicloparticipantes = repositoryMySql.SimpleSelect<Pracicloparticipante>(("IdPrAcicloProgAuditoria", x.IdPrAcicloProgAuditoria));
+                        x.Pradireccionespaproductos = repositoryMySql.SimpleSelect<Pradireccionespaproducto>(("IdPrAcicloProgAuditoria", x.IdPrAcicloProgAuditoria));
+                        x.Pradireccionespasistemas = repositoryMySql.SimpleSelect<Pradireccionespasistema>(("IdPrAcicloProgAuditoria", x.IdPrAcicloProgAuditoria));
+                    });
+                    resul.Object.Praciclosprogauditoria = lAuxiliar;
                 }
-
             }
             catch (Exception ex)
             {
