@@ -62,6 +62,116 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                 if (resulDB.Count == 0)
                 {
                     //aqui llenamos los datos con ws para llenar la primera instancia y guardar en la BD
+                    AperturaAuditoriaManager objProgramaAudi = new AperturaAuditoriaManager();
+                    ComplexProgramaAuditoria objComplex = new ComplexProgramaAuditoria();
+                    Praprogramasdeauditorium objPrograma = new Praprogramasdeauditorium
+                    {
+                        IdpArea = 1, // /*SISTEMA - PRODUCTO*/
+                        Nit = "123456",
+                        Gestion = 2021,
+                        IdpPais = 1,
+                        IdpDepartamento = 1,
+                        IdOrganizacionWs = "5",
+                        OrganizacionContentWs = "{\"NOmbre\":\"ruben\"}",
+                        CodigoServicioWs = "REG-PROG-XXXXXXX",
+                        DetalleServicio = "{\"NOmbre\":\"ruben\"}",
+                        IdpTipoServicio = 1,/*CERTIFICACION - RENOVACION*/
+                        IdCodigoDeServicioCodigoIafWs = "{\"NOmbre\":\"ruben\"}",
+                        NumeroAnos = 1,
+                        IdpEstadosProgAuditoria = 2, /*'Sin fecha de auditoría' -  Con  - audi realizada*/
+                        UsuarioRegistro = "ivan.vilela",
+                        FechaDesde = DateTime.Now,
+                        FechaHasta = null
+                    };
+
+                    Praciclosprogauditorium ciclosprogauditorium = new Praciclosprogauditorium
+                    {
+                        UsuarioRegistro = "ivan.vilela",
+                        FechaDesde = DateTime.Now,
+                        FechaHasta = null,
+                        Ano = 2000,
+                        IdpTipoAuditoria = 1,
+                        NombreOrganizacionCertificado = "nombre que va en el certificado"
+
+                    };
+                    objPrograma.Praciclosprogauditoria.Add(ciclosprogauditorium);
+
+                    ciclosprogauditorium = new Praciclosprogauditorium
+                    {
+                        UsuarioRegistro = "ivan.vilela",
+                        FechaDesde = DateTime.Now,
+                        FechaHasta = null,
+                        Ano = 2001,
+                        IdpTipoAuditoria = 1,
+                        NombreOrganizacionCertificado = "nombre que va en el certificado"
+
+                    };
+                    objPrograma.Praciclosprogauditoria.Add(ciclosprogauditorium);
+                    ciclosprogauditorium = new Praciclosprogauditorium
+                    {
+                        UsuarioRegistro = "ivan.vilela",
+                        FechaDesde = DateTime.Now,
+                        FechaHasta = null,
+                        Ano = 2002,
+                        IdpTipoAuditoria = 1,
+                        NombreOrganizacionCertificado = "nombre que va en el certificado"
+
+                    };
+
+
+                    Praciclocronograma objCicloCrono = new Praciclocronograma
+                    {
+                        IdPrAcicloProgAuditoria = 1,
+                        CantidadDeDiasTotal = 5,
+                        MesProgramado = 1,
+                        MesReprogramado = 3,
+                        FechaInicioDeEjecucionDeAuditoria = DateTime.Now,
+                        FechaDeFinDeEjecucionAuditoria = DateTime.Now,
+                        UsuarioRegistro = "ivan.vilela",
+                        FechaDesde = DateTime.Now,
+                        FechaHasta = null
+
+                    }; //doble tipo de auditoria, se repite en la cabecera por sis ac los dos
+
+                    ciclosprogauditorium.Praciclocronogramas.Add(objCicloCrono);
+                    //Participante
+                    Pracicloparticipante objParticipante = new Pracicloparticipante
+                    {
+                        IdPrAcicloProgAuditoria = 1,
+                        IdParticipanteWs = "1WS",
+                        ParticipanteContextWs = "{\"NOmbre\":\"ruben\"}",
+                        UsuarioRegistro = "ivan.vilela",
+                        FechaDesde = DateTime.Now,
+                        IdpEstadoParticipante = 1 ///baja  - vigente
+                    };
+                    ciclosprogauditorium.Pracicloparticipantes.Add(objParticipante);
+
+                    //Productos
+                    Pradireccionespaproducto objDirProd = new Pradireccionespaproducto
+                    {
+                        IdPrAcicloProgAuditoria = 1,
+                        Nombre = "cemento Portland",
+                        Direccion = "Planta industrial Viacha",
+                        Marca = "NB",
+                        Sello = 1,
+                        IdPais = 1,
+                        IdDepartamento = 1,
+                        Ciudad = "el alto",
+                        FechaEmisionPrimerCertificado = DateTime.Now,
+                        FechaVencimientoUltimoCertificado = DateTime.Now,
+                        FechaVencimientoCertificado = DateTime.Now,
+                        UsuarioRegistro = "ivan.vilela",
+                        FechaDesde = DateTime.Now,
+                        FechaHasta = null
+                    };
+                    ciclosprogauditorium.Pradireccionespaproductos.Add(objDirProd);
+
+                    objPrograma.Praciclosprogauditoria.Add(ciclosprogauditorium);
+                    //objComplex.reqPrograma = objPrograma;
+
+                    //var resul = objProgramaAudi.RegisterProgramaAuditoria(objPrograma);
+                    //Assert.AreEqual(resul.State, ResponseType.Success);
+
 
 
                 }
