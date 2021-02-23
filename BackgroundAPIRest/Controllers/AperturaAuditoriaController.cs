@@ -33,5 +33,14 @@ namespace BackgroundAPIRest.Controllers
             AperturaAuditoriaManager objAperturaManager = new AperturaAuditoriaManager();
             return objAperturaManager.RegisterProgramaAuditoria(req);
         }
+
+        [HttpPost("ObtenerProgramaAuditoria")]
+        [EnableCors("MyPolicy")]
+        public ResponseObject<Praprogramasdeauditorium> ObtenerProgramaAuditoria(int IdServicios)
+        {
+            Binnacle.ProcessEvent(new Event { category = Event.Category.Information, description = $"Metodo ObtenerProgramaAuditoria llamdo con parametro {JsonConvert.SerializeObject(IdServicios)}" });
+            AperturaAuditoriaManager objAperturaManager = new AperturaAuditoriaManager();
+            return objAperturaManager.ObtenerProgramaAuditoria(IdServicios);
+        }
     }
 }

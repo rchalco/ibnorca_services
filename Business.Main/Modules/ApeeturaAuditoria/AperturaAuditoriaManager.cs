@@ -167,12 +167,16 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                     ciclosprogauditorium.Pradireccionespaproductos.Add(objDirProd);
 
                     objPrograma.Praciclosprogauditoria.Add(ciclosprogauditorium);
+
+                    ///Inserta el programa de auditoria
+                    Entity<Praprogramasdeauditorium> entity = new Entity<Praprogramasdeauditorium> { EntityDB = objPrograma, stateEntity = StateEntity.add };
+                    repositoryMySql.SaveObject<Praprogramasdeauditorium>(entity);
+                    objPrograma.IdPrAprogramaAuditoria = entity.EntityDB.IdPrAprogramaAuditoria;
+                    resul.Object = objPrograma;
                     //objComplex.reqPrograma = objPrograma;
 
                     //var resul = objProgramaAudi.RegisterProgramaAuditoria(objPrograma);
                     //Assert.AreEqual(resul.State, ResponseType.Success);
-
-
 
                 }
                 else
@@ -189,6 +193,8 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                     });
                     resul.Object.Praciclosprogauditoria = lAuxiliar;
                 }
+                resul.State = ResponseType.Success;
+
             }
             catch (Exception ex)
             {
