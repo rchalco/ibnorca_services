@@ -12,8 +12,8 @@ namespace Business.Main.IbnorcaContext
         public int? Correlativo { get; set; }
         public string Oficina { get; set; }
         public string Direccion { get; set; }
-        public short? IdPais { get; set; }
-        public short? IdDepartamento { get; set; }
+        public short? IdparamPais { get; set; }
+        public short? IdparamDepartamento { get; set; }
         public string Ciudad { get; set; }
         public int? Dias { get; set; }
         public string UsuarioRegistro { get; set; }

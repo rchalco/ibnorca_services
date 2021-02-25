@@ -20,7 +20,7 @@ namespace Business.Main.IbnorcaContext
         public long? IdPrAprogramaAuditoria { get; set; }
         public string NombreOrganizacionCertificado { get; set; }
         public short? Ano { get; set; }
-        public short? IdpTipoAuditoria { get; set; }
+        public short? IdparamTipoAuditoria { get; set; }
         public string UsuarioRegistro { get; set; }
         public DateTime? FechaDesde { get; set; }
         public DateTime? FechaHasta { get; set; }

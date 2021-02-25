@@ -9,7 +9,7 @@ namespace Business.Main.IbnorcaContext
     {
         public long IdCicloNormaSistema { get; set; }
         public long? IdPrAcicloProgAuditoria { get; set; }
-        public int? IdpNorma { get; set; }
+        public short? IdparamNorma { get; set; }
         public string Alcance { get; set; }
         public DateTime? FechaEmisionPrimerCertificado { get; set; }
         public DateTime? FechaVencimientoUltimoCertificado { get; set; }

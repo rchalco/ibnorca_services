@@ -5,10 +5,10 @@ using System.Collections.Generic;
 
 namespace Business.Main.IbnorcaContext
 {
-    public partial class Pestadosparticipante
+    public partial class Paramestadosprogauditorium
     {
-        public short IdpEstadoParticipante { get; set; }
-        public string EstadoParticipante { get; set; }
+        public short IdparamEstadosProgAuditoria { get; set; }
+        public string EstadosProgAuditoria { get; set; }
         public DateTime? FechaRegistro { get; set; }
     }
 }

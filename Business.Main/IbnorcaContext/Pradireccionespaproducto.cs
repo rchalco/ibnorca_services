@@ -13,8 +13,8 @@ namespace Business.Main.IbnorcaContext
         public string Direccion { get; set; }
         public string Marca { get; set; }
         public short? Sello { get; set; }
-        public short? IdPais { get; set; }
-        public short? IdDepartamento { get; set; }
+        public short? IdparamPais { get; set; }
+        public short? IdparamDepartamento { get; set; }
         public string Ciudad { get; set; }
         public DateTime? FechaEmisionPrimerCertificado { get; set; }
         public DateTime? FechaVencimientoUltimoCertificado { get; set; }

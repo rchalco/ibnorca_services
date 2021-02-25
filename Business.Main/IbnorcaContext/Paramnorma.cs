@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 namespace Business.Main.IbnorcaContext
 {
-    public partial class Pnorma
+    public partial class Paramnorma
     {
-        public short IdpNorma { get; set; }
+        public short IdparamNorma { get; set; }
         public string CodigoDeNorma { get; set; }
         public string Norma { get; set; }
         public short? IdpArea { get; set; }

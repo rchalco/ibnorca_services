@@ -11,10 +11,10 @@ namespace Business.Main.IbnorcaContext
         public long? IdPrAcicloProgAuditoria { get; set; }
         public string IdParticipanteWs { get; set; }
         public string ParticipanteContextWs { get; set; }
-        public short? IdpCargoParticipante { get; set; }
+        public short? IdparamCargoParticipante { get; set; }
         public string UsuarioRegistro { get; set; }
         public DateTime? FechaDesde { get; set; }
-        public short? IdpEstadoParticipante { get; set; }
+        public short? IdparamEstadoParticipante { get; set; }
 
         public virtual Praciclosprogauditorium IdPrAcicloProgAuditoriaNavigation { get; set; }
     }

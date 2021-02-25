@@ -13,7 +13,7 @@ namespace Business.Main.IbnorcaContext
         }
 
         public long IdPrAprogramaAuditoria { get; set; }
-        public short? IdpArea { get; set; }
+        public short? IdparamArea { get; set; }
         public string IdExternalsWs { get; set; }
         public string Nit { get; set; }
         public int? Gestion { get; set; }
@@ -23,10 +23,10 @@ namespace Business.Main.IbnorcaContext
         public string OrganizacionContentWs { get; set; }
         public string CodigoServicioWs { get; set; }
         public string DetalleServicio { get; set; }
-        public short? IdpTipoServicio { get; set; }
+        public short? IdparamTipoServicio { get; set; }
         public string IdCodigoDeServicioCodigoIafWs { get; set; }
         public short? NumeroAnos { get; set; }
-        public short? IdpEstadosProgAuditoria { get; set; }
+        public short? IdparamEstadosProgAuditoria { get; set; }
         public string UsuarioRegistro { get; set; }
         public DateTime? FechaDesde { get; set; }
         public DateTime? FechaHasta { get; set; }

@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 namespace Business.Main.IbnorcaContext
 {
-    public partial class Pcargosparticipante
+    public partial class Paramcargosparticipante
     {
-        public short IdpCargoParticipante { get; set; }
+        public short IdparamCargoParticipante { get; set; }
         public string CargoParticipante { get; set; }
         public short? IdpTipoCertificacion { get; set; }
         public DateTime? FechaRegistro { get; set; }

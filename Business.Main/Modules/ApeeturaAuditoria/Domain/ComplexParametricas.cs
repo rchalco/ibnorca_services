@@ -9,7 +9,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria.Domain
 {
     public class ComplexParametricas
     {
-        public List<Pcargosparticipante> ListCargosParticipante { get; set; }
+        public List<Paramcargosparticipante> ListCargosParticipante { get; set; }
 
     }
 }

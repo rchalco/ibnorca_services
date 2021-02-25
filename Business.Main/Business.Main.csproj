@@ -28,8 +28,4 @@
     <ProjectReference Include="..\PlumbingProps\PlumbingProps.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="IbnorcaContext\" />
-  </ItemGroup>
-
 </Project>
