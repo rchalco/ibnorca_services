@@ -1,9 +1,12 @@
 ﻿using Business.Main.Base;
+using Business.Main.Cross;
 using Business.Main.IbnorcaContext;
 using Business.Main.Modules.ApeeturaAuditoria.Domain;
+using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.DatosServicioDTO;
 using CoreAccesLayer.Wraper;
 using Domain.Main.AperturaAuditoria;
 using Domain.Main.Wraper;
+using PlumbingProps.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,19 +67,30 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                     //aqui llenamos los datos con ws para llenar la primera instancia y guardar en la BD
                     AperturaAuditoriaManager objProgramaAudi = new AperturaAuditoriaManager();
                     ComplexProgramaAuditoria objComplex = new ComplexProgramaAuditoria();
+
+                    ClientHelper clientHelper = new ClientHelper();
+                    RequestDatosServicio requestDato = new RequestDatosServicio { accion = "DatosServicio", IdServicio = 14338, sIdentificador = Global.IDENTIFICADOR, sKey = Global.KEY_SERVICES };
+                    ResponseDatosServicio resulServices = clientHelper.Consume<ResponseDatosServicio>(Global.URIGLOBAL_SERVICES + Global.URI_SERVICIO, requestDato).Result;
+                    if (!resulServices.estado)
+                    {
+                        resul.State = ResponseType.Warning;
+                        resul.Message = $"Existe problemas al consumir el servicio de ibnorca: {resulServices.mensaje}";
+                    }
+
+
                     Praprogramasdeauditorium objPrograma = new Praprogramasdeauditorium
                     {
-                        IdpArea = 1, // /*SISTEMA - PRODUCTO*/
+                        IdpArea = Convert.ToInt32(resulServices.DatosServicio.IdArea),                        
                         Nit = "123456",
                         Gestion = 2021,
                         IdpPais = 1,
                         IdpDepartamento = 1,
                         IdOrganizacionWs = "5",
-                        OrganizacionContentWs = "{\"NOmbre\":\"ruben\"}",
+                        OrganizacionContentWs = "{\"Nombre\":\"YACIMIENTOS PETROLIFEROS DE BOLIVIA\", {\"NIT\":\"1701234547\"}",
                         CodigoServicioWs = "REG-PROG-XXXXXXX",
                         DetalleServicio = "{\"NOmbre\":\"ruben\"}",
                         IdpTipoServicio = 1,/*CERTIFICACION - RENOVACION*/
-                        IdCodigoDeServicioCodigoIafWs = "{\"NOmbre\":\"ruben\"}",
+                        IdCodigoDeServicioCodigoIafWs = "{\"Gestion\":\"2020\", \"Gestion\":\"2020\"}",
                         NumeroAnos = 1,
                         IdpEstadosProgAuditoria = 2, /*'Sin fecha de auditoría' -  Con  - audi realizada*/
                         UsuarioRegistro = "ivan.vilela",
@@ -184,8 +198,9 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                     resul.Object = resulDB[0];
                     resul.Object.Praciclosprogauditoria = repositoryMySql.SimpleSelect<Praciclosprogauditorium>(("IdPrAprogramaAuditoria", resul.Object.IdPrAprogramaAuditoria));
                     List<Praciclosprogauditorium> lAuxiliar = resul.Object.Praciclosprogauditoria.ToList();
-                    lAuxiliar.ForEach(x => { 
-                        x.Praciclocronogramas = repositoryMySql.SimpleSelect<Praciclocronograma>(("IdPrAcicloProgAuditoria", x.IdPrAcicloProgAuditoria));                        
+                    lAuxiliar.ForEach(x =>
+                    {
+                        x.Praciclocronogramas = repositoryMySql.SimpleSelect<Praciclocronograma>(("IdPrAcicloProgAuditoria", x.IdPrAcicloProgAuditoria));
                         x.Praciclonormassistemas = repositoryMySql.SimpleSelect<Praciclonormassistema>(("IdPrAcicloProgAuditoria", x.IdPrAcicloProgAuditoria));
                         x.Pracicloparticipantes = repositoryMySql.SimpleSelect<Pracicloparticipante>(("IdPrAcicloProgAuditoria", x.IdPrAcicloProgAuditoria));
                         x.Pradireccionespaproductos = repositoryMySql.SimpleSelect<Pradireccionespaproducto>(("IdPrAcicloProgAuditoria", x.IdPrAcicloProgAuditoria));
