@@ -91,7 +91,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                         DetalleServicio = "{\"NOmbre\":\"ruben\"}",
                         IdpTipoServicio = 1,/*CERTIFICACION - RENOVACION*/
                         IdCodigoDeServicioCodigoIafWs = "{\"Gestion\":\"2020\", \"Gestion\":\"2020\"}",
-                        NumeroAnos = 1,
+                        NumeroAnios = 1,
                         IdpEstadosProgAuditoria = 2, /*'Sin fecha de auditoría' -  Con  - audi realizada*/
                         UsuarioRegistro = "ivan.vilela",
                         FechaDesde = DateTime.Now,

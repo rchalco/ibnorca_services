@@ -33,7 +33,7 @@ namespace NUnitBusinessMain
                 DetalleServicio = "{\"NOmbre\":\"ruben\"}",
                 IdpTipoServicio = 1,/*CERTIFICACION - RENOVACION*/
                 IdCodigoDeServicioCodigoIafWs = "{\"NOmbre\":\"ruben\"}",
-                NumeroAnos = 1,
+                NumeroAnios = 1,
                 IdpEstadosProgAuditoria = 2, /*'Sin fecha de auditoría' -  Con  - audi realizada*/
                 UsuarioRegistro = "ivan.vilela",
                 FechaDesde = DateTime.Now,
