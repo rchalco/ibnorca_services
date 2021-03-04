@@ -1,9 +1,12 @@
 ﻿using Business.Main.Base;
+using Business.Main.Cross;
 using Business.Main.IbnorcaContext;
 using Business.Main.Modules.ApeeturaAuditoria.Domain;
+using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.DatosServicioDTO;
 using CoreAccesLayer.Wraper;
 using Domain.Main.AperturaAuditoria;
 using Domain.Main.Wraper;
+using PlumbingProps.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,21 +67,32 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                     //aqui llenamos los datos con ws para llenar la primera instancia y guardar en la BD
                     AperturaAuditoriaManager objProgramaAudi = new AperturaAuditoriaManager();
                     ComplexProgramaAuditoria objComplex = new ComplexProgramaAuditoria();
+
+                    ClientHelper clientHelper = new ClientHelper();
+                    RequestDatosServicio requestDato = new RequestDatosServicio { accion = "DatosServicio", IdServicio = 14338, sIdentificador = Global.IDENTIFICADOR, sKey = Global.KEY_SERVICES };
+                    ResponseDatosServicio resulServices = clientHelper.Consume<ResponseDatosServicio>(Global.URIGLOBAL_SERVICES + Global.URI_SERVICIO, requestDato).Result;
+                    if (!resulServices.estado)
+                    {
+                        resul.State = ResponseType.Warning;
+                        resul.Message = $"Existe problemas al consumir el servicio de ibnorca: {resulServices.mensaje}";
+                    }
+
+
                     Praprogramasdeauditorium objPrograma = new Praprogramasdeauditorium
                     {
-                        IdparamArea = 1, // /*SISTEMA - PRODUCTO*/
+                        IdpArea = Convert.ToInt32(resulServices.DatosServicio.IdArea),                        
                         Nit = "123456",
                         Gestion = 2021,
                         IdpPais = 1,
                         IdpDepartamento = 1,
                         IdOrganizacionWs = "5",
-                        OrganizacionContentWs = "{\"NOmbre\":\"ruben\"}",
+                        OrganizacionContentWs = "{\"Nombre\":\"YACIMIENTOS PETROLIFEROS DE BOLIVIA\", {\"NIT\":\"1701234547\"}",
                         CodigoServicioWs = "REG-PROG-XXXXXXX",
                         DetalleServicio = "{\"NOmbre\":\"ruben\"}",
-                        IdparamTipoServicio = 1,/*CERTIFICACION - RENOVACION*/
-                        IdCodigoDeServicioCodigoIafWs = "{\"NOmbre\":\"ruben\"}",
-                        NumeroAnos = 1,
-                        IdparamEstadosProgAuditoria = 2, /*'Sin fecha de auditoría' -  Con  - audi realizada*/
+                        IdpTipoServicio = 1,/*CERTIFICACION - RENOVACION*/
+                        IdCodigoDeServicioCodigoIafWs = "{\"Gestion\":\"2020\", \"Gestion\":\"2020\"}",
+                        NumeroAnios = 1,
+                        IdpEstadosProgAuditoria = 2, /*'Sin fecha de auditoría' -  Con  - audi realizada*/
                         UsuarioRegistro = "ivan.vilela",
                         FechaDesde = DateTime.Now,
                         FechaHasta = null
@@ -90,7 +104,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                         FechaDesde = DateTime.Now,
                         FechaHasta = null,
                         Ano = 2000,
-                        IdparamTipoAuditoria = 1,
+                        IdpTipoAuditoria = 1,
                         NombreOrganizacionCertificado = "nombre que va en el certificado"
 
                     };
@@ -102,7 +116,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                         FechaDesde = DateTime.Now,
                         FechaHasta = null,
                         Ano = 2001,
-                        IdparamTipoAuditoria = 1,
+                        IdpTipoAuditoria = 1,
                         NombreOrganizacionCertificado = "nombre que va en el certificado"
 
                     };
@@ -113,7 +127,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                         FechaDesde = DateTime.Now,
                         FechaHasta = null,
                         Ano = 2002,
-                        IdparamTipoAuditoria = 1,
+                        IdpTipoAuditoria = 1,
                         NombreOrganizacionCertificado = "nombre que va en el certificado"
 
                     };
@@ -142,7 +156,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                         ParticipanteContextWs = "{\"NOmbre\":\"ruben\"}",
                         UsuarioRegistro = "ivan.vilela",
                         FechaDesde = DateTime.Now,
-                        IdparamEstadoParticipante = 1 ///baja  - vigente
+                        IdpEstadoParticipante = 1 ///baja  - vigente
                     };
                     ciclosprogauditorium.Pracicloparticipantes.Add(objParticipante);
 
@@ -154,8 +168,8 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                         Direccion = "Planta industrial Viacha",
                         Marca = "NB",
                         Sello = 1,
-                        IdparamPais = 1,
-                        IdparamDepartamento = 1,
+                        IdPais = 1,
+                        IdDepartamento = 1,
                         Ciudad = "el alto",
                         FechaEmisionPrimerCertificado = DateTime.Now,
                         FechaVencimientoUltimoCertificado = DateTime.Now,
@@ -184,8 +198,9 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                     resul.Object = resulDB[0];
                     resul.Object.Praciclosprogauditoria = repositoryMySql.SimpleSelect<Praciclosprogauditorium>(("IdPrAprogramaAuditoria", resul.Object.IdPrAprogramaAuditoria));
                     List<Praciclosprogauditorium> lAuxiliar = resul.Object.Praciclosprogauditoria.ToList();
-                    lAuxiliar.ForEach(x => { 
-                        x.Praciclocronogramas = repositoryMySql.SimpleSelect<Praciclocronograma>(("IdPrAcicloProgAuditoria", x.IdPrAcicloProgAuditoria));                        
+                    lAuxiliar.ForEach(x =>
+                    {
+                        x.Praciclocronogramas = repositoryMySql.SimpleSelect<Praciclocronograma>(("IdPrAcicloProgAuditoria", x.IdPrAcicloProgAuditoria));
                         x.Praciclonormassistemas = repositoryMySql.SimpleSelect<Praciclonormassistema>(("IdPrAcicloProgAuditoria", x.IdPrAcicloProgAuditoria));
                         x.Pracicloparticipantes = repositoryMySql.SimpleSelect<Pracicloparticipante>(("IdPrAcicloProgAuditoria", x.IdPrAcicloProgAuditoria));
                         x.Pradireccionespaproductos = repositoryMySql.SimpleSelect<Pradireccionespaproducto>(("IdPrAcicloProgAuditoria", x.IdPrAcicloProgAuditoria));
@@ -208,7 +223,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
             ResponseObject<ComplexParametricas> response = new ResponseObject<ComplexParametricas> { Message = "Parametros obtenidos correctamente.", State = ResponseType.Success, Object = new ComplexParametricas() };
             try
             {
-                response.Object.ListCargosParticipante = repositoryMySql.GetDataByProcedure<Paramcargosparticipante>("spGetCargosParticipante", 1);
+                response.Object.ListCargosParticipante = repositoryMySql.GetDataByProcedure<Pcargosparticipante>("spGetCargosParticipante", 1);
             }
             catch (Exception ex)
             {
