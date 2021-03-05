@@ -3,15 +3,15 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace Business.Main.IbnorcaContext
+namespace Business.Main.DataMapping
 {
     public partial class Praciclocronograma
     {
         public long IdCiclosCronogramas { get; set; }
         public long? IdPrAcicloProgAuditoria { get; set; }
         public int? CantidadDeDiasTotal { get; set; }
-        public short? MesProgramado { get; set; }
-        public short? MesReprogramado { get; set; }
+        public DateTime? MesProgramado { get; set; }
+        public DateTime? MesReprogramado { get; set; }
         public DateTime? FechaInicioDeEjecucionDeAuditoria { get; set; }
         public DateTime? FechaDeFinDeEjecucionAuditoria { get; set; }
         public string UsuarioRegistro { get; set; }

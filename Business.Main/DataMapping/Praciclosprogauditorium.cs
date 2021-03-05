@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace Business.Main.IbnorcaContext
+namespace Business.Main.DataMapping
 {
     public partial class Praciclosprogauditorium
     {
@@ -19,8 +19,10 @@ namespace Business.Main.IbnorcaContext
         public long IdPrAcicloProgAuditoria { get; set; }
         public long? IdPrAprogramaAuditoria { get; set; }
         public string NombreOrganizacionCertificado { get; set; }
-        public short? Ano { get; set; }
-        public short? IdpTipoAuditoria { get; set; }
+        public int? IdparamEstadosProgAuditoria { get; set; }
+        public string EstadoDescripcion { get; set; }
+        public int? Anio { get; set; }
+        public int? IdparamTipoAuditoria { get; set; }
         public string UsuarioRegistro { get; set; }
         public DateTime? FechaDesde { get; set; }
         public DateTime? FechaHasta { get; set; }

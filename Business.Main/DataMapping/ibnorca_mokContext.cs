@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace Business.Main.IbnorcaContext
+namespace Business.Main.DataMapping
 {
     public partial class ibnorca_mokContext : DbContext
     {
@@ -17,19 +17,21 @@ namespace Business.Main.IbnorcaContext
         {
         }
 
-        public virtual DbSet<Parea> Pareas { get; set; }
-        public virtual DbSet<Pcargosparticipante> Pcargosparticipantes { get; set; }
-        public virtual DbSet<Pdepartamento> Pdepartamentos { get; set; }
+        public virtual DbSet<Paramarea> Paramareas { get; set; }
+        public virtual DbSet<Paramcargosparticipante> Paramcargosparticipantes { get; set; }
+        public virtual DbSet<Paramdepartamento> Paramdepartamentos { get; set; }
+        public virtual DbSet<Paramestadosparticipante> Paramestadosparticipantes { get; set; }
+        public virtual DbSet<Paramestadosprogauditorium> Paramestadosprogauditoria { get; set; }
+        public virtual DbSet<Paramnorma> Paramnormas { get; set; }
+        public virtual DbSet<Parampaise> Parampaises { get; set; }
+        public virtual DbSet<Paramtipoauditorium> Paramtipoauditoria { get; set; }
+        public virtual DbSet<Paramtiposervicio> Paramtiposervicios { get; set; }
         public virtual DbSet<Person> People { get; set; }
-        public virtual DbSet<Pestadosparticipante> Pestadosparticipantes { get; set; }
-        public virtual DbSet<Pestadosprogauditorium> Pestadosprogauditoria { get; set; }
         public virtual DbSet<Plaauditorium> Plaauditoria { get; set; }
         public virtual DbSet<Placronoequipo> Placronoequipos { get; set; }
         public virtual DbSet<Placronogama> Placronogamas { get; set; }
         public virtual DbSet<Pladiasequipo> Pladiasequipos { get; set; }
         public virtual DbSet<Plaplanetapa> Plaplanetapas { get; set; }
-        public virtual DbSet<Pnorma> Pnormas { get; set; }
-        public virtual DbSet<Ppaise> Ppaises { get; set; }
         public virtual DbSet<Praciclocronograma> Praciclocronogramas { get; set; }
         public virtual DbSet<Praciclonormassistema> Praciclonormassistemas { get; set; }
         public virtual DbSet<Pracicloparticipante> Pracicloparticipantes { get; set; }
@@ -37,27 +39,26 @@ namespace Business.Main.IbnorcaContext
         public virtual DbSet<Pradireccionespaproducto> Pradireccionespaproductos { get; set; }
         public virtual DbSet<Pradireccionespasistema> Pradireccionespasistemas { get; set; }
         public virtual DbSet<Praprogramasdeauditorium> Praprogramasdeauditoria { get; set; }
-        public virtual DbSet<Ptipoauditorium> Ptipoauditoria { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseMySql("server=192.168.0.105;database=ibnorca_mok;user=ibnorca;password=admin.123;treattinyasboolean=true", Microsoft.EntityFrameworkCore.ServerVersion.FromString("8.0.22-mysql"));
+                optionsBuilder.UseMySql("server=localhost;database=ibnorca_mok;user=root;password=admin.123;treattinyasboolean=true", Microsoft.EntityFrameworkCore.ServerVersion.FromString("8.0.22-mysql"));
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Parea>(entity =>
+            modelBuilder.Entity<Paramarea>(entity =>
             {
-                entity.HasKey(e => e.IdpArea)
+                entity.HasKey(e => e.IdparamArea)
                     .HasName("PRIMARY");
 
-                entity.ToTable("parea");
+                entity.ToTable("paramarea");
 
-                entity.Property(e => e.IdpArea).HasColumnName("idpArea");
+                entity.Property(e => e.IdparamArea).HasColumnName("idparamArea");
 
                 entity.Property(e => e.Area)
                     .HasColumnType("varchar(50)")
@@ -67,14 +68,14 @@ namespace Business.Main.IbnorcaContext
                 entity.Property(e => e.FechaRegistro).HasColumnType("datetime");
             });
 
-            modelBuilder.Entity<Pcargosparticipante>(entity =>
+            modelBuilder.Entity<Paramcargosparticipante>(entity =>
             {
-                entity.HasKey(e => e.IdpCargoParticipante)
+                entity.HasKey(e => e.IdparamCargoParticipante)
                     .HasName("PRIMARY");
 
-                entity.ToTable("pcargosparticipantes");
+                entity.ToTable("paramcargosparticipantes");
 
-                entity.Property(e => e.IdpCargoParticipante).HasColumnName("idpCargoParticipante");
+                entity.Property(e => e.IdparamCargoParticipante).HasColumnName("idparamCargoParticipante");
 
                 entity.Property(e => e.CargoParticipante)
                     .HasColumnType("varchar(100)")
@@ -88,14 +89,14 @@ namespace Business.Main.IbnorcaContext
                 entity.Property(e => e.IdpTipoCertificacion).HasColumnName("idpTipoCertificacion");
             });
 
-            modelBuilder.Entity<Pdepartamento>(entity =>
+            modelBuilder.Entity<Paramdepartamento>(entity =>
             {
-                entity.HasKey(e => e.IdpDepartamento)
+                entity.HasKey(e => e.IdparamDepartamento)
                     .HasName("PRIMARY");
 
-                entity.ToTable("pdepartamentos");
+                entity.ToTable("paramdepartamentos");
 
-                entity.Property(e => e.IdpDepartamento).HasColumnName("idpDepartamento");
+                entity.Property(e => e.IdparamDepartamento).HasColumnName("idparamDepartamento");
 
                 entity.Property(e => e.Departamento)
                     .HasColumnType("varchar(150)")
@@ -104,7 +105,124 @@ namespace Business.Main.IbnorcaContext
 
                 entity.Property(e => e.FechaRegistro).HasColumnType("datetime");
 
-                entity.Property(e => e.IdpPais).HasColumnName("idpPais");
+                entity.Property(e => e.IdparamPais).HasColumnName("idparamPais");
+            });
+
+            modelBuilder.Entity<Paramestadosparticipante>(entity =>
+            {
+                entity.HasKey(e => e.IdparamEstadoParticipante)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("paramestadosparticipante");
+
+                entity.Property(e => e.IdparamEstadoParticipante).HasColumnName("idparamEstadoParticipante");
+
+                entity.Property(e => e.EstadoParticipante)
+                    .HasColumnType("varchar(30)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.Property(e => e.FechaRegistro).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<Paramestadosprogauditorium>(entity =>
+            {
+                entity.HasKey(e => e.IdparamEstadosProgAuditoria)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("paramestadosprogauditoria");
+
+                entity.Property(e => e.IdparamEstadosProgAuditoria).HasColumnName("idparamEstadosProgAuditoria");
+
+                entity.Property(e => e.EstadosProgAuditoria)
+                    .HasColumnType("varchar(50)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.Property(e => e.FechaRegistro).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<Paramnorma>(entity =>
+            {
+                entity.HasKey(e => e.IdparamNorma)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("paramnormas");
+
+                entity.Property(e => e.IdparamNorma).HasColumnName("idparamNorma");
+
+                entity.Property(e => e.CodigoDeNorma)
+                    .HasColumnType("varchar(30)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.Property(e => e.FechaRegistro).HasColumnType("datetime");
+
+                entity.Property(e => e.IdpArea).HasColumnName("idpArea");
+
+                entity.Property(e => e.Norma)
+                    .HasColumnType("varchar(500)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.Property(e => e.PathNorma)
+                    .HasColumnType("varchar(300)")
+                    .HasColumnName("pathNorma")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+            });
+
+            modelBuilder.Entity<Parampaise>(entity =>
+            {
+                entity.HasKey(e => e.IdparamPais)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("parampaises");
+
+                entity.Property(e => e.IdparamPais).HasColumnName("idparamPais");
+
+                entity.Property(e => e.FechaRegistro).HasColumnType("datetime");
+
+                entity.Property(e => e.Pais)
+                    .HasColumnType("varchar(150)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+            });
+
+            modelBuilder.Entity<Paramtipoauditorium>(entity =>
+            {
+                entity.HasKey(e => e.IdparamTipoAuditoria)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("paramtipoauditoria");
+
+                entity.Property(e => e.IdparamTipoAuditoria).HasColumnName("idparamTipoAuditoria");
+
+                entity.Property(e => e.FechaRegistro).HasColumnType("datetime");
+
+                entity.Property(e => e.IdpTipoCertificacion).HasColumnName("idpTipoCertificacion");
+
+                entity.Property(e => e.TipoAuditoria)
+                    .HasColumnType("varchar(50)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+            });
+
+            modelBuilder.Entity<Paramtiposervicio>(entity =>
+            {
+                entity.HasKey(e => e.IdparamTipoServicio)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("paramtiposervicio");
+
+                entity.Property(e => e.IdparamTipoServicio).HasColumnName("idparamTipoServicio");
+
+                entity.Property(e => e.FechaRegistro).HasColumnType("datetime");
+
+                entity.Property(e => e.TipoServicio)
+                    .HasColumnType("varchar(50)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
             });
 
             modelBuilder.Entity<Person>(entity =>
@@ -129,40 +247,6 @@ namespace Business.Main.IbnorcaContext
                     .HasColumnName("name")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
-            });
-
-            modelBuilder.Entity<Pestadosparticipante>(entity =>
-            {
-                entity.HasKey(e => e.IdpEstadoParticipante)
-                    .HasName("PRIMARY");
-
-                entity.ToTable("pestadosparticipante");
-
-                entity.Property(e => e.IdpEstadoParticipante).HasColumnName("idpEstadoParticipante");
-
-                entity.Property(e => e.EstadoParticipante)
-                    .HasColumnType("varchar(30)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
-
-                entity.Property(e => e.FechaRegistro).HasColumnType("datetime");
-            });
-
-            modelBuilder.Entity<Pestadosprogauditorium>(entity =>
-            {
-                entity.HasKey(e => e.IdpEstadosProgAuditoria)
-                    .HasName("PRIMARY");
-
-                entity.ToTable("pestadosprogauditoria");
-
-                entity.Property(e => e.IdpEstadosProgAuditoria).HasColumnName("idpEstadosProgAuditoria");
-
-                entity.Property(e => e.EstadosProgAuditoria)
-                    .HasColumnType("varchar(50)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
-
-                entity.Property(e => e.FechaRegistro).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<Plaauditorium>(entity =>
@@ -293,53 +377,6 @@ namespace Business.Main.IbnorcaContext
                     .HasCollation("utf8mb4_0900_ai_ci");
             });
 
-            modelBuilder.Entity<Pnorma>(entity =>
-            {
-                entity.HasKey(e => e.IdpNorma)
-                    .HasName("PRIMARY");
-
-                entity.ToTable("pnormas");
-
-                entity.Property(e => e.IdpNorma).HasColumnName("idpNorma");
-
-                entity.Property(e => e.CodigoDeNorma)
-                    .HasColumnType("varchar(30)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
-
-                entity.Property(e => e.FechaRegistro).HasColumnType("datetime");
-
-                entity.Property(e => e.IdpArea).HasColumnName("idpArea");
-
-                entity.Property(e => e.Norma)
-                    .HasColumnType("varchar(500)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
-
-                entity.Property(e => e.PathNorma)
-                    .HasColumnType("varchar(300)")
-                    .HasColumnName("pathNorma")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
-            });
-
-            modelBuilder.Entity<Ppaise>(entity =>
-            {
-                entity.HasKey(e => e.IdpPais)
-                    .HasName("PRIMARY");
-
-                entity.ToTable("ppaises");
-
-                entity.Property(e => e.IdpPais).HasColumnName("idpPais");
-
-                entity.Property(e => e.FechaRegistro).HasColumnType("datetime");
-
-                entity.Property(e => e.Pais)
-                    .HasColumnType("varchar(150)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
-            });
-
             modelBuilder.Entity<Praciclocronograma>(entity =>
             {
                 entity.HasKey(e => e.IdCiclosCronogramas)
@@ -360,6 +397,10 @@ namespace Business.Main.IbnorcaContext
                 entity.Property(e => e.FechaInicioDeEjecucionDeAuditoria).HasColumnType("datetime");
 
                 entity.Property(e => e.IdPrAcicloProgAuditoria).HasColumnName("idPrACicloProgAuditoria");
+
+                entity.Property(e => e.MesProgramado).HasColumnType("datetime");
+
+                entity.Property(e => e.MesReprogramado).HasColumnType("datetime");
 
                 entity.Property(e => e.UsuarioRegistro)
                     .HasColumnType("varchar(50)")
@@ -398,7 +439,12 @@ namespace Business.Main.IbnorcaContext
 
                 entity.Property(e => e.IdPrAcicloProgAuditoria).HasColumnName("idPrACicloProgAuditoria");
 
-                entity.Property(e => e.IdpNorma).HasColumnName("idpNorma");
+                entity.Property(e => e.IdparamNorma).HasColumnName("idparamNorma");
+
+                entity.Property(e => e.Norma)
+                    .HasColumnType("varchar(1000)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
 
                 entity.Property(e => e.NumeroDeCertificacion)
                     .HasColumnType("varchar(100)")
@@ -427,23 +473,17 @@ namespace Business.Main.IbnorcaContext
 
                 entity.Property(e => e.IdCicloParticipante).HasColumnName("idCicloParticipante");
 
+                entity.Property(e => e.CargoDetalleWs).HasColumnType("json");
+
                 entity.Property(e => e.FechaDesde).HasColumnType("datetime");
 
-                entity.Property(e => e.IdParticipanteWs)
-                    .HasColumnType("varchar(20)")
-                    .HasColumnName("idParticipante_ws")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.IdParticipanteWs).HasColumnName("idParticipante_ws");
 
                 entity.Property(e => e.IdPrAcicloProgAuditoria).HasColumnName("idPrACicloProgAuditoria");
 
-                entity.Property(e => e.IdpCargoParticipante).HasColumnName("idpCargoParticipante");
-
-                entity.Property(e => e.IdpEstadoParticipante).HasColumnName("idpEstadoParticipante");
-
-                entity.Property(e => e.ParticipanteContextWs)
+                entity.Property(e => e.ParticipanteDetalleWs)
                     .HasColumnType("json")
-                    .HasColumnName("ParticipanteContext_ws");
+                    .HasColumnName("ParticipanteDetalle_ws");
 
                 entity.Property(e => e.UsuarioRegistro)
                     .HasColumnType("varchar(50)")
@@ -467,13 +507,20 @@ namespace Business.Main.IbnorcaContext
 
                 entity.Property(e => e.IdPrAcicloProgAuditoria).HasColumnName("idPrACicloProgAuditoria");
 
+                entity.Property(e => e.EstadoDescripcion)
+                    .HasColumnType("varchar(100)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
                 entity.Property(e => e.FechaDesde).HasColumnType("datetime");
 
                 entity.Property(e => e.FechaHasta).HasColumnType("datetime");
 
                 entity.Property(e => e.IdPrAprogramaAuditoria).HasColumnName("idPrAProgramaAuditoria");
 
-                entity.Property(e => e.IdpTipoAuditoria).HasColumnName("idpTipoAuditoria");
+                entity.Property(e => e.IdparamEstadosProgAuditoria).HasColumnName("idparamEstadosProgAuditoria");
+
+                entity.Property(e => e.IdparamTipoAuditoria).HasColumnName("idparamTipoAuditoria");
 
                 entity.Property(e => e.NombreOrganizacionCertificado)
                     .HasColumnType("varchar(150)")
@@ -512,6 +559,11 @@ namespace Business.Main.IbnorcaContext
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
 
+                entity.Property(e => e.Estado)
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
                 entity.Property(e => e.FechaDesde).HasColumnType("datetime");
 
                 entity.Property(e => e.FechaEmisionPrimerCertificado).HasColumnType("datetime");
@@ -521,10 +573,6 @@ namespace Business.Main.IbnorcaContext
                 entity.Property(e => e.FechaVencimientoCertificado).HasColumnType("datetime");
 
                 entity.Property(e => e.FechaVencimientoUltimoCertificado).HasColumnType("datetime");
-
-                entity.Property(e => e.IdDepartamento).HasColumnName("idDepartamento");
-
-                entity.Property(e => e.IdPais).HasColumnName("idPais");
 
                 entity.Property(e => e.IdPrAcicloProgAuditoria).HasColumnName("idPrACicloProgAuditoria");
 
@@ -540,6 +588,16 @@ namespace Business.Main.IbnorcaContext
 
                 entity.Property(e => e.NumeroDeCertificacion)
                     .HasColumnType("varchar(100)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.Property(e => e.Pais)
+                    .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.Property(e => e.Sello)
+                    .HasColumnType("varchar(50)")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
 
@@ -570,6 +628,11 @@ namespace Business.Main.IbnorcaContext
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
 
+                entity.Property(e => e.Departamento)
+                    .HasColumnType("varchar(100)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
                 entity.Property(e => e.Direccion)
                     .HasColumnType("varchar(150)")
                     .HasCharSet("utf8mb4")
@@ -579,14 +642,10 @@ namespace Business.Main.IbnorcaContext
 
                 entity.Property(e => e.FechaHasta).HasColumnType("datetime");
 
-                entity.Property(e => e.IdDepartamento).HasColumnName("idDepartamento");
-
-                entity.Property(e => e.IdPais).HasColumnName("idPais");
-
                 entity.Property(e => e.IdPrAcicloProgAuditoria).HasColumnName("idPrACicloProgAuditoria");
 
-                entity.Property(e => e.Oficina)
-                    .HasColumnType("varchar(150)")
+                entity.Property(e => e.Pais)
+                    .HasColumnType("varchar(100)")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
 
@@ -610,41 +669,45 @@ namespace Business.Main.IbnorcaContext
 
                 entity.Property(e => e.IdPrAprogramaAuditoria).HasColumnName("idPrAProgramaAuditoria");
 
-                entity.Property(e => e.CodigoServicioWs)
-                    .HasColumnType("varchar(50)")
-                    .HasColumnName("CodigoServicio_ws")
+                entity.Property(e => e.CodigoIafws)
+                    .HasColumnType("varchar(60)")
+                    .HasColumnName("CodigoIAFWS")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
 
-                entity.Property(e => e.DetalleServicio).HasColumnType("json");
+                entity.Property(e => e.CodigoServicioWs)
+                    .HasColumnType("varchar(50)")
+                    .HasColumnName("CodigoServicioWS")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.Property(e => e.DetalleServicioWs)
+                    .HasColumnType("json")
+                    .HasColumnName("DetalleServicioWS");
+
+                entity.Property(e => e.Estado)
+                    .HasColumnType("varchar(100)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.Property(e => e.Fecha)
+                    .HasColumnType("varchar(20)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
 
                 entity.Property(e => e.FechaDesde).HasColumnType("datetime");
 
                 entity.Property(e => e.FechaHasta).HasColumnType("datetime");
 
-                entity.Property(e => e.IdCodigoDeServicioCodigoIafWs)
-                    .HasColumnType("json")
-                    .HasColumnName("idCodigoDeServicioCodigoIAF_ws");
-
-                entity.Property(e => e.IdExternalsWs)
-                    .HasColumnType("json")
-                    .HasColumnName("idExternals_ws");
-
                 entity.Property(e => e.IdOrganizacionWs)
                     .HasColumnType("varchar(20)")
-                    .HasColumnName("idOrganizacion_ws")
+                    .HasColumnName("IdOrganizacionWS")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
 
-                entity.Property(e => e.IdpArea).HasColumnName("idpArea");
+                entity.Property(e => e.IdparamArea).HasColumnName("idparamArea");
 
-                entity.Property(e => e.IdpDepartamento).HasColumnName("idpDepartamento");
-
-                entity.Property(e => e.IdpEstadosProgAuditoria).HasColumnName("idpEstadosProgAuditoria");
-
-                entity.Property(e => e.IdpPais).HasColumnName("idpPais");
-
-                entity.Property(e => e.IdpTipoServicio).HasColumnName("idpTipoServicio");
+                entity.Property(e => e.IdparamTipoServicio).HasColumnName("idparamTipoServicio");
 
                 entity.Property(e => e.Nit)
                     .HasColumnType("varchar(10)")
@@ -652,30 +715,16 @@ namespace Business.Main.IbnorcaContext
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
 
-                entity.Property(e => e.OrganizacionContentWs)
-                    .HasColumnType("json")
-                    .HasColumnName("OrganizacionContent_ws");
-
-                entity.Property(e => e.UsuarioRegistro)
+                entity.Property(e => e.Oficina)
                     .HasColumnType("varchar(50)")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
-            });
 
-            modelBuilder.Entity<Ptipoauditorium>(entity =>
-            {
-                entity.HasKey(e => e.IdpTipoAuditoria)
-                    .HasName("PRIMARY");
+                entity.Property(e => e.OrganizacionContentWs)
+                    .HasColumnType("json")
+                    .HasColumnName("OrganizacionContentWS");
 
-                entity.ToTable("ptipoauditoria");
-
-                entity.Property(e => e.IdpTipoAuditoria).HasColumnName("idpTipoAuditoria");
-
-                entity.Property(e => e.FechaRegistro).HasColumnType("datetime");
-
-                entity.Property(e => e.IdpTipoCertificacion).HasColumnName("idpTipoCertificacion");
-
-                entity.Property(e => e.TipoAuditoria)
+                entity.Property(e => e.UsuarioRegistro)
                     .HasColumnType("varchar(50)")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");

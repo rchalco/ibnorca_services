@@ -18,9 +18,32 @@ namespace Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.DatosServi
         public string norma { get; set; }
         public string nro_sello { get; set; }
         public string cod_ciudad { get; set; }
+        public string ciudad { get; set; }
         public string cod_estado { get; set; }
+        public string estado { get; set; }
         public string cod_pais { get; set; }
+        public string pais { get; set; }
     }
+
+    public class ListaProducto
+    {
+        public string codigo { get; set; }
+        public string cod_simulacionservicio { get; set; }
+        public string nombre { get; set; }
+        public string direccion { get; set; }
+        public string cod_tipoatributo { get; set; }
+        public string habilitado { get; set; }
+        public string marca { get; set; }
+        public string norma { get; set; }
+        public string nro_sello { get; set; }
+        public string cod_ciudad { get; set; }
+        public string ciudad { get; set; }
+        public string cod_estado { get; set; }
+        public string estado { get; set; }
+        public string cod_pais { get; set; }
+        public string pais { get; set; }
+    }
+
 
     public class DatosServicio
     {
@@ -39,7 +62,7 @@ namespace Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.DatosServi
         public string responsable { get; set; }
         public string cod_iaf_primario { get; set; }
         public string cod_iaf_secundario { get; set; }
-        //public List<object> ListaProducto { get; set; }
+        public List<ListaProducto> ListaProducto { get; set; }
         public List<ListaDireccion> ListaDireccion { get; set; }
     }
 

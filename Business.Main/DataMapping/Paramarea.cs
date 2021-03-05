@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace Business.Main.IbnorcaContext
+namespace Business.Main.DataMapping
 {
-    public partial class Parea
+    public partial class Paramarea
     {
-        public short IdpArea { get; set; }
+        public short IdparamArea { get; set; }
         public string Area { get; set; }
         public DateTime? FechaRegistro { get; set; }
     }

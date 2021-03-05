@@ -1,4 +1,4 @@
-﻿using Business.Main.IbnorcaContext;
+﻿using Business.Main.DataMapping;
 using Business.Main.Modules.ApeeturaAuditoria;
 using Domain.Main.AperturaAuditoria;
 using Domain.Main.Wraper;
@@ -36,11 +36,11 @@ namespace BackgroundAPIRest.Controllers
 
         [HttpPost("ObtenerProgramaAuditoria")]
         [EnableCors("MyPolicy")]
-        public ResponseObject<Praprogramasdeauditorium> ObtenerProgramaAuditoria(int IdServicios)
+        public ResponseObject<Praprogramasdeauditorium> ObtenerProgramaAuditoria(int IdServicios, string usuario)
         {
             Binnacle.ProcessEvent(new Event { category = Event.Category.Information, description = $"Metodo ObtenerProgramaAuditoria llamdo con parametro {JsonConvert.SerializeObject(IdServicios)}" });
             AperturaAuditoriaManager objAperturaManager = new AperturaAuditoriaManager();
-            return objAperturaManager.ObtenerProgramaAuditoria(IdServicios);
+            return objAperturaManager.ObtenerProgramaAuditoria(IdServicios, usuario);
         }
     }
 }

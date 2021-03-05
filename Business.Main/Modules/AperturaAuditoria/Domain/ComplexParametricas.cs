@@ -1,4 +1,4 @@
-﻿using Business.Main.IbnorcaContext;
+﻿using Business.Main.DataMapping;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria.Domain
 {
     public class ComplexParametricas
     {
-        public List<Pcargosparticipante> ListCargosParticipante { get; set; }
+        public List<Paramcargosparticipante> ListCargosParticipante { get; set; }
 
     }
 }

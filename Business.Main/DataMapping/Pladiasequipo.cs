@@ -3,13 +3,14 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace Business.Main.IbnorcaContext
+namespace Business.Main.DataMapping
 {
-    public partial class Placronoequipo
+    public partial class Pladiasequipo
     {
-        public long IdPlAcronoEquipo { get; set; }
-        public long? IdPlAcronograma { get; set; }
+        public long IdPlAdiasEquipo { get; set; }
         public long? IdCicloParticipante { get; set; }
+        public int? DiasInSitu { get; set; }
+        public int? DiasRemoto { get; set; }
         public string UsuarioRegistro { get; set; }
         public DateTime? FechaRegistro { get; set; }
     }
