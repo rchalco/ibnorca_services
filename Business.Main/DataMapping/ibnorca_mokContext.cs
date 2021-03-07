@@ -22,6 +22,8 @@ namespace Business.Main.DataMapping
         public virtual DbSet<Paramdepartamento> Paramdepartamentos { get; set; }
         public virtual DbSet<Paramestadosparticipante> Paramestadosparticipantes { get; set; }
         public virtual DbSet<Paramestadosprogauditorium> Paramestadosprogauditoria { get; set; }
+        public virtual DbSet<Paramitemselect> Paramitemselects { get; set; }
+        public virtual DbSet<Paramlistasitemselect> Paramlistasitemselects { get; set; }
         public virtual DbSet<Paramnorma> Paramnormas { get; set; }
         public virtual DbSet<Parampaise> Parampaises { get; set; }
         public virtual DbSet<Paramtipoauditorium> Paramtipoauditoria { get; set; }
@@ -140,6 +142,53 @@ namespace Business.Main.DataMapping
                     .HasCollation("utf8mb4_0900_ai_ci");
 
                 entity.Property(e => e.FechaRegistro).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<Paramitemselect>(entity =>
+            {
+                entity.HasKey(e => e.IdparamItemSelect)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("paramitemselect");
+
+                entity.Property(e => e.IdparamItemSelect).HasColumnName("idparamItemSelect");
+
+                entity.Property(e => e.FechaRegistro).HasColumnType("datetime");
+
+                entity.Property(e => e.IdParamListaItemSelect).HasColumnName("idParamListaItemSelect");
+
+                entity.Property(e => e.ItemSelect)
+                    .HasColumnType("varchar(2000)")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.UsuarioRegistro)
+                    .HasColumnType("varchar(50)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+            });
+
+            modelBuilder.Entity<Paramlistasitemselect>(entity =>
+            {
+                entity.HasKey(e => e.IdParamListaItemSelect)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("paramlistasitemselect");
+
+                entity.Property(e => e.IdParamListaItemSelect).HasColumnName("idParamListaItemSelect");
+
+                entity.Property(e => e.FechaRegistro).HasColumnType("datetime");
+
+                entity.Property(e => e.Lista)
+                    .HasColumnType("varchar(100)")
+                    .HasColumnName("lista")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.Property(e => e.UsuarioRegistro)
+                    .HasColumnType("varchar(50)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
             });
 
             modelBuilder.Entity<Paramnorma>(entity =>

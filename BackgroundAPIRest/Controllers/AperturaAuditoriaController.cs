@@ -36,11 +36,11 @@ namespace BackgroundAPIRest.Controllers
 
         [HttpPost("ObtenerProgramaAuditoria")]
         [EnableCors("MyPolicy")]
-        public ResponseObject<Praprogramasdeauditorium> ObtenerProgramaAuditoria(int IdServicios, string usuario)
+        public ResponseObject<Praprogramasdeauditorium> ObtenerProgramaAuditoria(int pIdServicio, string pUsuario)
         {
-            Binnacle.ProcessEvent(new Event { category = Event.Category.Information, description = $"Metodo ObtenerProgramaAuditoria llamdo con parametro {JsonConvert.SerializeObject(IdServicios)}" });
+            Binnacle.ProcessEvent(new Event { category = Event.Category.Information, description = $"Metodo ObtenerProgramaAuditoria llamdo con parametro {JsonConvert.SerializeObject(pIdServicio)}" });
             AperturaAuditoriaManager objAperturaManager = new AperturaAuditoriaManager();
-            return objAperturaManager.ObtenerProgramaAuditoria(IdServicios, usuario);
+            return objAperturaManager.ObtenerProgramaAuditoria(pIdServicio, pUsuario);
         }
     }
 }

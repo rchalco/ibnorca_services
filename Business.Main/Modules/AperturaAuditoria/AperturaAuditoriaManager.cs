@@ -59,7 +59,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
             return response;
         }
 
-        public ResponseObject<Praprogramasdeauditorium> ObtenerProgramaAuditoria(int pIdServicio, string usuario)
+        public ResponseObject<Praprogramasdeauditorium> ObtenerProgramaAuditoria(int pIdServicio, string pUsuario)
         {
             ResponseObject<Praprogramasdeauditorium> resul = new ResponseObject<Praprogramasdeauditorium> { Object = new Praprogramasdeauditorium(), Code = "000", Message = "Programa obtenido correctamente", State = ResponseType.Success };
             try
@@ -118,7 +118,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                         CodigoIafws = resulServices.DatosServicio.cod_iaf_primario,
                         NumeroAnios = 0,
                         Estado = "INICIAL",
-                        UsuarioRegistro = usuario,
+                        UsuarioRegistro = pUsuario,
                         FechaDesde = DateTime.Now,
                         FechaHasta = null
                     };
@@ -129,7 +129,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                         {
                             Praciclosprogauditorium ciclosprogauditorium = new Praciclosprogauditorium
                             {
-                                UsuarioRegistro = usuario,
+                                UsuarioRegistro = pUsuario,
                                 FechaDesde = DateTime.Now,
                                 FechaHasta = null,
                                 Anio = (short)Convert.ToInt32(x.cod_anio),
@@ -155,7 +155,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                                         FechaEmisionPrimerCertificado = null,
                                         FechaVencimientoUltimoCertificado = null,
                                         FechaVencimientoCertificado = null,
-                                        UsuarioRegistro = usuario,
+                                        UsuarioRegistro = pUsuario,
                                         FechaDesde = DateTime.Now,
                                         FechaHasta = null
                                     };
@@ -180,7 +180,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                                         FechaDesde = DateTime.Now,
                                         FechaHasta = null,
                                         Pais = dir.pais,
-                                        UsuarioRegistro = usuario
+                                        UsuarioRegistro = pUsuario
                                     };
                                     ciclosprogauditorium.Pradireccionespasistemas.Add(objDirSis);
                                 });
@@ -197,7 +197,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                                     FechaHasta = null,
                                     FechaVencimientoUltimoCertificado = null,
                                     NumeroDeCertificacion = "",
-                                    UsuarioRegistro = usuario
+                                    UsuarioRegistro = pUsuario
                                 });
                             }
 
@@ -211,7 +211,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                                 FechaInicioDeEjecucionDeAuditoria = null,
                                 MesProgramado = CalcularMesProgramado(mode, Convert.ToInt32(x.cod_anio)),
                                 MesReprogramado = null,
-                                UsuarioRegistro = usuario
+                                UsuarioRegistro = pUsuario
                             };
                             ciclosprogauditorium.Praciclocronogramas = new List<Praciclocronograma>();
                             ciclosprogauditorium.Praciclocronogramas.Add(cronograma);
@@ -229,7 +229,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                                         IdCargoWs = Convert.ToInt32(auditor.cod_tipoauditor),
                                         IdParticipanteWs = null,
                                         ParticipanteDetalleWs = null,
-                                        UsuarioRegistro = usuario
+                                        UsuarioRegistro = pUsuario
                                     };
                                     ciclosprogauditorium.Pracicloparticipantes.Add(participante);
                                 }
