@@ -12,6 +12,7 @@ namespace Business.Main.DataMapping
         public string Nombre { get; set; }
         public string Direccion { get; set; }
         public string Marca { get; set; }
+        public string Norma { get; set; }
         public string Sello { get; set; }
         public string Ciudad { get; set; }
         public string Estado { get; set; }

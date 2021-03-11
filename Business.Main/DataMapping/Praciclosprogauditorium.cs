@@ -23,6 +23,7 @@ namespace Business.Main.DataMapping
         public string EstadoDescripcion { get; set; }
         public int? Anio { get; set; }
         public int? IdparamTipoAuditoria { get; set; }
+        public string Referencia { get; set; }
         public string UsuarioRegistro { get; set; }
         public DateTime? FechaDesde { get; set; }
         public DateTime? FechaHasta { get; set; }
