@@ -9,5 +9,6 @@ namespace Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.BuscarPais
     public class RequestBuscarPais: BaseRequest
     {
         public string palabra { get; set; }
+        public string TipoLista { get; set; }
     }
 }
