@@ -5,7 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="AperturaAuditoria\" />
+    <Compile Remove="AperturaAuditoria\**" />
+    <EmbeddedResource Remove="AperturaAuditoria\**" />
+    <None Remove="AperturaAuditoria\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Wraper\" />
   </ItemGroup>
 
