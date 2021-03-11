@@ -9,6 +9,7 @@ namespace Business.Main.DataMapping
     {
         public short IdDireccionPasistema { get; set; }
         public long? IdPrAcicloProgAuditoria { get; set; }
+        public string Nombre { get; set; }
         public string Direccion { get; set; }
         public string Pais { get; set; }
         public string Departamento { get; set; }

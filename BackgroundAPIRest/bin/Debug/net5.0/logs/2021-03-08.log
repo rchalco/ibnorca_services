@@ -1,0 +1,493 @@
+2021-03-08 00:00:13.4118 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 00:00:16.1578 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 00:00:19.9373 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 00:00:55.0511 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 07:40:37.6653 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:00:50.2829 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:01:09.9466 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:01:17.1391 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:01:19.4760 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:01:48.1260 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:02:05.4239 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:02:15.9206 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:06:11.9589 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:08:17.1792 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:09:41.7566 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:10:08.7785 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:11:32.0520 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:11:57.6630 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:11:57.7745 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:14:46.0346 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:14:46.1242 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:14:48.0461 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:14:48.1491 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:15:30.7017 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:15:30.8172 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:15:47.0120 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:15:47.1170 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:16:21.6845 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:16:21.8585 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:17:08.8917 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:17:09.0092 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:17:18.9184 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:17:19.0304 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:17:40.5035 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:17:40.6117 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:18:49.1629 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:18:49.2824 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:19:20.9668 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:19:21.0803 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:20:14.9419 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:20:15.0901 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:20:25.5606 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:20:26.2381 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:22:29.3710 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:22:29.5196 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:22:45.4020 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:22:45.5811 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:22:52.4194 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:22:52.5490 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:23:16.1475 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:23:16.2628 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:24:18.1816 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:24:18.3255 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:26:03.7007 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:26:03.8093 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:26:36.8527 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:26:36.9780 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:26:54.7350 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:26:54.9178 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:27:05.6256 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:27:05.7462 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:27:55.4251 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:27:55.5686 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:27:56.9918 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:27:57.1485 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:28:17.1135 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:28:17.2036 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:28:39.6162 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:28:39.7124 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:28:55.4886 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:28:55.6652 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:29:49.7617 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:29:49.8947 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:29:50.9327 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:29:51.0474 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:30:10.3034 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:30:10.7098 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:30:14.9249 INFO Metodo BuscarPersonalCargos llamado
+2021-03-08 08:30:21.1696 INFO Metodo BuscarPersonalCargos llamado
+2021-03-08 08:30:26.8201 INFO Metodo BuscarPersonalCargos llamado
+2021-03-08 08:31:24.3149 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:31:24.4171 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:31:33.4973 INFO Metodo BuscarPersonalCargos llamado
+2021-03-08 08:32:15.3473 INFO Metodo BuscarPersonalCargos llamado
+2021-03-08 08:34:16.8179 INFO Metodo BuscarPersonalCargos llamado
+2021-03-08 08:34:16.8179 INFO Metodo BuscarPersonalCargos llamado
+2021-03-08 08:34:24.9207 INFO Metodo BuscarPersonalCargos llamado
+2021-03-08 08:35:30.4129 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:35:31.6905 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:35:40.9621 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:35:41.2651 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:35:49.3046 INFO Metodo BuscarPersonalCargos llamado
+2021-03-08 08:41:40.5001 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:41:40.7241 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:43:35.4460 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:43:35.6920 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:43:41.5999 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:43:41.8683 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:44:20.8547 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:44:20.9952 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:45:32.0942 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:45:32.2115 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:45:43.1864 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:45:43.4450 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:45:48.4567 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:45:48.6052 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:45:54.9852 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:45:55.1241 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:57:39.6987 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:57:39.9048 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:58:25.0175 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:58:25.1208 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:59:18.8734 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:59:19.3349 INFO Metodo ObtenerCargos llamado
+2021-03-08 08:59:21.7650 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 08:59:21.8904 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:00:47.7206 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:00:47.8223 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:00:58.0152 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:00:58.1175 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:01:06.0034 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:01:06.1059 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:04:15.0969 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:04:15.2118 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:06:15.9444 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:06:16.0699 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:06:19.2405 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:06:19.3819 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:08:15.1746 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:08:15.2653 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:08:25.9125 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:08:26.0369 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:09:06.4293 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:09:06.5932 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:10:08.1987 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:10:08.3819 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:11:13.9448 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:11:14.0949 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:11:21.6298 INFO Metodo BuscarPersonalCargos llamado
+2021-03-08 09:11:31.0516 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:11:31.1435 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:11:49.7210 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:11:49.8620 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:12:05.7454 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:12:05.8511 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:12:09.3928 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:12:09.5240 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:14:09.1505 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:14:09.2647 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:15:35.1839 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:15:35.2904 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:15:42.2212 INFO Metodo BuscarPersonalCargos llamado
+2021-03-08 09:17:02.1967 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:17:02.3225 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:17:54.8042 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:17:54.9048 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:18:15.4658 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:18:15.5749 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:19:37.9043 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:19:38.0474 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:20:39.7966 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:20:40.0602 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:21:11.2378 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:21:11.3683 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:21:14.0271 INFO Metodo BuscarPersonalCargos llamado
+2021-03-08 09:21:51.7851 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:21:51.8897 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:21:55.9044 INFO Metodo BuscarPersonalCargos llamado
+2021-03-08 09:25:12.6261 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:25:12.7109 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:25:15.6390 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:25:15.7500 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:25:29.8824 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:25:29.9866 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:25:46.7202 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:25:46.8553 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:26:33.5297 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:26:33.6557 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:26:35.4154 INFO Metodo BuscarPersonalCargos llamado
+2021-03-08 09:27:44.6537 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:27:44.9626 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:27:48.0036 INFO Metodo BuscarPersonalCargos llamado
+2021-03-08 09:29:42.0029 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:29:42.1026 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:29:43.3671 INFO Metodo BuscarPersonalCargos llamado
+2021-03-08 09:29:46.5764 INFO Metodo BuscarPersonalCargos llamado
+2021-03-08 09:30:22.9818 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:30:23.0949 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:30:26.4210 INFO Metodo BuscarPersonalCargos llamado
+2021-03-08 09:31:40.6702 INFO Metodo BuscarPersonalCargos llamado
+2021-03-08 09:33:43.9531 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:33:44.1185 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:34:09.0448 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:34:09.3441 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:34:31.3216 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:34:31.4603 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:34:36.1115 INFO Metodo BuscarPersonalCargos llamado
+2021-03-08 09:36:48.3624 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:36:48.4840 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:36:53.0189 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:36:53.1524 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:36:54.2752 INFO Metodo BuscarPersonalCargos llamado
+2021-03-08 09:38:11.3480 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:38:12.4617 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:38:40.3934 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:38:40.4821 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:38:45.1352 INFO Metodo BuscarPersonalCargos llamado
+2021-03-08 09:39:11.8541 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:39:11.9574 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:39:22.6008 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:39:22.7179 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:39:29.8668 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:39:30.5599 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:40:41.7311 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:40:41.8393 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:40:46.0529 INFO Metodo BuscarPersonalCargos llamado
+2021-03-08 09:42:39.9051 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:42:40.0143 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:42:45.6824 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:42:45.7907 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:42:54.5586 INFO Metodo BuscarPersonalCargos llamado
+2021-03-08 09:43:49.4392 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:43:49.6430 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:43:55.0665 INFO Metodo BuscarPersonalCargos llamado
+2021-03-08 09:44:43.3382 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:44:43.4421 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:44:46.3174 INFO Metodo BuscarPersonalCargos llamado
+2021-03-08 09:44:53.1986 INFO Metodo BuscarPersonalCargos llamado
+2021-03-08 09:51:33.3958 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:51:33.5903 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:55:40.2871 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:55:41.0829 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:55:59.6093 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 09:55:59.7202 INFO Metodo ObtenerCargos llamado
+2021-03-08 09:56:01.9599 INFO Metodo BuscarPersonalCargos llamado
+2021-03-08 09:56:08.5062 INFO Metodo BuscarPersonalCargos llamado
+2021-03-08 09:56:16.4016 INFO Metodo BuscarPersonalCargos llamado
+2021-03-08 10:01:17.4550 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 10:01:17.5595 INFO Metodo ObtenerCargos llamado
+2021-03-08 10:01:22.6925 INFO Metodo BuscarPersonalCargos llamado
+2021-03-08 10:02:02.5204 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 10:02:02.6258 INFO Metodo ObtenerCargos llamado
+2021-03-08 19:50:33.4005 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 19:50:33.6641 INFO Metodo ObtenerCargos llamado
+2021-03-08 20:19:38.1357 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 20:19:38.2544 INFO Metodo ObtenerCargos llamado
+2021-03-08 20:19:41.0745 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 20:19:41.2131 INFO Metodo ObtenerCargos llamado
+2021-03-08 20:21:38.3033 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 20:21:38.3941 INFO Metodo ObtenerCargos llamado
+2021-03-08 20:22:40.0537 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 20:22:40.1752 INFO Metodo ObtenerCargos llamado
+2021-03-08 20:26:14.2322 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 20:26:14.3575 INFO Metodo ObtenerCargos llamado
+2021-03-08 20:26:47.1630 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 20:26:47.2871 INFO Metodo ObtenerCargos llamado
+2021-03-08 20:26:52.9769 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 20:26:53.1351 INFO Metodo ObtenerCargos llamado
+2021-03-08 20:35:28.6083 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 20:35:28.9582 INFO Metodo ObtenerCargos llamado
+2021-03-08 20:36:27.5441 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 20:36:27.6378 INFO Metodo ObtenerCargos llamado
+2021-03-08 20:37:49.7380 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 20:37:49.8292 INFO Metodo ObtenerCargos llamado
+2021-03-08 20:38:48.8784 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 20:38:48.9921 INFO Metodo ObtenerCargos llamado
+2021-03-08 20:40:40.9754 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 20:40:41.0670 INFO Metodo ObtenerCargos llamado
+2021-03-08 20:42:33.0854 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 20:42:33.2274 INFO Metodo ObtenerCargos llamado
+2021-03-08 20:43:55.2889 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 20:43:55.3819 INFO Metodo ObtenerCargos llamado
+2021-03-08 20:45:23.9726 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 20:45:24.0514 INFO Metodo ObtenerCargos llamado
+2021-03-08 20:47:36.3735 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 20:47:36.7815 INFO Metodo ObtenerCargos llamado
+2021-03-08 20:48:51.3304 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 20:48:51.4449 INFO Metodo ObtenerCargos llamado
+2021-03-08 20:49:06.2624 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 20:49:06.3852 INFO Metodo ObtenerCargos llamado
+2021-03-08 20:49:28.2339 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 20:49:28.3540 INFO Metodo ObtenerCargos llamado
+2021-03-08 20:49:52.5037 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 20:49:52.5900 INFO Metodo ObtenerCargos llamado
+2021-03-08 20:50:21.7149 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 20:50:22.1539 INFO Metodo ObtenerCargos llamado
+2021-03-08 20:50:56.7935 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 20:50:56.9852 INFO Metodo ObtenerCargos llamado
+2021-03-08 20:55:22.0137 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 20:55:22.1072 INFO Metodo ObtenerCargos llamado
+2021-03-08 20:57:29.2965 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 20:57:29.3857 INFO Metodo ObtenerCargos llamado
+2021-03-08 20:57:43.7496 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 20:57:43.8496 INFO Metodo ObtenerCargos llamado
+2021-03-08 20:58:15.4909 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 20:58:16.1896 INFO Metodo ObtenerCargos llamado
+2021-03-08 20:58:50.3844 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 20:58:50.5026 INFO Metodo ObtenerCargos llamado
+2021-03-08 20:59:10.0321 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 20:59:10.1415 INFO Metodo ObtenerCargos llamado
+2021-03-08 20:59:46.2791 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 20:59:46.3874 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:02:38.3518 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:02:38.4556 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:04:54.5984 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:04:55.0876 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:05:30.7914 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:05:30.9185 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:06:49.6995 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:06:49.7924 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:06:56.4457 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:06:56.6186 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:07:34.5896 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:07:35.2122 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:07:56.8702 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:07:56.9882 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:08:37.9762 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:08:38.0983 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:08:48.0858 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:08:48.1825 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:09:03.9984 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:09:04.1209 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:09:14.8706 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:09:15.1577 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:09:41.9377 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:09:42.0337 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:10:08.3508 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:10:08.4294 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:10:31.3131 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:10:31.4110 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:10:43.5680 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:10:43.9225 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:11:15.3343 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:11:15.4305 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:14:10.4315 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:14:10.5665 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:16:03.0550 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:16:03.1638 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:16:29.6064 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:16:29.7203 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:16:35.8085 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:16:35.9169 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:16:54.5210 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:16:54.6183 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:17:15.8711 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:17:15.9715 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:18:01.8783 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:18:02.0847 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:19:26.2234 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:19:26.3103 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:19:58.1339 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:19:58.3751 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:22:56.7652 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:22:56.8492 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:23:13.4099 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:23:13.5055 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:24:03.9800 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:24:04.0607 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:24:34.7107 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:24:34.8117 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:25:13.4037 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:25:13.4776 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:25:24.3505 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:25:24.4671 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:26:16.2202 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:26:16.3279 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:26:35.4348 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:26:35.5227 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:26:53.1373 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:26:53.2460 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:27:10.0020 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:27:10.1718 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:27:24.3873 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:27:24.4827 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:29:08.5297 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:29:08.6423 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:29:34.5061 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:29:34.8433 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:30:08.2296 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:30:08.3137 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:36:30.7915 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:36:31.0234 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:36:49.6764 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:36:49.7760 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:39:54.5087 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:39:54.9799 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:40:10.3927 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:40:10.5185 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:40:15.5841 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:40:15.7946 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:40:28.5416 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:40:28.6567 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:42:36.1510 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:42:36.2875 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:42:46.9152 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:42:47.0794 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:43:38.8479 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:43:38.9736 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:44:38.3951 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:44:38.4698 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:44:50.4109 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:44:50.5095 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:52:48.9206 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:52:49.0266 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:54:47.8276 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:54:47.9671 INFO Metodo ObtenerCargos llamado
+2021-03-08 21:59:57.0944 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 21:59:57.3197 INFO Metodo ObtenerCargos llamado
+2021-03-08 22:02:03.4351 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 22:02:03.5200 INFO Metodo ObtenerCargos llamado
+2021-03-08 22:03:12.5224 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 22:03:12.6301 INFO Metodo ObtenerCargos llamado
+2021-03-08 22:05:51.4101 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 22:05:51.4993 INFO Metodo ObtenerCargos llamado
+2021-03-08 22:08:01.1406 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 22:08:01.2542 INFO Metodo ObtenerCargos llamado
+2021-03-08 22:13:03.9053 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 22:13:04.0443 INFO Metodo ObtenerCargos llamado
+2021-03-08 22:24:13.5008 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 22:24:15.4833 INFO Metodo ObtenerCargos llamado
+2021-03-08 22:25:22.2307 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 22:25:23.5173 INFO Metodo ObtenerCargos llamado
+2021-03-08 22:25:57.0799 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 22:25:57.1778 INFO Metodo ObtenerCargos llamado
+2021-03-08 22:36:54.5477 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 22:36:54.7400 INFO Metodo ObtenerCargos llamado
+2021-03-08 22:37:06.6700 INFO Metodo BuscarPersonalCargos llamado
+2021-03-08 22:37:08.4723 INFO Metodo BuscarPersonalCargos llamado
+2021-03-08 22:37:12.3740 INFO Metodo BuscarPersonalCargos llamado
+2021-03-08 22:41:38.8494 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 22:41:39.0745 INFO Metodo ObtenerCargos llamado
+2021-03-08 22:42:36.1907 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 22:42:36.3880 INFO Metodo ObtenerCargos llamado
+2021-03-08 22:44:12.0383 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 22:44:12.1280 INFO Metodo ObtenerCargos llamado
+2021-03-08 22:44:35.6732 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 22:44:35.8008 INFO Metodo ObtenerCargos llamado
+2021-03-08 22:45:36.5345 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 22:45:36.6501 INFO Metodo ObtenerCargos llamado
+2021-03-08 23:01:37.5211 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 23:01:37.6578 INFO Metodo ObtenerCargos llamado
+2021-03-08 23:10:05.8717 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 23:10:06.0599 INFO Metodo ObtenerCargos llamado
+2021-03-08 23:10:35.1557 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 23:10:35.3820 INFO Metodo ObtenerCargos llamado
+2021-03-08 23:10:44.9861 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 23:10:45.0855 INFO Metodo ObtenerCargos llamado
+2021-03-08 23:11:21.8744 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 23:11:22.0111 INFO Metodo ObtenerCargos llamado
+2021-03-08 23:16:08.1733 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 23:16:10.4665 INFO Metodo ObtenerCargos llamado
+2021-03-08 23:16:21.5027 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 23:16:21.7561 INFO Metodo ObtenerCargos llamado
+2021-03-08 23:16:48.5886 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 23:16:48.7008 INFO Metodo ObtenerCargos llamado
+2021-03-08 23:16:53.6709 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 23:16:53.7793 INFO Metodo ObtenerCargos llamado
+2021-03-08 23:17:46.5605 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 23:17:46.6454 INFO Metodo ObtenerCargos llamado
+2021-03-08 23:18:40.9150 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
+2021-03-08 23:18:41.1345 INFO Metodo ObtenerCargos llamado
+2021-03-08 23:19:19.2570 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 14455
+2021-03-08 23:19:20.3975 INFO Metodo ObtenerCargos llamado
+2021-03-08 23:19:20.4147 INFO Metodo ObtenerCargos llamado
+2021-03-08 23:19:20.5443 INFO Metodo ObtenerCargos llamado
+2021-03-08 23:22:16.6301 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 14455
+2021-03-08 23:22:16.8172 INFO Metodo ObtenerCargos llamado
+2021-03-08 23:22:16.8342 INFO Metodo ObtenerCargos llamado
+2021-03-08 23:22:16.9187 INFO Metodo ObtenerCargos llamado
+2021-03-08 23:23:25.5816 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 14455
+2021-03-08 23:23:25.7354 INFO Metodo ObtenerCargos llamado
+2021-03-08 23:23:25.7817 INFO Metodo ObtenerCargos llamado
+2021-03-08 23:23:25.8068 INFO Metodo ObtenerCargos llamado
+2021-03-08 23:24:41.6295 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 14455
+2021-03-08 23:24:44.2994 INFO Metodo ObtenerCargos llamado
+2021-03-08 23:24:44.2994 INFO Metodo ObtenerCargos llamado
+2021-03-08 23:24:44.3217 INFO Metodo ObtenerCargos llamado
+2021-03-08 23:26:31.9857 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 14455
+2021-03-08 23:26:32.4545 INFO Metodo ObtenerCargos llamado
+2021-03-08 23:26:32.5155 INFO Metodo ObtenerCargos llamado
+2021-03-08 23:26:32.5155 INFO Metodo ObtenerCargos llamado
+2021-03-08 23:29:04.4745 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 14455
+2021-03-08 23:29:04.6847 INFO Metodo ObtenerCargos llamado
+2021-03-08 23:29:04.7483 INFO Metodo ObtenerCargos llamado
+2021-03-08 23:29:04.7483 INFO Metodo ObtenerCargos llamado
+2021-03-08 23:29:38.1017 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 14455
+2021-03-08 23:29:38.2684 INFO Metodo ObtenerCargos llamado
+2021-03-08 23:29:38.3433 INFO Metodo ObtenerCargos llamado
+2021-03-08 23:29:38.3433 INFO Metodo ObtenerCargos llamado
+2021-03-08 23:37:11.8879 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 14455
+2021-03-08 23:37:14.6216 INFO Metodo ObtenerCargos llamado
+2021-03-08 23:37:14.6563 INFO Metodo ObtenerCargos llamado
+2021-03-08 23:37:14.6563 INFO Metodo ObtenerCargos llamado

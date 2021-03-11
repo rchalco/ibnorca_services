@@ -2,9 +2,15 @@
 using Business.Main.Cross;
 using Business.Main.DataMapping;
 using Business.Main.Modules.ApeeturaAuditoria.Domain;
+using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.BuscarNormaxCodigoDTO;
+using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.BuscarPaisDTO;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.BuscarxIdClienteEmpresaDTO;
+using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.CiudadesDTO;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.DatosPropuestaDTO;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.DatosServicioDTO;
+using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.EstadosDTO;
+using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.ListarAuditoresxCargoCalificadoDTO;
+using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.ListarCargosCalificadosDTO;
 using CoreAccesLayer.Wraper;
 using Domain.Main.AperturaAuditoria;
 using Domain.Main.Wraper;
@@ -133,8 +139,10 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                                 FechaDesde = DateTime.Now,
                                 FechaHasta = null,
                                 Anio = (short)Convert.ToInt32(x.cod_anio),
+                                Referencia = x.descripcion,
                                 IdparamTipoAuditoria = 1,
-                                NombreOrganizacionCertificado = responseBusquedaCliente.resultados[0].NombreRazon
+                                NombreOrganizacionCertificado = responseBusquedaCliente.resultados[0].NombreRazon,
+                                EstadoDescripcion = "SIN FECHA DE AUDITORIA"
                             };
 
                             ///TDO: TCP - Cert. de Productos 
@@ -152,6 +160,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                                         Ciudad = dir.ciudad,
                                         Estado = dir.estado,
                                         Pais = dir.pais,
+                                        Norma = dir.norma,
                                         FechaEmisionPrimerCertificado = null,
                                         FechaVencimientoUltimoCertificado = null,
                                         FechaVencimientoCertificado = null,
@@ -180,7 +189,8 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                                         FechaDesde = DateTime.Now,
                                         FechaHasta = null,
                                         Pais = dir.pais,
-                                        UsuarioRegistro = pUsuario
+                                        UsuarioRegistro = pUsuario,
+                                        Nombre = dir.nombre
                                     };
                                     ciclosprogauditorium.Pradireccionespasistemas.Add(objDirSis);
                                 });
@@ -271,8 +281,147 @@ namespace Business.Main.Modules.ApeeturaAuditoria
             return resul;
         }
 
+        public ResponseQuery<ListaCargosCalificados> ObtenerCargos()
+        {
+            ResponseQuery<ListaCargosCalificados> response = new ResponseQuery<ListaCargosCalificados> { Message = "Cargos obtenidos correctamente.", State = ResponseType.Success };
+            try
+            {
+                ClientHelper clientHelper = new ClientHelper();
+                ///TDO: obtenemos los datos del servicio
+                RequestListarCargosCalificados requestDato = new RequestListarCargosCalificados { accion = "ListarCargosCalificados", sIdentificador = Global.IDENTIFICADOR, sKey = Global.KEY_SERVICES };
+                ResponseListarCargosCalificados resulServices = clientHelper.Consume<ResponseListarCargosCalificados>(Global.URIGLOBAL_SERVICES + Global.URI_CARGOS, requestDato).Result;
+                if (!resulServices.estado)
+                {
+                    response.State = ResponseType.Warning;
+                    response.Message = $"Existe problemas al consumir el servicio de ibnorca (ListarCargosCalificados): {resulServices.mensaje}";
+                    return response;
+                }
+                response.ListEntities = resulServices.ListaCargosCalificados;
+            }
+            catch (Exception ex)
+            {
+                ProcessError(ex, response);
+            }
+            return response;
+        }
 
+        public ResponseQuery<ListaCalificado> BuscarPersonalCargos(int IdCargoCalificado)
+        {
+            ResponseQuery<ListaCalificado> response = new ResponseQuery<ListaCalificado> { Message = "Cargos obtenidos obtenido correctamente.", State = ResponseType.Success };
+            try
+            {
+                ClientHelper clientHelper = new ClientHelper();
+                ///TDO: obtenemos los datos del servicio
+                RequestListarAuditoresxCargoCalificado requestDato = new RequestListarAuditoresxCargoCalificado { accion = "ListarAuditoresxCargoCalificado", sIdentificador = Global.IDENTIFICADOR, sKey = Global.KEY_SERVICES, IdCargoCalificado = IdCargoCalificado };
+                ResponseListarAuditoresxCargoCalificado resulServices = clientHelper.Consume<ResponseListarAuditoresxCargoCalificado>(Global.URIGLOBAL_SERVICES + Global.URI_CARGOS, requestDato).Result;
+                if (!resulServices.estado)
+                {
+                    response.State = ResponseType.Warning;
+                    response.Message = $"Existe problemas al consumir el servicio de ibnorca (ListarAuditoresxCargoCalificado): {resulServices.mensaje}";
+                    return response;
+                }
+                response.ListEntities = resulServices.ListaCalificados;
+            }
+            catch (Exception ex)
+            {
+                ProcessError(ex, response);
+            }
+            return response;
+        }
 
+        public ResponseQuery<Norma> BuscarNormas(string Codigo)
+        {
+            ResponseQuery<Norma> response = new ResponseQuery<Norma> { Message = "Parametros obtenidos correctamente.", State = ResponseType.Success, ListEntities = new List<Norma>() };
+            try
+            {
+                ClientHelper clientHelper = new ClientHelper();
+                ///TDO: obtenemos los datos del servicio
+                RequestBuscarNormaxCodigo requestDato = new RequestBuscarNormaxCodigo { accion = "BuscarNormaxCodigo", sIdentificador = Global.IDENTIFICADOR, sKey = Global.KEY_SERVICES, Codigo = Codigo };
+                ResponseBuscarNormaxCodigo resulServices = clientHelper.Consume<ResponseBuscarNormaxCodigo>(Global.URIGLOBAL_SERVICES + Global.URI_NORMAS, requestDato).Result;
+                if (!resulServices.estado)
+                {
+                    response.State = ResponseType.Warning;
+                    response.Message = $"Existe problemas al consumir el servicio de ibnorca (BuscarNormaxCodigo): {resulServices.mensaje}";
+                    return response;
+                }
+                response.ListEntities = resulServices.resultado;
+            }
+            catch (Exception ex)
+            {
+                ProcessError(ex, response);
+            }
+            return response;
+        }
+
+        public ResponseQuery<Pais> BuscarPais(string pais)
+        {
+            ResponseQuery<Pais> response = new ResponseQuery<Pais> { Message = "Parametros obtenidos correctamente.", State = ResponseType.Success, ListEntities = new List<Pais>() };
+            try
+            {
+                ClientHelper clientHelper = new ClientHelper();
+                ///TDO: obtenemos los datos del servicio
+                RequestBuscarPais requestDato = new RequestBuscarPais { accion = "BuscarPais", sIdentificador = Global.IDENTIFICADOR, sKey = Global.KEY_SERVICES, palabra = pais };
+                ResponseBuscarPais resulServices = clientHelper.Consume<ResponseBuscarPais>(Global.URIGLOBAL_SERVICES + Global.URI_PAISES, requestDato).Result;
+                if (!resulServices.estado)
+                {
+                    response.State = ResponseType.Warning;
+                    response.Message = $"Existe problemas al consumir el servicio de ibnorca (BuscarPais): {resulServices.mensaje}";
+                    return response;
+                }
+                response.ListEntities = resulServices.resultado;
+            }
+            catch (Exception ex)
+            {
+                ProcessError(ex, response);
+            }
+            return response;
+        }
+        public ResponseQuery<Estado> BuscarEstado(string IdPais)
+        {
+            ResponseQuery<Estado> response = new ResponseQuery<Estado> { Message = "Parametros obtenidos correctamente.", State = ResponseType.Success, ListEntities = new List<Estado>() };
+            try
+            {
+                ClientHelper clientHelper = new ClientHelper();
+                ///TDO: obtenemos los datos del servicio
+                RequestEstados requestDato = new RequestEstados { accion = "", sIdentificador = Global.IDENTIFICADOR, sKey = Global.KEY_SERVICES, IdPais = IdPais, TipoLista = "estados" };
+                ResponseEstados resulServices = clientHelper.Consume<ResponseEstados>(Global.URIGLOBAL_SERVICES + Global.URI_PAISES, requestDato).Result;
+                if (!resulServices.estado)
+                {
+                    response.State = ResponseType.Warning;
+                    response.Message = $"Existe problemas al consumir el servicio de ibnorca (estados): {resulServices.mensaje}";
+                    return response;
+                }
+                response.ListEntities = resulServices.lista;
+            }
+            catch (Exception ex)
+            {
+                ProcessError(ex, response);
+            }
+            return response;
+        }
+        public ResponseQuery<Ciudad> BuscarCiudad(string IdEstado)
+        {
+            ResponseQuery<Ciudad> response = new ResponseQuery<Ciudad> { Message = "Parametros obtenidos correctamente.", State = ResponseType.Success, ListEntities = new List<Ciudad>() };
+            try
+            {
+                ClientHelper clientHelper = new ClientHelper();
+                ///TDO: obtenemos los datos del servicio
+                RequestCiudades requestDato = new RequestCiudades { accion = "", sIdentificador = Global.IDENTIFICADOR, sKey = Global.KEY_SERVICES, IdEstado = IdEstado, TipoLista = "ciudades" };
+                ResponseCiudades resulServices = clientHelper.Consume<ResponseCiudades>(Global.URIGLOBAL_SERVICES + Global.URI_PAISES, requestDato).Result;
+                if (!resulServices.estado)
+                {
+                    response.State = ResponseType.Warning;
+                    response.Message = $"Existe problemas al consumir el servicio de ibnorca (estados): {resulServices.mensaje}";
+                    return response;
+                }
+                response.ListEntities = resulServices.lista;
+            }
+            catch (Exception ex)
+            {
+                ProcessError(ex, response);
+            }
+            return response;
+        }
         public ResponseObject<ComplexParametricas> GetParametricas(ComplexParametricas req)
         {
             ResponseObject<ComplexParametricas> response = new ResponseObject<ComplexParametricas> { Message = "Parametros obtenidos correctamente.", State = ResponseType.Success, Object = new ComplexParametricas() };
@@ -297,5 +446,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
             }
             return resul;
         }
+
+
     }
 }
