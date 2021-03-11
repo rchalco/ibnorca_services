@@ -1,5 +1,12 @@
-﻿using Business.Main.IbnorcaContext;
+﻿using BackgroundAPIRest.Contracts;
+using Business.Main.DataMapping;
 using Business.Main.Modules.ApeeturaAuditoria;
+using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.BuscarNormaxCodigoDTO;
+using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.BuscarPaisDTO;
+using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.CiudadesDTO;
+using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.EstadosDTO;
+using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.ListarAuditoresxCargoCalificadoDTO;
+using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.ListarCargosCalificadosDTO;
 using Domain.Main.AperturaAuditoria;
 using Domain.Main.Wraper;
 using Microsoft.AspNetCore.Cors;
@@ -36,11 +43,63 @@ namespace BackgroundAPIRest.Controllers
 
         [HttpPost("ObtenerProgramaAuditoria")]
         [EnableCors("MyPolicy")]
-        public ResponseObject<Praprogramasdeauditorium> ObtenerProgramaAuditoria(int IdServicios)
+        public ResponseObject<Praprogramasdeauditorium> ObtenerProgramaAuditoria(RequestObtenerProgramaAuditoria req)
         {
-            Binnacle.ProcessEvent(new Event { category = Event.Category.Information, description = $"Metodo ObtenerProgramaAuditoria llamdo con parametro {JsonConvert.SerializeObject(IdServicios)}" });
+            Binnacle.ProcessEvent(new Event { category = Event.Category.Information, description = $"Metodo ObtenerProgramaAuditoria llamdo con parametro {JsonConvert.SerializeObject(req.IdServicio)}" });
             AperturaAuditoriaManager objAperturaManager = new AperturaAuditoriaManager();
-            return objAperturaManager.ObtenerProgramaAuditoria(IdServicios);
+            return objAperturaManager.ObtenerProgramaAuditoria(req.IdServicio, req.Usuario);
+        }
+
+        [HttpPost("ObtenerCargos")]
+        [EnableCors("MyPolicy")]
+        public ResponseQuery<ListaCargosCalificados> ObtenerCargos()
+        {
+            Binnacle.ProcessEvent(new Event { category = Event.Category.Information, description = $"Metodo ObtenerCargos llamado" });
+            AperturaAuditoriaManager objAperturaManager = new AperturaAuditoriaManager();
+            return objAperturaManager.ObtenerCargos();
+        }
+
+        [HttpPost("BuscarPersonalCargos")]
+        [EnableCors("MyPolicy")]
+        public ResponseQuery<ListaCalificado> BuscarPersonalCargos(RequestBuscarPersonalCargos requestBuscarPersonalCargos)
+        {
+            Binnacle.ProcessEvent(new Event { category = Event.Category.Information, description = $"Metodo BuscarPersonalCargos llamado" });
+            AperturaAuditoriaManager objAperturaManager = new AperturaAuditoriaManager();
+            return objAperturaManager.BuscarPersonalCargos(requestBuscarPersonalCargos.IdCargoCalificado);
+        }
+
+        [HttpPost("BuscarNormas")]
+        [EnableCors("MyPolicy")]
+        public ResponseQuery<Norma> BuscarNormas(RequestBuscarNormas requestBuscarNormas)
+        {
+            Binnacle.ProcessEvent(new Event { category = Event.Category.Information, description = $"Metodo BuscarNormas llamado" });
+            AperturaAuditoriaManager objAperturaManager = new AperturaAuditoriaManager();
+            return objAperturaManager.BuscarNormas(requestBuscarNormas.Codigo);
+        }
+
+        [HttpPost("BuscarPais")]
+        [EnableCors("MyPolicy")]
+        public ResponseQuery<Pais> BuscarPais(Contracts.RequestBuscarPais req)
+        {
+            Binnacle.ProcessEvent(new Event { category = Event.Category.Information, description = $"Metodo BuscarPais llamado" });
+            AperturaAuditoriaManager objAperturaManager = new AperturaAuditoriaManager();
+            return objAperturaManager.BuscarPais(req.pais);
+        }
+        [HttpPost("BuscarEstado")]
+        [EnableCors("MyPolicy")]
+        public ResponseQuery<Estado> BuscarEstado(RequestBuscarEstado req)
+        {
+            Binnacle.ProcessEvent(new Event { category = Event.Category.Information, description = $"Metodo BuscarPais llamado" });
+            AperturaAuditoriaManager objAperturaManager = new AperturaAuditoriaManager();
+            return objAperturaManager.BuscarEstado(req.IdPais);
+        }
+        [HttpPost("BuscarCiudad")]
+        [EnableCors("MyPolicy")]
+        public ResponseQuery<Ciudad> BuscarCiudad(RequestBuscarCiudad req)
+        {
+            Binnacle.ProcessEvent(new Event { category = Event.Category.Information, description = $"Metodo BuscarPais llamado" });
+            AperturaAuditoriaManager objAperturaManager = new AperturaAuditoriaManager();
+            return objAperturaManager.BuscarCiudad(req.IdEstado);
         }
     }
 }

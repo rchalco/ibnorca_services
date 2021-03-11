@@ -29,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="IbnorcaContext\" />
+    <Folder Include="Modules\AperturaAuditoria\Domain\SP\" />
   </ItemGroup>
 
 </Project>

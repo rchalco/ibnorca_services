@@ -1,4 +1,4 @@
-﻿using Business.Main.IbnorcaContext;
+﻿using Business.Main.DataMapping;
 using Business.Main.Modules.ApeeturaAuditoria;
 using Business.Main.Modules.ApeeturaAuditoria.Domain;
 using Domain.Main.AperturaAuditoria;
@@ -22,19 +22,16 @@ namespace NUnitBusinessMain
             ComplexProgramaAuditoria objComplex = new ComplexProgramaAuditoria();
             Praprogramasdeauditorium objPrograma = new Praprogramasdeauditorium
             {
-                IdpArea = 1, // /*SISTEMA - PRODUCTO*/
+                IdparamArea = 1, // /*SISTEMA - PRODUCTO*/
                 Nit = "123456",
-                Gestion = 2021,
-                IdpPais = 1,
-                IdpDepartamento = 1,
+                Fecha = "01/01/2001",
                 IdOrganizacionWs = "5",
                 OrganizacionContentWs = "{\"NOmbre\":\"ruben\"}",
                 CodigoServicioWs = "REG-PROG-XXXXXXX",
-                DetalleServicio = "{\"NOmbre\":\"ruben\"}",
-                IdpTipoServicio = 1,/*CERTIFICACION - RENOVACION*/
-                IdCodigoDeServicioCodigoIafWs = "{\"NOmbre\":\"ruben\"}",
-                NumeroAnos = 1,
-                IdpEstadosProgAuditoria = 2, /*'Sin fecha de auditoría' -  Con  - audi realizada*/
+                //DetalleServicio = "{\"NOmbre\":\"ruben\"}",
+                IdparamTipoServicio = 1,/*CERTIFICACION - RENOVACION*/
+                //CodigoDeServicioCodigoIafWs = "{\"NOmbre\":\"ruben\"}",
+                NumeroAnios = 1,                
                 UsuarioRegistro = "ivan.vilela",
                 FechaDesde = DateTime.Now,
                 FechaHasta = null
@@ -45,8 +42,8 @@ namespace NUnitBusinessMain
                 UsuarioRegistro = "ivan.vilela",
                 FechaDesde = DateTime.Now,
                 FechaHasta = null,
-                Ano = 2000,
-                IdpTipoAuditoria = 1,
+                //Ano = 2000,
+                IdparamTipoAuditoria = 1,
                 NombreOrganizacionCertificado = "nombre que va en el certificado"
 
             };
@@ -57,8 +54,8 @@ namespace NUnitBusinessMain
                 UsuarioRegistro = "ivan.vilela",
                 FechaDesde = DateTime.Now,
                 FechaHasta = null,
-                Ano = 2001,
-                IdpTipoAuditoria = 1,
+                //Ano = 2001,
+                IdparamTipoAuditoria = 1,
                 NombreOrganizacionCertificado = "nombre que va en el certificado"
 
             };
@@ -68,8 +65,8 @@ namespace NUnitBusinessMain
                 UsuarioRegistro = "ivan.vilela",
                 FechaDesde = DateTime.Now,
                 FechaHasta = null,
-                Ano = 2002,
-                IdpTipoAuditoria = 1,
+                //Ano = 2002,
+                IdparamTipoAuditoria = 1,
                 NombreOrganizacionCertificado = "nombre que va en el certificado"
 
             };
@@ -79,8 +76,8 @@ namespace NUnitBusinessMain
             {
                 IdPrAcicloProgAuditoria = 1,
                 CantidadDeDiasTotal = 5,
-                MesProgramado = 1,
-                MesReprogramado = 3,
+                //MesProgramado = 1,
+                //MesReprogramado = 3,
                 FechaInicioDeEjecucionDeAuditoria = DateTime.Now,
                 FechaDeFinDeEjecucionAuditoria = DateTime.Now,
                 UsuarioRegistro = "ivan.vilela",
@@ -94,11 +91,11 @@ namespace NUnitBusinessMain
             Pracicloparticipante objParticipante = new Pracicloparticipante
             {
                 IdPrAcicloProgAuditoria = 1,
-                IdParticipanteWs = "1WS",
-                ParticipanteContextWs = "{\"NOmbre\":\"ruben\"}",
+                //IdParticipanteWs = "1WS",
+                //ParticipanteContextWs = "{\"NOmbre\":\"ruben\"}",
                 UsuarioRegistro = "ivan.vilela",
                 FechaDesde = DateTime.Now,
-                IdpEstadoParticipante = 1 ///baja  - vigente
+                //IdparamEstadoParticipante = 1 ///baja  - vigente
             };
             ciclosprogauditorium.Pracicloparticipantes.Add(objParticipante);
 
@@ -109,9 +106,9 @@ namespace NUnitBusinessMain
                 Nombre = "cemento Portland",
                 Direccion = "Planta industrial Viacha",
                 Marca = "NB",
-                Sello = 1,
-                IdPais = 1,
-                IdDepartamento = 1,
+                Sello = "1",
+                //IdparamPais = 1,
+                //IdparamDepartamento = 1,
                 Ciudad = "el alto",
                 FechaEmisionPrimerCertificado = DateTime.Now,
                 FechaVencimientoUltimoCertificado = DateTime.Now,
@@ -141,7 +138,7 @@ namespace NUnitBusinessMain
         [Test]
         public void ObtenerProgramaAuditoriaTest() {
             AperturaAuditoriaManager aperturaAuditoriaManager = new AperturaAuditoriaManager();
-            var resul = aperturaAuditoriaManager.ObtenerProgramaAuditoria(11);
+            var resul = aperturaAuditoriaManager.ObtenerProgramaAuditoria(14455, "rchalco");
         }
 
     }

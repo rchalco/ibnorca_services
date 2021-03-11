@@ -340,7 +340,7 @@ namespace CoreAccesLayer.Implement.MySQL
 
                 foreach (PropertyInfo item in propiedades)
                 {
-                    if (!dtSchema.AsEnumerable().Any(a => a.Field<string>("ColumnName").Equals(item.Name)))
+                    if (!dtSchema.AsEnumerable().Any(a => a.Field<string>("ColumnName").ToLower().Equals(item.Name.ToLower())))
                     {
                         continue;
                     }

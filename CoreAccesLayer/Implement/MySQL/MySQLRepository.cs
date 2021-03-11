@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -43,9 +44,9 @@ namespace CoreAccesLayer.Implement.MySQL
             throw new NotImplementedException();
         }
 
-        public List<T> SimpleSelect<T>((string, object) parameterFilter) where T : class, new()
+        public List<T> SimpleSelect<T>(Expression<Func<T, bool>> predicate) where T : class, new()
         {
-            return mysqlDataInterface.SimpleSelect<T>(parameterFilter);
+            return _dbContext.Set<T>().Where(predicate).ToList<T>();
         }
 
         public bool SaveObject<T>(Entity<T> entity) where T : class, new()
