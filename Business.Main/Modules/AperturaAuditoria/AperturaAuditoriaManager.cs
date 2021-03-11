@@ -360,8 +360,8 @@ namespace Business.Main.Modules.ApeeturaAuditoria
             {
                 ClientHelper clientHelper = new ClientHelper();
                 ///TDO: obtenemos los datos del servicio
-                RequestBuscarPais requestDato = new RequestBuscarPais { accion = "BuscarPais", sIdentificador = Global.IDENTIFICADOR, sKey = Global.KEY_SERVICES, palabra = pais };
-                ResponseBuscarPais resulServices = clientHelper.Consume<ResponseBuscarPais>(Global.URIGLOBAL_SERVICES + Global.URI_PAISES, requestDato).Result;
+                RequestBuscarPais requestDato = new RequestBuscarPais { accion = "BuscarPais", sIdentificador = Global.IDENTIFICADOR, sKey = Global.KEY_SERVICES, palabra = pais, TipoLista = "BuscarPais", };
+                ResponseBuscarPais resulServices = clientHelper.Consume<ResponseBuscarPais>(Global.URIGLOBAL_CLASIFICADOR+ Global.URI_PAISES, requestDato).Result;
                 if (!resulServices.estado)
                 {
                     response.State = ResponseType.Warning;
@@ -384,7 +384,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                 ClientHelper clientHelper = new ClientHelper();
                 ///TDO: obtenemos los datos del servicio
                 RequestEstados requestDato = new RequestEstados { accion = "", sIdentificador = Global.IDENTIFICADOR, sKey = Global.KEY_SERVICES, IdPais = IdPais, TipoLista = "estados" };
-                ResponseEstados resulServices = clientHelper.Consume<ResponseEstados>(Global.URIGLOBAL_SERVICES + Global.URI_PAISES, requestDato).Result;
+                ResponseEstados resulServices = clientHelper.Consume<ResponseEstados>(Global.URIGLOBAL_CLASIFICADOR + Global.URI_PAISES, requestDato).Result;
                 if (!resulServices.estado)
                 {
                     response.State = ResponseType.Warning;
@@ -407,7 +407,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                 ClientHelper clientHelper = new ClientHelper();
                 ///TDO: obtenemos los datos del servicio
                 RequestCiudades requestDato = new RequestCiudades { accion = "", sIdentificador = Global.IDENTIFICADOR, sKey = Global.KEY_SERVICES, IdEstado = IdEstado, TipoLista = "ciudades" };
-                ResponseCiudades resulServices = clientHelper.Consume<ResponseCiudades>(Global.URIGLOBAL_SERVICES + Global.URI_PAISES, requestDato).Result;
+                ResponseCiudades resulServices = clientHelper.Consume<ResponseCiudades>(Global.URIGLOBAL_CLASIFICADOR + Global.URI_PAISES, requestDato).Result;
                 if (!resulServices.estado)
                 {
                     response.State = ResponseType.Warning;
