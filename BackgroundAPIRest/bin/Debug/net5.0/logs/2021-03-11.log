@@ -16,3 +16,165 @@
 2021-03-11 14:50:58.6279 INFO Metodo ObtenerCargos llamado
 2021-03-11 15:16:53.7599 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
 2021-03-11 15:16:54.1592 INFO Metodo ObtenerCargos llamado
+2021-03-11 16:18:35.4098 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 14455
+2021-03-11 16:18:36.5269 INFO Metodo ObtenerCargos llamado
+2021-03-11 16:18:36.5519 INFO Metodo ObtenerCargos llamado
+2021-03-11 16:18:36.6113 INFO Metodo ObtenerCargos llamado
+2021-03-11 16:18:49.7379 INFO Metodo BuscarPais llamado
+2021-03-11 16:18:50.0775 ERROR One or more errors occurred. (No se puede consumir el servicio. Error: <html> 
+<head> 
+<title>Documento no encontrado</title> 
+</head> 
+<body> 
+<p><img src="/itranet/images/ibnlogo200x218.jpg" width="200" height="218" longdesc="http://www.ibnorca.org"></p>
+<p>El documento: <b>
+  /wsibnob/auditoria/ws-paises.php  </b> 
+  no ha sido encontrado en nuestro servidor.<br> 
+  El error ha sido comunicado al administrador del sitio. Disculpe las molestias 
+  ocasionadas.
+  
+  
+</p>
+<!--
+Todo sea por el IE
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx --> 
+</body>
+</html>) inner -> No se puede consumir el servicio. Error: <html> 
+<head> 
+<title>Documento no encontrado</title> 
+</head> 
+<body> 
+<p><img src="/itranet/images/ibnlogo200x218.jpg" width="200" height="218" longdesc="http://www.ibnorca.org"></p>
+<p>El documento: <b>
+  /wsibnob/auditoria/ws-paises.php  </b> 
+  no ha sido encontrado en nuestro servidor.<br> 
+  El error ha sido comunicado al administrador del sitio. Disculpe las molestias 
+  ocasionadas.
+  
+  
+</p>
+<!--
+Todo sea por el IE
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx --> 
+</body>
+</html> stactrace ->    at PlumbingProps.Services.ClientHelper.Consume[T](String URI, Object parameter) in C:\Ivo\Projects\ibnorca\ibnorca_services\PlumbingProps\Services\ClientHelper.cs:line 37
+2021-03-11 16:18:50.0775 ERROR One or more errors occurred. (No se puede consumir el servicio. Error: <html> 
+<head> 
+<title>Documento no encontrado</title> 
+</head> 
+<body> 
+<p><img src="/itranet/images/ibnlogo200x218.jpg" width="200" height="218" longdesc="http://www.ibnorca.org"></p>
+<p>El documento: <b>
+  /wsibnob/auditoria/ws-paises.php  </b> 
+  no ha sido encontrado en nuestro servidor.<br> 
+  El error ha sido comunicado al administrador del sitio. Disculpe las molestias 
+  ocasionadas.
+  
+  
+</p>
+<!--
+Todo sea por el IE
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx --> 
+</body>
+</html>) inner -> No se puede consumir el servicio. Error: <html> 
+<head> 
+<title>Documento no encontrado</title> 
+</head> 
+<body> 
+<p><img src="/itranet/images/ibnlogo200x218.jpg" width="200" height="218" longdesc="http://www.ibnorca.org"></p>
+<p>El documento: <b>
+  /wsibnob/auditoria/ws-paises.php  </b> 
+  no ha sido encontrado en nuestro servidor.<br> 
+  El error ha sido comunicado al administrador del sitio. Disculpe las molestias 
+  ocasionadas.
+  
+  
+</p>
+<!--
+Todo sea por el IE
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx --> 
+</body>
+</html> stactrace ->    at PlumbingProps.Services.ClientHelper.Consume[T](String URI, Object parameter) in C:\Ivo\Projects\ibnorca\ibnorca_services\PlumbingProps\Services\ClientHelper.cs:line 37
+2021-03-11 16:20:22.9021 INFO Metodo BuscarPais llamado
+2021-03-11 16:20:24.3243 ERROR One or more errors occurred. (No se puede consumir el servicio. Error: <html> 
+<head> 
+<title>Documento no encontrado</title> 
+</head> 
+<body> 
+<p><img src="/itranet/images/ibnlogo200x218.jpg" width="200" height="218" longdesc="http://www.ibnorca.org"></p>
+<p>El documento: <b>
+  /wsibnob/auditoria/ws-paises.php  </b> 
+  no ha sido encontrado en nuestro servidor.<br> 
+  El error ha sido comunicado al administrador del sitio. Disculpe las molestias 
+  ocasionadas.
+  
+  
+</p>
+<!--
+Todo sea por el IE
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx --> 
+</body>
+</html>) inner -> No se puede consumir el servicio. Error: <html> 
+<head> 
+<title>Documento no encontrado</title> 
+</head> 
+<body> 
+<p><img src="/itranet/images/ibnlogo200x218.jpg" width="200" height="218" longdesc="http://www.ibnorca.org"></p>
+<p>El documento: <b>
+  /wsibnob/auditoria/ws-paises.php  </b> 
+  no ha sido encontrado en nuestro servidor.<br> 
+  El error ha sido comunicado al administrador del sitio. Disculpe las molestias 
+  ocasionadas.
+  
+  
+</p>
+<!--
+Todo sea por el IE
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx --> 
+</body>
+</html> stactrace ->    at PlumbingProps.Services.ClientHelper.Consume[T](String URI, Object parameter) in C:\Ivo\Projects\ibnorca\ibnorca_services\PlumbingProps\Services\ClientHelper.cs:line 37
+2021-03-11 16:20:24.3243 ERROR One or more errors occurred. (No se puede consumir el servicio. Error: <html> 
+<head> 
+<title>Documento no encontrado</title> 
+</head> 
+<body> 
+<p><img src="/itranet/images/ibnlogo200x218.jpg" width="200" height="218" longdesc="http://www.ibnorca.org"></p>
+<p>El documento: <b>
+  /wsibnob/auditoria/ws-paises.php  </b> 
+  no ha sido encontrado en nuestro servidor.<br> 
+  El error ha sido comunicado al administrador del sitio. Disculpe las molestias 
+  ocasionadas.
+  
+  
+</p>
+<!--
+Todo sea por el IE
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx --> 
+</body>
+</html>) inner -> No se puede consumir el servicio. Error: <html> 
+<head> 
+<title>Documento no encontrado</title> 
+</head> 
+<body> 
+<p><img src="/itranet/images/ibnlogo200x218.jpg" width="200" height="218" longdesc="http://www.ibnorca.org"></p>
+<p>El documento: <b>
+  /wsibnob/auditoria/ws-paises.php  </b> 
+  no ha sido encontrado en nuestro servidor.<br> 
+  El error ha sido comunicado al administrador del sitio. Disculpe las molestias 
+  ocasionadas.
+  
+  
+</p>
+<!--
+Todo sea por el IE
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx --> 
+</body>
+</html> stactrace ->    at PlumbingProps.Services.ClientHelper.Consume[T](String URI, Object parameter) in C:\Ivo\Projects\ibnorca\ibnorca_services\PlumbingProps\Services\ClientHelper.cs:line 37
