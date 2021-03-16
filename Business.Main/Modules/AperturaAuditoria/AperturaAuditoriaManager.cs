@@ -2,6 +2,7 @@
 using Business.Main.Cross;
 using Business.Main.DataMapping;
 using Business.Main.Modules.ApeeturaAuditoria.Domain;
+using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.BuscarNormaIntxCodigoDTO;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.BuscarNormaxCodigoDTO;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.BuscarPaisDTO;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.BuscarxIdClienteEmpresaDTO;
@@ -40,13 +41,26 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                     response.Code = "404";
                     return response;
                 }
-                //full validacion
 
                 Entity<Praprogramasdeauditorium> entity = new Entity<Praprogramasdeauditorium> { EntityDB = req, stateEntity = StateEntity.add };
                 if (req.IdPrAprogramaAuditoria != 0)
                 {
                     entity.stateEntity = StateEntity.modify;
                 }
+                ///tratamos a  los hijos para la designacion de llaves
+                req.Praciclosprogauditoria.ToList().ForEach(ciclo =>
+                {
+                    ciclo.Praciclocronogramas?.ToList().ForEach(cronograma => { cronograma.IdPrAcicloProgAuditoria = ciclo.IdPrAcicloProgAuditoria;
+                        if (cronograma.FechaInicioDeEjecucionDeAuditoria != null)
+                        {
+                            ciclo.EstadoDescripcion = "Con fecha de auditoría";
+                        }
+                    });
+                    ciclo.Praciclonormassistemas?.ToList().ForEach(norma => { norma.IdPrAcicloProgAuditoria = ciclo.IdPrAcicloProgAuditoria; });
+                    ciclo.Pracicloparticipantes?.ToList().ForEach(participante => { participante.IdPrAcicloProgAuditoria = ciclo.IdPrAcicloProgAuditoria; });
+                    ciclo.Pradireccionespaproductos?.ToList().ForEach(producto => { producto.IdPrAcicloProgAuditoria = ciclo.IdPrAcicloProgAuditoria; });
+                    ciclo.Pradireccionespasistemas?.ToList().ForEach(sistema => { sistema.IdPrAcicloProgAuditoria = ciclo.IdPrAcicloProgAuditoria; });
+                });
 
                 repositoryMySql.SaveObject<Praprogramasdeauditorium>(entity);
 
@@ -121,7 +135,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                         Nit = responseBusquedaCliente.resultados[0].NIT,
                         CodigoServicioWs = resulServices.DatosServicio.Codigo,
                         IdparamTipoServicio = 1,/*CERTIFICACION - RENOVACION*///no se tiene del servicio
-                        CodigoIafws = resulServices.DatosServicio.cod_iaf_primario,
+                        CodigoIafws = resulServices.DatosServicio.iaf_primario_codigo + " - " + resulServices.DatosServicio.iaf_primario_descripcion,
                         NumeroAnios = 0,
                         Estado = "INICIAL",
                         UsuarioRegistro = pUsuario,
@@ -161,13 +175,20 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                                         Estado = dir.estado,
                                         Pais = dir.pais,
                                         Norma = dir.norma,
-                                        FechaEmisionPrimerCertificado = null,
+                                        FechaEmisionPrimerCertificado = null,//////////////////////////////
                                         FechaVencimientoUltimoCertificado = null,
                                         FechaVencimientoCertificado = null,
                                         UsuarioRegistro = pUsuario,
                                         FechaDesde = DateTime.Now,
                                         FechaHasta = null
                                     };
+                                    if (resulServices.DatosServicio.ListaProductoCertificado != null
+                                    && resulServices.DatosServicio.ListaProductoCertificado.Any(x => x.nombre.ToLower().Equals(objDirProd.Nombre.ToLower())))
+                                    {
+                                        var dataCertificado = resulServices.DatosServicio.ListaProductoCertificado.First(x => x.nombre.ToLower().Equals(objDirProd.Nombre.ToLower()));
+                                        objDirProd.FechaVencimientoCertificado = Convert.ToDateTime(dataCertificado.FechaValido);
+                                        objDirProd.NumeroDeCertificacion = dataCertificado.IdCertificadoServicios;
+                                    }
                                     ciclosprogauditorium.Pradireccionespaproductos.Add(objDirProd);
                                 });
                             }
@@ -249,6 +270,18 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                         }
 
                     });
+
+                    ///insertamos el ciclo final como año 4 renovacion
+                    var cicloClonar = objPrograma.Praciclosprogauditoria.LastOrDefault();
+                    if (cicloClonar != null)
+                    {
+                        var deserializeSettings = new JsonSerializerSettings { ObjectCreationHandling = ObjectCreationHandling.Replace };
+                        var serializeSettings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
+                        var cicloClonado = JsonConvert.DeserializeObject<Praciclosprogauditorium>(JsonConvert.SerializeObject(cicloClonar, serializeSettings), deserializeSettings);
+                        cicloClonado.Anio = 4;
+                        cicloClonado.Referencia = "Renovacion";
+                        objPrograma.Praciclosprogauditoria.Add(cicloClonado);
+                    }
 
                     ///Inserta el programa de auditoria
                     Entity<Praprogramasdeauditorium> entity = new Entity<Praprogramasdeauditorium> { EntityDB = objPrograma, stateEntity = StateEntity.add };
@@ -353,6 +386,30 @@ namespace Business.Main.Modules.ApeeturaAuditoria
             return response;
         }
 
+        public ResponseQuery<NormaInternacional> BuscarNormasInternacionales(string Codigo)
+        {
+            ResponseQuery<NormaInternacional> response = new ResponseQuery<NormaInternacional> { Message = "Parametros obtenidos correctamente.", State = ResponseType.Success, ListEntities = new List<NormaInternacional>() };
+            try
+            {
+                ClientHelper clientHelper = new ClientHelper();
+                ///TDO: obtenemos los datos del servicio
+                RequestBuscarNormaIntxCodigo requestDato = new RequestBuscarNormaIntxCodigo { accion = "BuscarNormaIntxCodigo", sIdentificador = Global.IDENTIFICADOR, sKey = Global.KEY_SERVICES, Codigo = Codigo };
+                ResponseBuscarNormaIntxCodigo resulServices = clientHelper.Consume<ResponseBuscarNormaIntxCodigo>(Global.URIGLOBAL_SERVICES + Global.URI_NORMAS_INT, requestDato).Result;
+                if (!resulServices.estado)
+                {
+                    response.State = ResponseType.Warning;
+                    response.Message = $"Existe problemas al consumir el servicio de ibnorca (BuscarNormaxCodigo): {resulServices.mensaje}";
+                    return response;
+                }
+                response.ListEntities = resulServices.resultado;
+            }
+            catch (Exception ex)
+            {
+                ProcessError(ex, response);
+            }
+            return response;
+        }
+
         public ResponseQuery<Pais> BuscarPais(string pais)
         {
             ResponseQuery<Pais> response = new ResponseQuery<Pais> { Message = "Parametros obtenidos correctamente.", State = ResponseType.Success, ListEntities = new List<Pais>() };
@@ -361,7 +418,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                 ClientHelper clientHelper = new ClientHelper();
                 ///TDO: obtenemos los datos del servicio
                 RequestBuscarPais requestDato = new RequestBuscarPais { accion = "BuscarPais", sIdentificador = Global.IDENTIFICADOR, sKey = Global.KEY_SERVICES, palabra = pais, TipoLista = "BuscarPais", };
-                ResponseBuscarPais resulServices = clientHelper.Consume<ResponseBuscarPais>(Global.URIGLOBAL_CLASIFICADOR+ Global.URI_PAISES, requestDato).Result;
+                ResponseBuscarPais resulServices = clientHelper.Consume<ResponseBuscarPais>(Global.URIGLOBAL_CLASIFICADOR + Global.URI_PAISES, requestDato).Result;
                 if (!resulServices.estado)
                 {
                     response.State = ResponseType.Warning;

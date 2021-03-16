@@ -1,6 +1,7 @@
 ﻿using BackgroundAPIRest.Contracts;
 using Business.Main.DataMapping;
 using Business.Main.Modules.ApeeturaAuditoria;
+using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.BuscarNormaIntxCodigoDTO;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.BuscarNormaxCodigoDTO;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.BuscarPaisDTO;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.CiudadesDTO;
@@ -76,6 +77,16 @@ namespace BackgroundAPIRest.Controllers
             AperturaAuditoriaManager objAperturaManager = new AperturaAuditoriaManager();
             return objAperturaManager.BuscarNormas(requestBuscarNormas.Codigo);
         }
+
+        [HttpPost("BuscarNormasInternacionales")]
+        [EnableCors("MyPolicy")]
+        public ResponseQuery<NormaInternacional> BuscarNormasInternacionales(RequestBuscarNormasInternacionales req)
+        {
+            Binnacle.ProcessEvent(new Event { category = Event.Category.Information, description = $"Metodo BuscarNormasInternacionales llamado" });
+            AperturaAuditoriaManager objAperturaManager = new AperturaAuditoriaManager();
+            return objAperturaManager.BuscarNormasInternacionales(req.Codigo);
+        }
+
 
         [HttpPost("BuscarPais")]
         [EnableCors("MyPolicy")]
