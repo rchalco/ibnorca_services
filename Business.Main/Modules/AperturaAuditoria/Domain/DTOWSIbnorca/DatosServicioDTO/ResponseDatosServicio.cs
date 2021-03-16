@@ -6,6 +6,30 @@ using System.Threading.Tasks;
 
 namespace Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.DatosServicioDTO
 {
+
+    public class ListaProductoCertificado
+    {
+        public string IdCertificadoServicios { get; set; }
+        public string tipoCertificado { get; set; }
+        public string FechaValido { get; set; }
+        public string ProductoServicio { get; set; }
+        public string Norma { get; set; }
+        public string nombre { get; set; }
+        public string marca { get; set; }
+        public string direccion { get; set; }
+        public string sub_partida_arancelaria { get; set; }
+    }
+
+    public class ListaDireccionCertificado
+    {
+        public string IdCertificadoServicios { get; set; }
+        public string tipoCertificado { get; set; }
+        public string FechaValido { get; set; }
+        public string ProductoServicio { get; set; }
+        public string Norma { get; set; }
+        public List<string> direcciones { get; set; }
+    }
+
     public class ListaDireccion
     {
         public string codigo { get; set; }
@@ -61,9 +85,14 @@ namespace Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.DatosServi
         public string cod_responsable { get; set; }
         public string responsable { get; set; }
         public string cod_iaf_primario { get; set; }
+        public string iaf_primario_codigo { get; set; }
+        public string iaf_primario_descripcion { get; set; }
         public string cod_iaf_secundario { get; set; }
         public List<ListaProducto> ListaProducto { get; set; }
         public List<ListaDireccion> ListaDireccion { get; set; }
+        public List<ListaProductoCertificado> ListaProductoCertificado { get; set; }
+        public List<ListaDireccionCertificado> ListaDireccionCertificado { get; set; }
+        
     }
 
     public class ResponseDatosServicio
