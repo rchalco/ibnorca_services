@@ -50,7 +50,9 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                 ///tratamos a  los hijos para la designacion de llaves
                 req.Praciclosprogauditoria.ToList().ForEach(ciclo =>
                 {
-                    ciclo.Praciclocronogramas?.ToList().ForEach(cronograma => { cronograma.IdPrAcicloProgAuditoria = ciclo.IdPrAcicloProgAuditoria;
+                    ciclo.Praciclocronogramas?.ToList().ForEach(cronograma =>
+                    {
+                        cronograma.IdPrAcicloProgAuditoria = ciclo.IdPrAcicloProgAuditoria;
                         if (cronograma.FechaInicioDeEjecucionDeAuditoria != null)
                         {
                             ciclo.EstadoDescripcion = "Con fecha de auditoría";
@@ -78,7 +80,6 @@ namespace Business.Main.Modules.ApeeturaAuditoria
             }
             return response;
         }
-
         public ResponseObject<Praprogramasdeauditorium> ObtenerProgramaAuditoria(int pIdServicio, string pUsuario)
         {
             ResponseObject<Praprogramasdeauditorium> resul = new ResponseObject<Praprogramasdeauditorium> { Object = new Praprogramasdeauditorium(), Code = "000", Message = "Programa obtenido correctamente", State = ResponseType.Success };
@@ -313,7 +314,6 @@ namespace Business.Main.Modules.ApeeturaAuditoria
             }
             return resul;
         }
-
         public ResponseQuery<ListaCargosCalificados> ObtenerCargos()
         {
             ResponseQuery<ListaCargosCalificados> response = new ResponseQuery<ListaCargosCalificados> { Message = "Cargos obtenidos correctamente.", State = ResponseType.Success };
@@ -337,7 +337,6 @@ namespace Business.Main.Modules.ApeeturaAuditoria
             }
             return response;
         }
-
         public ResponseQuery<ListaCalificado> BuscarPersonalCargos(int IdCargoCalificado)
         {
             ResponseQuery<ListaCalificado> response = new ResponseQuery<ListaCalificado> { Message = "Cargos obtenidos obtenido correctamente.", State = ResponseType.Success };
@@ -361,7 +360,6 @@ namespace Business.Main.Modules.ApeeturaAuditoria
             }
             return response;
         }
-
         public ResponseQuery<Norma> BuscarNormas(string Codigo)
         {
             ResponseQuery<Norma> response = new ResponseQuery<Norma> { Message = "Parametros obtenidos correctamente.", State = ResponseType.Success, ListEntities = new List<Norma>() };
@@ -385,7 +383,6 @@ namespace Business.Main.Modules.ApeeturaAuditoria
             }
             return response;
         }
-
         public ResponseQuery<NormaInternacional> BuscarNormasInternacionales(string Codigo)
         {
             ResponseQuery<NormaInternacional> response = new ResponseQuery<NormaInternacional> { Message = "Parametros obtenidos correctamente.", State = ResponseType.Success, ListEntities = new List<NormaInternacional>() };
@@ -409,7 +406,6 @@ namespace Business.Main.Modules.ApeeturaAuditoria
             }
             return response;
         }
-
         public ResponseQuery<Pais> BuscarPais(string pais)
         {
             ResponseQuery<Pais> response = new ResponseQuery<Pais> { Message = "Parametros obtenidos correctamente.", State = ResponseType.Success, ListEntities = new List<Pais>() };
@@ -492,6 +488,19 @@ namespace Business.Main.Modules.ApeeturaAuditoria
             }
             return response;
         }
+        public Response GenerarDesignacion(int IdCiclo, string plantilla)
+        {
+            Response response = new Response { Message = "", State = ResponseType.Success };
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                ProcessError(ex, response);
+            }
+            return response;
+        }
 
         private DateTime CalcularMesProgramado(string area, int año)
         {
@@ -503,7 +512,6 @@ namespace Business.Main.Modules.ApeeturaAuditoria
             }
             return resul;
         }
-
 
     }
 }
