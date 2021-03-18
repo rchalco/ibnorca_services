@@ -19,12 +19,16 @@ namespace Business.Main.Cross
         public static string URI_PERSONAL = "ws-au-calificado.php";
         public static string URI_PAISES = "ws-paises.php";        
         public static string URI_NORMAS = "ws-au-catalogo-nal.php";
+        public static string URI_NORMAS_INT = "ws-au-catalogo-int.php";
         public static string URI_CARGOS = "ws-au-calificado.php";
         public static string URI_CLASIFICADOR = "ws-clasificador-post.php";
         public static string KEY_SERVICES = "f5bebe5def9bfe88eb8932f9da7d34cd";
 
         
         public static string IDENTIFICADOR = "iauditoria";
+
+        ///Seccion de plantillas
+        public static string PATH_PLANTILLA_DESIGNACION = ConfigManager.GetConfiguration().GetSection("PLANTILLA_DESGINACION_ROOT").Value; 
 
     }
 }

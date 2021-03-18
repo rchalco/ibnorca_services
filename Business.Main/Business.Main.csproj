@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="5.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.2">
@@ -16,6 +17,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Npgsql" Version="5.0.1.1" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.1" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.0" />
@@ -26,10 +28,6 @@
     <ProjectReference Include="..\CoreAccesLayer\CoreAccesLayer.csproj" />
     <ProjectReference Include="..\Domain.Main\Domain.Main.csproj" />
     <ProjectReference Include="..\PlumbingProps\PlumbingProps.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Modules\AperturaAuditoria\Domain\SP\" />
   </ItemGroup>
 
 </Project>

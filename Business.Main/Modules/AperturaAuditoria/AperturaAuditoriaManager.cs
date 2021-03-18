@@ -1,7 +1,9 @@
 ﻿using Business.Main.Base;
 using Business.Main.Cross;
 using Business.Main.DataMapping;
+using Business.Main.DataMapping.DTOs;
 using Business.Main.Modules.ApeeturaAuditoria.Domain;
+using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.BuscarNormaIntxCodigoDTO;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.BuscarNormaxCodigoDTO;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.BuscarPaisDTO;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.BuscarxIdClienteEmpresaDTO;
@@ -15,9 +17,11 @@ using CoreAccesLayer.Wraper;
 using Domain.Main.AperturaAuditoria;
 using Domain.Main.Wraper;
 using Newtonsoft.Json;
+using PlumbingProps.Document;
 using PlumbingProps.Services;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,13 +44,28 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                     response.Code = "404";
                     return response;
                 }
-                //full validacion
 
                 Entity<Praprogramasdeauditorium> entity = new Entity<Praprogramasdeauditorium> { EntityDB = req, stateEntity = StateEntity.add };
                 if (req.IdPrAprogramaAuditoria != 0)
                 {
                     entity.stateEntity = StateEntity.modify;
                 }
+                ///tratamos a  los hijos para la designacion de llaves
+                req.Praciclosprogauditoria.ToList().ForEach(ciclo =>
+                {
+                    ciclo.Praciclocronogramas?.ToList().ForEach(cronograma =>
+                    {
+                        cronograma.IdPrAcicloProgAuditoria = ciclo.IdPrAcicloProgAuditoria;
+                        if (cronograma.FechaInicioDeEjecucionDeAuditoria != null)
+                        {
+                            ciclo.EstadoDescripcion = "Con fecha de auditoría";
+                        }
+                    });
+                    ciclo.Praciclonormassistemas?.ToList().ForEach(norma => { norma.IdPrAcicloProgAuditoria = ciclo.IdPrAcicloProgAuditoria; });
+                    ciclo.Pracicloparticipantes?.ToList().ForEach(participante => { participante.IdPrAcicloProgAuditoria = ciclo.IdPrAcicloProgAuditoria; });
+                    ciclo.Pradireccionespaproductos?.ToList().ForEach(producto => { producto.IdPrAcicloProgAuditoria = ciclo.IdPrAcicloProgAuditoria; });
+                    ciclo.Pradireccionespasistemas?.ToList().ForEach(sistema => { sistema.IdPrAcicloProgAuditoria = ciclo.IdPrAcicloProgAuditoria; });
+                });
 
                 repositoryMySql.SaveObject<Praprogramasdeauditorium>(entity);
 
@@ -64,7 +83,6 @@ namespace Business.Main.Modules.ApeeturaAuditoria
             }
             return response;
         }
-
         public ResponseObject<Praprogramasdeauditorium> ObtenerProgramaAuditoria(int pIdServicio, string pUsuario)
         {
             ResponseObject<Praprogramasdeauditorium> resul = new ResponseObject<Praprogramasdeauditorium> { Object = new Praprogramasdeauditorium(), Code = "000", Message = "Programa obtenido correctamente", State = ResponseType.Success };
@@ -121,7 +139,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                         Nit = responseBusquedaCliente.resultados[0].NIT,
                         CodigoServicioWs = resulServices.DatosServicio.Codigo,
                         IdparamTipoServicio = 1,/*CERTIFICACION - RENOVACION*///no se tiene del servicio
-                        CodigoIafws = resulServices.DatosServicio.cod_iaf_primario,
+                        CodigoIafws = resulServices.DatosServicio.iaf_primario_codigo + " - " + resulServices.DatosServicio.iaf_primario_descripcion,
                         NumeroAnios = 0,
                         Estado = "INICIAL",
                         UsuarioRegistro = pUsuario,
@@ -161,13 +179,20 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                                         Estado = dir.estado,
                                         Pais = dir.pais,
                                         Norma = dir.norma,
-                                        FechaEmisionPrimerCertificado = null,
+                                        FechaEmisionPrimerCertificado = null,//////////////////////////////
                                         FechaVencimientoUltimoCertificado = null,
                                         FechaVencimientoCertificado = null,
                                         UsuarioRegistro = pUsuario,
                                         FechaDesde = DateTime.Now,
                                         FechaHasta = null
                                     };
+                                    if (resulServices.DatosServicio.ListaProductoCertificado != null
+                                    && resulServices.DatosServicio.ListaProductoCertificado.Any(x => x.nombre.ToLower().Equals(objDirProd.Nombre.ToLower())))
+                                    {
+                                        var dataCertificado = resulServices.DatosServicio.ListaProductoCertificado.First(x => x.nombre.ToLower().Equals(objDirProd.Nombre.ToLower()));
+                                        objDirProd.FechaVencimientoCertificado = Convert.ToDateTime(dataCertificado.FechaValido);
+                                        objDirProd.NumeroDeCertificacion = dataCertificado.IdCertificadoServicios;
+                                    }
                                     ciclosprogauditorium.Pradireccionespaproductos.Add(objDirProd);
                                 });
                             }
@@ -214,7 +239,8 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                             ///TDO: Cronograma 
                             Praciclocronograma cronograma = new Praciclocronograma
                             {
-                                CantidadDeDiasTotal = (int)Convert.ToDecimal(x.cantidad),
+                                DiasInsitu = (int)Convert.ToDecimal(x.cantidad),
+                                DiasRemoto = 0,
                                 FechaDeFinDeEjecucionAuditoria = null,
                                 FechaDesde = DateTime.Now,
                                 FechaHasta = null,
@@ -250,6 +276,18 @@ namespace Business.Main.Modules.ApeeturaAuditoria
 
                     });
 
+                    ///insertamos el ciclo final como año 4 renovacion
+                    var cicloClonar = objPrograma.Praciclosprogauditoria.LastOrDefault();
+                    if (cicloClonar != null)
+                    {
+                        var deserializeSettings = new JsonSerializerSettings { ObjectCreationHandling = ObjectCreationHandling.Replace };
+                        var serializeSettings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
+                        var cicloClonado = JsonConvert.DeserializeObject<Praciclosprogauditorium>(JsonConvert.SerializeObject(cicloClonar, serializeSettings), deserializeSettings);
+                        cicloClonado.Anio = 4;
+                        cicloClonado.Referencia = "Renovacion";
+                        objPrograma.Praciclosprogauditoria.Add(cicloClonado);
+                    }
+
                     ///Inserta el programa de auditoria
                     Entity<Praprogramasdeauditorium> entity = new Entity<Praprogramasdeauditorium> { EntityDB = objPrograma, stateEntity = StateEntity.add };
                     repositoryMySql.SaveObject<Praprogramasdeauditorium>(entity);
@@ -280,7 +318,6 @@ namespace Business.Main.Modules.ApeeturaAuditoria
             }
             return resul;
         }
-
         public ResponseQuery<ListaCargosCalificados> ObtenerCargos()
         {
             ResponseQuery<ListaCargosCalificados> response = new ResponseQuery<ListaCargosCalificados> { Message = "Cargos obtenidos correctamente.", State = ResponseType.Success };
@@ -304,7 +341,6 @@ namespace Business.Main.Modules.ApeeturaAuditoria
             }
             return response;
         }
-
         public ResponseQuery<ListaCalificado> BuscarPersonalCargos(int IdCargoCalificado)
         {
             ResponseQuery<ListaCalificado> response = new ResponseQuery<ListaCalificado> { Message = "Cargos obtenidos obtenido correctamente.", State = ResponseType.Success };
@@ -328,7 +364,6 @@ namespace Business.Main.Modules.ApeeturaAuditoria
             }
             return response;
         }
-
         public ResponseQuery<Norma> BuscarNormas(string Codigo)
         {
             ResponseQuery<Norma> response = new ResponseQuery<Norma> { Message = "Parametros obtenidos correctamente.", State = ResponseType.Success, ListEntities = new List<Norma>() };
@@ -352,7 +387,29 @@ namespace Business.Main.Modules.ApeeturaAuditoria
             }
             return response;
         }
-
+        public ResponseQuery<NormaInternacional> BuscarNormasInternacionales(string Codigo)
+        {
+            ResponseQuery<NormaInternacional> response = new ResponseQuery<NormaInternacional> { Message = "Parametros obtenidos correctamente.", State = ResponseType.Success, ListEntities = new List<NormaInternacional>() };
+            try
+            {
+                ClientHelper clientHelper = new ClientHelper();
+                ///TDO: obtenemos los datos del servicio
+                RequestBuscarNormaIntxCodigo requestDato = new RequestBuscarNormaIntxCodigo { accion = "BuscarNormaIntxCodigo", sIdentificador = Global.IDENTIFICADOR, sKey = Global.KEY_SERVICES, Codigo = Codigo };
+                ResponseBuscarNormaIntxCodigo resulServices = clientHelper.Consume<ResponseBuscarNormaIntxCodigo>(Global.URIGLOBAL_SERVICES + Global.URI_NORMAS_INT, requestDato).Result;
+                if (!resulServices.estado)
+                {
+                    response.State = ResponseType.Warning;
+                    response.Message = $"Existe problemas al consumir el servicio de ibnorca (BuscarNormaxCodigo): {resulServices.mensaje}";
+                    return response;
+                }
+                response.ListEntities = resulServices.resultado;
+            }
+            catch (Exception ex)
+            {
+                ProcessError(ex, response);
+            }
+            return response;
+        }
         public ResponseQuery<Pais> BuscarPais(string pais)
         {
             ResponseQuery<Pais> response = new ResponseQuery<Pais> { Message = "Parametros obtenidos correctamente.", State = ResponseType.Success, ListEntities = new List<Pais>() };
@@ -361,7 +418,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                 ClientHelper clientHelper = new ClientHelper();
                 ///TDO: obtenemos los datos del servicio
                 RequestBuscarPais requestDato = new RequestBuscarPais { accion = "BuscarPais", sIdentificador = Global.IDENTIFICADOR, sKey = Global.KEY_SERVICES, palabra = pais, TipoLista = "BuscarPais", };
-                ResponseBuscarPais resulServices = clientHelper.Consume<ResponseBuscarPais>(Global.URIGLOBAL_CLASIFICADOR+ Global.URI_PAISES, requestDato).Result;
+                ResponseBuscarPais resulServices = clientHelper.Consume<ResponseBuscarPais>(Global.URIGLOBAL_CLASIFICADOR + Global.URI_PAISES, requestDato).Result;
                 if (!resulServices.estado)
                 {
                     response.State = ResponseType.Warning;
@@ -435,6 +492,48 @@ namespace Business.Main.Modules.ApeeturaAuditoria
             }
             return response;
         }
+        public Response GenerarDesignacion(int IdCiclo, string pathPlantilla)
+        {
+            Response response = new Response { Message = "", State = ResponseType.Success };
+            try
+            {
+                PraDocDesignacion praDocDesignacion = new PraDocDesignacion();
+                var resulBD = repositoryMySql.GetDataByProcedure<PraDocDesignacion>("GetPraDesignacion", IdCiclo);
+                if (resulBD.Count() == 0)
+                {
+                    response.Message = "No se cuenta con informacion sobre el ciclo";
+                    response.State = ResponseType.Warning;
+                    return response;
+                }
+                praDocDesignacion = resulBD[0];
+                string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
+                WordHelper generadorWord = new WordHelper(filePlantilla);
+                string fileNameGenerado = generadorWord.GenerarDocumento(praDocDesignacion, null, $"{Global.PATH_PLANTILLA_DESIGNACION}\\Salidas");
+
+                ///Convertimos en PDF
+                using (var process = new Process())
+                {
+                    process.StartInfo.FileName = @"E:\ConvertPDF\ConvertExecute.exe"; // relative path. absolute path works too.
+                    process.StartInfo.Arguments = $"{fileNameGenerado}";
+                    process.StartInfo.CreateNoWindow = true;
+                    process.StartInfo.UseShellExecute = false;
+                    process.StartInfo.RedirectStandardOutput = true;
+                    process.StartInfo.RedirectStandardError = true;
+                    process.OutputDataReceived += (sender, data) => Console.WriteLine(data.Data);
+                    process.ErrorDataReceived += (sender, data) => Console.WriteLine(data.Data);
+                    process.Start();
+                    process.BeginOutputReadLine();
+                    process.BeginErrorReadLine();
+                    process.WaitForExit();     // (optional) wait up to 10 seconds                    
+                }
+                response.Message = fileNameGenerado.Replace(".doc", ".pdf");
+            }
+            catch (Exception ex)
+            {
+                ProcessError(ex, response);
+            }
+            return response;
+        }
 
         private DateTime CalcularMesProgramado(string area, int año)
         {
@@ -446,7 +545,6 @@ namespace Business.Main.Modules.ApeeturaAuditoria
             }
             return resul;
         }
-
 
     }
 }

@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Document\WordToPDF.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="C:\Users\home\.nuget\packages\nlog.config\4.7.6\contentFiles\any\any\NLog.config" />
   </ItemGroup>
 
@@ -14,6 +18,21 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="NLog" Version="4.7.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Document\WordParts.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>WordParts.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Document\WordParts.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>WordParts.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>
