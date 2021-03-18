@@ -1,6 +1,7 @@
 ﻿using Business.Main.Base;
 using Business.Main.Cross;
 using Business.Main.DataMapping;
+using Business.Main.DataMapping.DTOs;
 using Business.Main.Modules.ApeeturaAuditoria.Domain;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.BuscarNormaIntxCodigoDTO;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.BuscarNormaxCodigoDTO;
@@ -16,9 +17,11 @@ using CoreAccesLayer.Wraper;
 using Domain.Main.AperturaAuditoria;
 using Domain.Main.Wraper;
 using Newtonsoft.Json;
+using PlumbingProps.Document;
 using PlumbingProps.Services;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -236,7 +239,8 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                             ///TDO: Cronograma 
                             Praciclocronograma cronograma = new Praciclocronograma
                             {
-                                CantidadDeDiasTotal = (int)Convert.ToDecimal(x.cantidad),
+                                DiasInsitu = (int)Convert.ToDecimal(x.cantidad),
+                                DiasRemoto = 0,
                                 FechaDeFinDeEjecucionAuditoria = null,
                                 FechaDesde = DateTime.Now,
                                 FechaHasta = null,
@@ -488,12 +492,41 @@ namespace Business.Main.Modules.ApeeturaAuditoria
             }
             return response;
         }
-        public Response GenerarDesignacion(int IdCiclo, string plantilla)
+        public Response GenerarDesignacion(int IdCiclo, string pathPlantilla)
         {
             Response response = new Response { Message = "", State = ResponseType.Success };
             try
             {
+                PraDocDesignacion praDocDesignacion = new PraDocDesignacion();
+                var resulBD = repositoryMySql.GetDataByProcedure<PraDocDesignacion>("GetPraDesignacion", IdCiclo);
+                if (resulBD.Count() == 0)
+                {
+                    response.Message = "No se cuenta con informacion sobre el ciclo";
+                    response.State = ResponseType.Warning;
+                    return response;
+                }
+                praDocDesignacion = resulBD[0];
+                string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
+                WordHelper generadorWord = new WordHelper(filePlantilla);
+                string fileNameGenerado = generadorWord.GenerarDocumento(praDocDesignacion, null, $"{Global.PATH_PLANTILLA_DESIGNACION}\\Salidas");
 
+                ///Convertimos en PDF
+                using (var process = new Process())
+                {
+                    process.StartInfo.FileName = @"E:\ConvertPDF\ConvertExecute.exe"; // relative path. absolute path works too.
+                    process.StartInfo.Arguments = $"{fileNameGenerado}";
+                    process.StartInfo.CreateNoWindow = true;
+                    process.StartInfo.UseShellExecute = false;
+                    process.StartInfo.RedirectStandardOutput = true;
+                    process.StartInfo.RedirectStandardError = true;
+                    process.OutputDataReceived += (sender, data) => Console.WriteLine(data.Data);
+                    process.ErrorDataReceived += (sender, data) => Console.WriteLine(data.Data);
+                    process.Start();
+                    process.BeginOutputReadLine();
+                    process.BeginErrorReadLine();
+                    process.WaitForExit();     // (optional) wait up to 10 seconds                    
+                }
+                response.Message = fileNameGenerado.Replace(".doc", ".pdf");
             }
             catch (Exception ex)
             {

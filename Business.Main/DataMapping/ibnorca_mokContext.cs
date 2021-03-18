@@ -445,6 +445,11 @@ namespace Business.Main.DataMapping
 
                 entity.Property(e => e.FechaInicioDeEjecucionDeAuditoria).HasColumnType("datetime");
 
+                entity.Property(e => e.HorarioTrabajo)
+                    .HasColumnType("varchar(100)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
                 entity.Property(e => e.IdPrAcicloProgAuditoria).HasColumnName("idPrACicloProgAuditoria");
 
                 entity.Property(e => e.MesProgramado).HasColumnType("datetime");
@@ -783,6 +788,11 @@ namespace Business.Main.DataMapping
 
                 entity.Property(e => e.Oficina)
                     .HasColumnType("varchar(50)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.Property(e => e.OrganismoCertificador)
+                    .HasColumnType("varchar(200)")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
 

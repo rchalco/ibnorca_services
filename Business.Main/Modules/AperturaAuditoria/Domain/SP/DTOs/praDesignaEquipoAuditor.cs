@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Business.Main.DataMapping.DTOs
 {
-    class praDesignaEquipoAuditor
+    public class praDesignaEquipoAuditor
     {
 
         public String AuditorLider { get; set; }

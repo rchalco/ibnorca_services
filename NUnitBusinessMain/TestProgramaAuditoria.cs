@@ -75,7 +75,7 @@ namespace NUnitBusinessMain
             Praciclocronograma objCicloCrono = new Praciclocronograma
             {
                 IdPrAcicloProgAuditoria = 1,
-                CantidadDeDiasTotal = 5,
+                DiasInsitu = 5,
                 //MesProgramado = 1,
                 //MesReprogramado = 3,
                 FechaInicioDeEjecucionDeAuditoria = DateTime.Now,

@@ -112,5 +112,21 @@ namespace BackgroundAPIRest.Controllers
             AperturaAuditoriaManager objAperturaManager = new AperturaAuditoriaManager();
             return objAperturaManager.BuscarCiudad(req.IdEstado);
         }
+        [HttpPost("GenerarDesignacion")]
+        [EnableCors("MyPolicy")]
+        public Response GenerarDesignacion(RequestGenerarDesignacion req)
+        {
+            Binnacle.ProcessEvent(new Event { category = Event.Category.Information, description = $"Metodo BuscarPais llamado" });
+            AperturaAuditoriaManager objAperturaManager = new AperturaAuditoriaManager();
+            return objAperturaManager.GenerarDesignacion(req.IdCiclo, req.pathPlantilla);
+        }
+
+        [HttpGet("ObtenerArchivoDesignacion")]
+        [EnableCors("MyPolicy")]
+        public IActionResult ObtenerArchivoDesignacion(string fileName)
+        {
+            Binnacle.ProcessEvent(new Event { category = Event.Category.Information, description = $"Metodo BuscarPais llamado" });            
+            return new PhysicalFileResult(fileName, "application/pdf");
+        }
     }
 }
