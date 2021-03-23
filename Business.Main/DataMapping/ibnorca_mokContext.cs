@@ -533,9 +533,13 @@ namespace Business.Main.DataMapping
 
                 entity.Property(e => e.CargoDetalleWs).HasColumnType("json");
 
-                entity.Property(e => e.Dias)
+                entity.Property(e => e.DiasInsistu)
                     .HasPrecision(10, 2)
-                    .HasColumnName("dias");
+                    .HasColumnName("diasInsistu");
+
+                entity.Property(e => e.DiasRemoto)
+                    .HasPrecision(10, 2)
+                    .HasColumnName("diasRemoto");
 
                 entity.Property(e => e.FechaDesde).HasColumnType("datetime");
 

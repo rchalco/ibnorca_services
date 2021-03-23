@@ -53,7 +53,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                 req.Praciclosprogauditoria.ToList().ForEach(x =>
                 {
                     decimal totalDiasCronograma = Convert.ToDecimal(x.Praciclocronogramas.ToList().First().DiasRemoto + x.Praciclocronogramas.ToList().First().DiasInsitu);
-                    decimal totalDiasAuditor = Convert.ToDecimal(x.Pracicloparticipantes.ToList().Where(yy => yy.IdCargoWs == 2408 || yy.IdCargoWs == 2409).Sum(zz => zz.Dias));
+                    decimal totalDiasAuditor = Convert.ToDecimal(x.Pracicloparticipantes.ToList().Where(yy => yy.IdCargoWs == 2408 || yy.IdCargoWs == 2409).Sum(zz => zz.DiasInsistu + zz.DiasRemoto));
                     if (totalDiasCronograma != totalDiasAuditor)
                     {
                         response.State = ResponseType.Warning;
@@ -189,34 +189,70 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                             if (mode.Equals("TCP"))
                             {
                                 ciclosprogauditorium.Pradireccionespaproductos = new List<Pradireccionespaproducto>();
-                                resulServices.DatosServicio.ListaProducto.ForEach(dir =>
+                                if (resulServices.DatosServicio.ListaProductoCertificado != null && resulServices.DatosServicio.ListaProductoCertificado.Count > 0)
                                 {
-                                    Pradireccionespaproducto objDirProd = new Pradireccionespaproducto
+                                    resulServices.DatosServicio.ListaProductoCertificado.ForEach(dir =>
                                     {
-                                        Nombre = dir.nombre,
-                                        Direccion = dir.direccion,
-                                        Marca = dir.marca,
-                                        Sello = dir.nro_sello,
-                                        Ciudad = dir.ciudad,
-                                        Estado = dir.estado,
-                                        Pais = dir.pais,
-                                        Norma = dir.norma,
-                                        FechaEmisionPrimerCertificado = null,//////////////////////////////
-                                        FechaVencimientoUltimoCertificado = null,
-                                        FechaVencimientoCertificado = null,
-                                        UsuarioRegistro = pUsuario,
-                                        FechaDesde = DateTime.Now,
-                                        FechaHasta = null
-                                    };
-                                    if (resulServices.DatosServicio.ListaProductoCertificado != null
-                                    && resulServices.DatosServicio.ListaProductoCertificado.Any(x => x.nombre.ToLower().Equals(objDirProd.Nombre.ToLower())))
+                                        Pradireccionespaproducto objDirProd = new Pradireccionespaproducto
+                                        {
+                                            Nombre = dir.nombre,
+                                            Direccion = dir.direccion,
+                                            Marca = dir.marca,
+                                            Sello = "",
+                                            Ciudad = "",
+                                            Estado = "",
+                                            Pais = "",
+                                            Norma = dir.Norma,
+                                            FechaEmisionPrimerCertificado = Convert.ToDateTime(dir.FechaEmision),//////////////////////////////
+                                            FechaVencimientoUltimoCertificado = Convert.ToDateTime(dir.FechaEmision),
+                                            FechaVencimientoCertificado = Convert.ToDateTime(dir.FechaValido),
+                                            UsuarioRegistro = pUsuario,
+                                            FechaDesde = DateTime.Now,
+                                            FechaHasta = null,
+                                            NumeroDeCertificacion = dir.IdCertificadoServicios
+                                        };
+                                        if (resulServices.DatosServicio.ListaProductoCertificado != null
+                                        && resulServices.DatosServicio.ListaProductoCertificado.Any(x => x.nombre.ToLower().Equals(objDirProd.Nombre.ToLower())))
+                                        {
+                                            var dataCertificado = resulServices.DatosServicio.ListaProductoCertificado.First(x => x.nombre.ToLower().Equals(objDirProd.Nombre.ToLower()));
+                                            objDirProd.FechaVencimientoCertificado = Convert.ToDateTime(dataCertificado.FechaValido);
+                                            objDirProd.NumeroDeCertificacion = dataCertificado.IdCertificadoServicios;
+                                        }
+                                        ciclosprogauditorium.Pradireccionespaproductos.Add(objDirProd);
+                                    });
+                                }
+                                else
+                                {
+                                    resulServices.DatosServicio.ListaProducto.ForEach(dir =>
                                     {
-                                        var dataCertificado = resulServices.DatosServicio.ListaProductoCertificado.First(x => x.nombre.ToLower().Equals(objDirProd.Nombre.ToLower()));
-                                        objDirProd.FechaVencimientoCertificado = Convert.ToDateTime(dataCertificado.FechaValido);
-                                        objDirProd.NumeroDeCertificacion = dataCertificado.IdCertificadoServicios;
-                                    }
-                                    ciclosprogauditorium.Pradireccionespaproductos.Add(objDirProd);
-                                });
+                                        Pradireccionespaproducto objDirProd = new Pradireccionespaproducto
+                                        {
+                                            Nombre = dir.nombre,
+                                            Direccion = dir.direccion,
+                                            Marca = dir.marca,
+                                            Sello = dir.nro_sello,
+                                            Ciudad = dir.ciudad,
+                                            Estado = dir.estado,
+                                            Pais = dir.pais,
+                                            Norma = dir.norma,
+                                            FechaEmisionPrimerCertificado = null,//////////////////////////////
+                                            FechaVencimientoUltimoCertificado = null,
+                                            FechaVencimientoCertificado = null,
+                                            UsuarioRegistro = pUsuario,
+                                            FechaDesde = DateTime.Now,
+                                            FechaHasta = null
+                                        };
+                                        if (resulServices.DatosServicio.ListaProductoCertificado != null
+                                        && resulServices.DatosServicio.ListaProductoCertificado.Any(x => x.nombre.ToLower().Equals(objDirProd.Nombre.ToLower())))
+                                        {
+                                            var dataCertificado = resulServices.DatosServicio.ListaProductoCertificado.First(x => x.nombre.ToLower().Equals(objDirProd.Nombre.ToLower()));
+                                            objDirProd.FechaVencimientoCertificado = Convert.ToDateTime(dataCertificado.FechaValido);
+                                            objDirProd.NumeroDeCertificacion = dataCertificado.IdCertificadoServicios;
+                                        }
+                                        ciclosprogauditorium.Pradireccionespaproductos.Add(objDirProd);
+                                    });
+                                }
+
                             }
 
 
@@ -225,37 +261,80 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                             {
                                 ///TDO: direcciones
                                 ciclosprogauditorium.Pradireccionespasistemas = new List<Pradireccionespasistema>();
-                                resulServices.DatosServicio.ListaDireccion.ForEach(dir =>
+                                if (resulServices.DatosServicio.ListaDireccionCertificado != null && resulServices.DatosServicio.ListaDireccion.Count > 0)
                                 {
-                                    Pradireccionespasistema objDirSis = new Pradireccionespasistema
-                                    {
-                                        Ciudad = dir.ciudad,
-                                        Departamento = dir.estado,
-                                        Dias = 0,
-                                        Direccion = dir.direccion,
-                                        FechaDesde = DateTime.Now,
-                                        FechaHasta = null,
-                                        Pais = dir.pais,
-                                        UsuarioRegistro = pUsuario,
-                                        Nombre = dir.nombre
-                                    };
-                                    ciclosprogauditorium.Pradireccionespasistemas.Add(objDirSis);
-                                });
+                                    ListaDireccionCertificado certificado = resulServices.DatosServicio.ListaDireccionCertificado.Last();
 
-                                ///TDO: normas
-                                ciclosprogauditorium.Praciclonormassistemas = new List<Praciclonormassistema>();
-                                ciclosprogauditorium.Praciclonormassistemas.Add(new Praciclonormassistema
+                                    //diracciones
+                                    certificado.direcciones.ForEach(dir =>
+                                    {
+                                        Pradireccionespasistema objDirSis = new Pradireccionespasistema
+                                        {
+                                            Ciudad = "",
+                                            Departamento = "",
+                                            Dias = 0,
+                                            Direccion = dir,
+                                            FechaDesde = DateTime.Now,
+                                            FechaHasta = null,
+                                            Pais = "",
+                                            UsuarioRegistro = pUsuario,
+
+                                        };
+                                        ciclosprogauditorium.Pradireccionespasistemas.Add(objDirSis);
+                                    });
+
+                                    ///TDO: normas
+                                    ciclosprogauditorium.Praciclonormassistemas = new List<Praciclonormassistema>();
+                                    ciclosprogauditorium.Praciclonormassistemas.Add(new Praciclonormassistema
+                                    {
+                                        Alcance = resulServices.DatosServicio.alcance_propuesta,
+                                        IdparamNorma = null,
+                                        Norma = certificado.Norma,
+                                        FechaDesde = DateTime.Now,
+                                        FechaEmisionPrimerCertificado = Convert.ToDateTime(certificado.FechaEmision),
+                                        FechaHasta = null,
+                                        FechaVencimientoUltimoCertificado = Convert.ToDateTime(certificado.FechaValido),
+                                        NumeroDeCertificacion = certificado.IdCertificadoServicios,
+                                        UsuarioRegistro = pUsuario
+                                    });
+                                }
+                                else
                                 {
-                                    Alcance = resulServices.DatosServicio.alcance_propuesta,
-                                    IdparamNorma = null,
-                                    Norma = "S/A",
-                                    FechaDesde = DateTime.Now,
-                                    FechaEmisionPrimerCertificado = null,
-                                    FechaHasta = null,
-                                    FechaVencimientoUltimoCertificado = null,
-                                    NumeroDeCertificacion = "",
-                                    UsuarioRegistro = pUsuario
-                                });
+                                    //direcciones
+                                    resulServices.DatosServicio.ListaDireccion.ForEach(dir =>
+                                    {
+                                        Pradireccionespasistema objDirSis = new Pradireccionespasistema
+                                        {
+                                            Ciudad = dir.ciudad,
+                                            Departamento = dir.estado,
+                                            Dias = 0,
+                                            Direccion = dir.direccion,
+                                            FechaDesde = DateTime.Now,
+                                            FechaHasta = null,
+                                            Pais = dir.pais,
+                                            UsuarioRegistro = pUsuario,
+                                            Nombre = dir.nombre
+                                        };
+                                        ciclosprogauditorium.Pradireccionespasistemas.Add(objDirSis);
+                                    });
+                                    ///TDO: normas
+                                    ciclosprogauditorium.Praciclonormassistemas = new List<Praciclonormassistema>();
+                                    ciclosprogauditorium.Praciclonormassistemas.Add(new Praciclonormassistema
+                                    {
+                                        Alcance = resulServices.DatosServicio.alcance_propuesta,
+                                        IdparamNorma = null,
+                                        Norma = "S/A",
+                                        FechaDesde = DateTime.Now,
+                                        FechaEmisionPrimerCertificado = null,
+                                        FechaHasta = null,
+                                        FechaVencimientoUltimoCertificado = null,
+                                        NumeroDeCertificacion = "",
+                                        UsuarioRegistro = pUsuario
+                                    });
+                                }
+
+
+
                             }
 
                             ///TDO: Cronograma 

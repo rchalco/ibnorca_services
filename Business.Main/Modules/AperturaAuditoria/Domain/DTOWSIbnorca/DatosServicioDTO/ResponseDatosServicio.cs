@@ -18,6 +18,7 @@ namespace Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.DatosServi
         public string marca { get; set; }
         public string direccion { get; set; }
         public string sub_partida_arancelaria { get; set; }
+        public string FechaEmision { get; set; }
     }
 
     public class ListaDireccionCertificado
@@ -25,6 +26,7 @@ namespace Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.DatosServi
         public string IdCertificadoServicios { get; set; }
         public string tipoCertificado { get; set; }
         public string FechaValido { get; set; }
+        public string FechaEmision { get; set; }
         public string ProductoServicio { get; set; }
         public string Norma { get; set; }
         public List<string> direcciones { get; set; }
