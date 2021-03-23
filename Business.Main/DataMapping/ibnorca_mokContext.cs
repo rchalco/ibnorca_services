@@ -437,6 +437,10 @@ namespace Business.Main.DataMapping
 
                 entity.Property(e => e.IdCiclosCronogramas).HasColumnName("idCiclosCronogramas");
 
+                entity.Property(e => e.DiasInsitu).HasPrecision(10, 2);
+
+                entity.Property(e => e.DiasRemoto).HasPrecision(10, 2);
+
                 entity.Property(e => e.FechaDeFinDeEjecucionAuditoria).HasColumnType("datetime");
 
                 entity.Property(e => e.FechaDesde).HasColumnType("datetime");
@@ -444,6 +448,11 @@ namespace Business.Main.DataMapping
                 entity.Property(e => e.FechaHasta).HasColumnType("datetime");
 
                 entity.Property(e => e.FechaInicioDeEjecucionDeAuditoria).HasColumnType("datetime");
+
+                entity.Property(e => e.HorarioTrabajo)
+                    .HasColumnType("varchar(100)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
 
                 entity.Property(e => e.IdPrAcicloProgAuditoria).HasColumnName("idPrACicloProgAuditoria");
 
@@ -524,7 +533,9 @@ namespace Business.Main.DataMapping
 
                 entity.Property(e => e.CargoDetalleWs).HasColumnType("json");
 
-                entity.Property(e => e.Dias).HasColumnName("dias");
+                entity.Property(e => e.Dias)
+                    .HasPrecision(10, 2)
+                    .HasColumnName("dias");
 
                 entity.Property(e => e.FechaDesde).HasColumnType("datetime");
 
@@ -783,6 +794,11 @@ namespace Business.Main.DataMapping
 
                 entity.Property(e => e.Oficina)
                     .HasColumnType("varchar(50)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.Property(e => e.OrganismoCertificador)
+                    .HasColumnType("varchar(200)")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
 

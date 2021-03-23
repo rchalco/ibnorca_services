@@ -1,191 +1,50 @@
-2021-03-11 12:21:23.4104 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
-2021-03-11 12:21:24.7868 INFO Metodo ObtenerCargos llamado
-2021-03-11 12:23:31.9449 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
-2021-03-11 12:23:32.3373 INFO Metodo ObtenerCargos llamado
-2021-03-11 14:05:00.8013 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 0
-2021-03-11 14:17:54.6948 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
-2021-03-11 14:20:55.9812 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
-2021-03-11 14:20:57.8653 INFO Metodo ObtenerCargos llamado
-2021-03-11 14:33:44.5511 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
-2021-03-11 14:33:45.2289 INFO Metodo ObtenerCargos llamado
-2021-03-11 14:49:04.2990 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
-2021-03-11 14:49:04.8422 INFO Metodo ObtenerCargos llamado
-2021-03-11 14:49:58.5029 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
-2021-03-11 14:49:59.0139 INFO Metodo ObtenerCargos llamado
-2021-03-11 14:50:58.1189 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
-2021-03-11 14:50:58.6279 INFO Metodo ObtenerCargos llamado
-2021-03-11 15:16:53.7599 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 5915
-2021-03-11 15:16:54.1592 INFO Metodo ObtenerCargos llamado
-2021-03-11 16:18:35.4098 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 14455
-2021-03-11 16:18:36.5269 INFO Metodo ObtenerCargos llamado
-2021-03-11 16:18:36.5519 INFO Metodo ObtenerCargos llamado
-2021-03-11 16:18:36.6113 INFO Metodo ObtenerCargos llamado
-2021-03-11 16:18:49.7379 INFO Metodo BuscarPais llamado
-2021-03-11 16:18:50.0775 ERROR One or more errors occurred. (No se puede consumir el servicio. Error: <html> 
-<head> 
-<title>Documento no encontrado</title> 
-</head> 
-<body> 
-<p><img src="/itranet/images/ibnlogo200x218.jpg" width="200" height="218" longdesc="http://www.ibnorca.org"></p>
-<p>El documento: <b>
-  /wsibnob/auditoria/ws-paises.php  </b> 
-  no ha sido encontrado en nuestro servidor.<br> 
-  El error ha sido comunicado al administrador del sitio. Disculpe las molestias 
-  ocasionadas.
-  
-  
-</p>
-<!--
-Todo sea por el IE
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx --> 
-</body>
-</html>) inner -> No se puede consumir el servicio. Error: <html> 
-<head> 
-<title>Documento no encontrado</title> 
-</head> 
-<body> 
-<p><img src="/itranet/images/ibnlogo200x218.jpg" width="200" height="218" longdesc="http://www.ibnorca.org"></p>
-<p>El documento: <b>
-  /wsibnob/auditoria/ws-paises.php  </b> 
-  no ha sido encontrado en nuestro servidor.<br> 
-  El error ha sido comunicado al administrador del sitio. Disculpe las molestias 
-  ocasionadas.
-  
-  
-</p>
-<!--
-Todo sea por el IE
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx --> 
-</body>
-</html> stactrace ->    at PlumbingProps.Services.ClientHelper.Consume[T](String URI, Object parameter) in C:\Ivo\Projects\ibnorca\ibnorca_services\PlumbingProps\Services\ClientHelper.cs:line 37
-2021-03-11 16:18:50.0775 ERROR One or more errors occurred. (No se puede consumir el servicio. Error: <html> 
-<head> 
-<title>Documento no encontrado</title> 
-</head> 
-<body> 
-<p><img src="/itranet/images/ibnlogo200x218.jpg" width="200" height="218" longdesc="http://www.ibnorca.org"></p>
-<p>El documento: <b>
-  /wsibnob/auditoria/ws-paises.php  </b> 
-  no ha sido encontrado en nuestro servidor.<br> 
-  El error ha sido comunicado al administrador del sitio. Disculpe las molestias 
-  ocasionadas.
-  
-  
-</p>
-<!--
-Todo sea por el IE
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx --> 
-</body>
-</html>) inner -> No se puede consumir el servicio. Error: <html> 
-<head> 
-<title>Documento no encontrado</title> 
-</head> 
-<body> 
-<p><img src="/itranet/images/ibnlogo200x218.jpg" width="200" height="218" longdesc="http://www.ibnorca.org"></p>
-<p>El documento: <b>
-  /wsibnob/auditoria/ws-paises.php  </b> 
-  no ha sido encontrado en nuestro servidor.<br> 
-  El error ha sido comunicado al administrador del sitio. Disculpe las molestias 
-  ocasionadas.
-  
-  
-</p>
-<!--
-Todo sea por el IE
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx --> 
-</body>
-</html> stactrace ->    at PlumbingProps.Services.ClientHelper.Consume[T](String URI, Object parameter) in C:\Ivo\Projects\ibnorca\ibnorca_services\PlumbingProps\Services\ClientHelper.cs:line 37
-2021-03-11 16:20:22.9021 INFO Metodo BuscarPais llamado
-2021-03-11 16:20:24.3243 ERROR One or more errors occurred. (No se puede consumir el servicio. Error: <html> 
-<head> 
-<title>Documento no encontrado</title> 
-</head> 
-<body> 
-<p><img src="/itranet/images/ibnlogo200x218.jpg" width="200" height="218" longdesc="http://www.ibnorca.org"></p>
-<p>El documento: <b>
-  /wsibnob/auditoria/ws-paises.php  </b> 
-  no ha sido encontrado en nuestro servidor.<br> 
-  El error ha sido comunicado al administrador del sitio. Disculpe las molestias 
-  ocasionadas.
-  
-  
-</p>
-<!--
-Todo sea por el IE
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx --> 
-</body>
-</html>) inner -> No se puede consumir el servicio. Error: <html> 
-<head> 
-<title>Documento no encontrado</title> 
-</head> 
-<body> 
-<p><img src="/itranet/images/ibnlogo200x218.jpg" width="200" height="218" longdesc="http://www.ibnorca.org"></p>
-<p>El documento: <b>
-  /wsibnob/auditoria/ws-paises.php  </b> 
-  no ha sido encontrado en nuestro servidor.<br> 
-  El error ha sido comunicado al administrador del sitio. Disculpe las molestias 
-  ocasionadas.
-  
-  
-</p>
-<!--
-Todo sea por el IE
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx --> 
-</body>
-</html> stactrace ->    at PlumbingProps.Services.ClientHelper.Consume[T](String URI, Object parameter) in C:\Ivo\Projects\ibnorca\ibnorca_services\PlumbingProps\Services\ClientHelper.cs:line 37
-2021-03-11 16:20:24.3243 ERROR One or more errors occurred. (No se puede consumir el servicio. Error: <html> 
-<head> 
-<title>Documento no encontrado</title> 
-</head> 
-<body> 
-<p><img src="/itranet/images/ibnlogo200x218.jpg" width="200" height="218" longdesc="http://www.ibnorca.org"></p>
-<p>El documento: <b>
-  /wsibnob/auditoria/ws-paises.php  </b> 
-  no ha sido encontrado en nuestro servidor.<br> 
-  El error ha sido comunicado al administrador del sitio. Disculpe las molestias 
-  ocasionadas.
-  
-  
-</p>
-<!--
-Todo sea por el IE
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx --> 
-</body>
-</html>) inner -> No se puede consumir el servicio. Error: <html> 
-<head> 
-<title>Documento no encontrado</title> 
-</head> 
-<body> 
-<p><img src="/itranet/images/ibnlogo200x218.jpg" width="200" height="218" longdesc="http://www.ibnorca.org"></p>
-<p>El documento: <b>
-  /wsibnob/auditoria/ws-paises.php  </b> 
-  no ha sido encontrado en nuestro servidor.<br> 
-  El error ha sido comunicado al administrador del sitio. Disculpe las molestias 
-  ocasionadas.
-  
-  
-</p>
-<!--
-Todo sea por el IE
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx --> 
-</body>
-</html> stactrace ->    at PlumbingProps.Services.ClientHelper.Consume[T](String URI, Object parameter) in C:\Ivo\Projects\ibnorca\ibnorca_services\PlumbingProps\Services\ClientHelper.cs:line 37
-2021-03-11 18:08:30.0323 INFO Metodo BuscarPais llamado
-2021-03-11 18:08:30.7132 INFO Metodo BuscarPais llamado
-2021-03-11 18:08:33.3797 INFO Metodo BuscarPais llamado
-2021-03-11 18:08:34.9286 INFO Metodo BuscarPais llamado
-2021-03-11 18:08:39.7934 INFO Metodo BuscarPais llamado
-2021-03-11 18:17:53.4111 INFO Metodo BuscarPais llamado
-2021-03-11 18:17:57.6767 INFO Metodo BuscarPais llamado
-2021-03-11 18:18:03.1455 INFO Metodo BuscarPais llamado
-2021-03-11 18:18:37.9531 INFO Metodo BuscarPais llamado
-2021-03-11 18:18:41.3010 INFO Metodo BuscarPais llamado
-2021-03-11 18:18:44.3829 INFO Metodo BuscarPais llamado
+2021-03-11 17:07:06.7842 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 0
+2021-03-11 17:07:14.9290 ERROR An error occurred while updating the entries. See the inner exception for details. inner -> Unknown column 'CodigoServicio_ws' in 'field list' inner -> Unknown column 'CodigoServicio_ws' in 'field list' stactrace ->    at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 49
+2021-03-11 17:07:14.9450 ERROR An error occurred while updating the entries. See the inner exception for details. inner -> Unknown column 'CodigoServicio_ws' in 'field list' inner -> Unknown column 'CodigoServicio_ws' in 'field list' stactrace ->    at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 49
+2021-03-11 17:12:25.2479 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 14455
+2021-03-11 17:12:32.0491 INFO Metodo ObtenerCargos llamado
+2021-03-11 17:12:32.0849 INFO Metodo ObtenerCargos llamado
+2021-03-11 17:12:32.1204 INFO Metodo ObtenerCargos llamado
+2021-03-11 17:12:45.2033 INFO Metodo BuscarPersonalCargos llamado
+2021-03-11 17:12:50.8170 INFO Metodo BuscarPersonalCargos llamado
+2021-03-11 17:13:27.2664 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 14455
+2021-03-11 17:13:30.3689 INFO Metodo ObtenerCargos llamado
+2021-03-11 17:13:30.4468 INFO Metodo ObtenerCargos llamado
+2021-03-11 17:13:30.4692 INFO Metodo ObtenerCargos llamado
+2021-03-11 17:13:33.5105 INFO Metodo BuscarPersonalCargos llamado
+2021-03-11 17:15:07.1282 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 14455
+2021-03-11 17:15:09.6872 INFO Metodo ObtenerCargos llamado
+2021-03-11 17:15:09.7142 INFO Metodo ObtenerCargos llamado
+2021-03-11 17:15:09.7715 INFO Metodo ObtenerCargos llamado
+2021-03-11 17:15:11.5294 INFO Metodo BuscarPersonalCargos llamado
+2021-03-11 17:15:37.4941 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 14455
+2021-03-11 17:15:39.6696 INFO Metodo ObtenerCargos llamado
+2021-03-11 17:15:39.7117 INFO Metodo ObtenerCargos llamado
+2021-03-11 17:15:39.8662 INFO Metodo ObtenerCargos llamado
+2021-03-11 17:15:41.6039 INFO Metodo BuscarPersonalCargos llamado
+2021-03-11 17:16:10.1145 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 14455
+2021-03-11 17:16:16.1783 INFO Metodo ObtenerCargos llamado
+2021-03-11 17:16:16.2803 INFO Metodo ObtenerCargos llamado
+2021-03-11 17:16:16.2803 INFO Metodo ObtenerCargos llamado
+2021-03-11 17:16:18.4585 INFO Metodo BuscarPersonalCargos llamado
+2021-03-11 17:17:02.1627 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 14455
+2021-03-11 17:17:04.8823 INFO Metodo ObtenerCargos llamado
+2021-03-11 17:17:04.9100 INFO Metodo ObtenerCargos llamado
+2021-03-11 17:17:04.9388 INFO Metodo ObtenerCargos llamado
+2021-03-11 17:17:06.6592 INFO Metodo BuscarPersonalCargos llamado
+2021-03-11 17:17:16.7216 INFO Metodo BuscarPersonalCargos llamado
+2021-03-11 17:18:20.6708 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 14455
+2021-03-11 17:18:23.3696 INFO Metodo ObtenerCargos llamado
+2021-03-11 17:18:23.3953 INFO Metodo ObtenerCargos llamado
+2021-03-11 17:18:23.4383 INFO Metodo ObtenerCargos llamado
+2021-03-11 17:18:27.8426 INFO Metodo BuscarPersonalCargos llamado
+2021-03-11 17:18:45.0380 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 14455
+2021-03-11 17:18:48.4255 INFO Metodo ObtenerCargos llamado
+2021-03-11 17:18:48.5015 INFO Metodo ObtenerCargos llamado
+2021-03-11 17:18:48.5320 INFO Metodo ObtenerCargos llamado
+2021-03-11 17:18:49.8439 INFO Metodo BuscarPersonalCargos llamado
+2021-03-11 17:19:18.7978 INFO Metodo ObtenerProgramaAuditoria llamdo con parametro 14455
+2021-03-11 17:19:24.5398 INFO Metodo ObtenerCargos llamado
+2021-03-11 17:19:24.5937 INFO Metodo ObtenerCargos llamado
+2021-03-11 17:19:24.6358 INFO Metodo ObtenerCargos llamado
+2021-03-11 17:19:26.4327 INFO Metodo BuscarPersonalCargos llamado

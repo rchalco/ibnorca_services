@@ -25,6 +25,7 @@ namespace Business.Main.DataMapping
         public int? IdparamTipoServicio { get; set; }
         public string CodigoIafws { get; set; }
         public int? NumeroAnios { get; set; }
+        public string OrganismoCertificador { get; set; }
         public string UsuarioRegistro { get; set; }
         public DateTime? FechaDesde { get; set; }
         public DateTime? FechaHasta { get; set; }
