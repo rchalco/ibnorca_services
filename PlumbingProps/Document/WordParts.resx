@@ -120,6 +120,9 @@
   <data name="prefijo" xml:space="preserve">
     <value>val</value>
   </data>
+  <data name="tagEnter" xml:space="preserve">
+    <value>&lt;w:br/&gt;</value>
+  </data>
   <data name="tagGrid" xml:space="preserve">
     <value>&lt;w:tblGrid&gt;</value>
   </data>

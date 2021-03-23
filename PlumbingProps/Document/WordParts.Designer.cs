@@ -70,6 +70,15 @@ namespace PlumbingProps.Document {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;w:br/&gt;.
+        /// </summary>
+        internal static string tagEnter {
+            get {
+                return ResourceManager.GetString("tagEnter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;w:tblGrid&gt;.
         /// </summary>
         internal static string tagGrid {

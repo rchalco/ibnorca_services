@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.BuscarxIdClienteEmpresaDTO
 {
 
-    public class Resultado
+    public class Cliente
     {
         public string IdCliente { get; set; }
         public string TipoCliente { get; set; }
@@ -37,6 +37,6 @@ namespace Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.BuscarxIdC
         public bool estado { get; set; }
         public string mensaje { get; set; }
         public int totalResultados { get; set; }
-        public List<Resultado> resultados { get; set; }
+        public List<Cliente> resultados { get; set; }
     }
 }

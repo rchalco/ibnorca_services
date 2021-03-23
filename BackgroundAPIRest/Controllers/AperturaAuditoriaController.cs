@@ -1,6 +1,7 @@
 ﻿using BackgroundAPIRest.Contracts;
 using Business.Main.DataMapping;
 using Business.Main.Modules.ApeeturaAuditoria;
+using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.BuscarClasificadorDTO;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.BuscarNormaIntxCodigoDTO;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.BuscarNormaxCodigoDTO;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.BuscarPaisDTO;
@@ -125,8 +126,19 @@ namespace BackgroundAPIRest.Controllers
         [EnableCors("MyPolicy")]
         public IActionResult ObtenerArchivoDesignacion(string fileName)
         {
-            Binnacle.ProcessEvent(new Event { category = Event.Category.Information, description = $"Metodo BuscarPais llamado" });            
-            return new PhysicalFileResult(fileName, "application/pdf");
+            Binnacle.ProcessEvent(new Event { category = Event.Category.Information, description = $"Metodo BuscarPais llamado" });
+            //return new PhysicalFileResult(fileName, "application/pdf");
+            return new PhysicalFileResult(fileName, System.Net.Mime.MediaTypeNames.Application.Octet);
+        }
+
+        [HttpPost("BuscarOrganismosCertificadores")]
+        [EnableCors("MyPolicy")]
+        public ResponseQuery<Clasificador> BuscarOrganismosCertificadores()
+        {
+            Binnacle.ProcessEvent(new Event { category = Event.Category.Information, description = $"Metodo BuscarPais llamado" });
+            AperturaAuditoriaManager objAperturaManager = new AperturaAuditoriaManager();
+            RequestBuscarClasificador req = new RequestBuscarClasificador { padre = 638 };
+            return objAperturaManager.BuscarOrganismosCertificadores(req);
         }
     }
 }
