@@ -9,8 +9,8 @@ namespace Business.Main.DataMapping
     {
         public long IdCiclosCronogramas { get; set; }
         public long? IdPrAcicloProgAuditoria { get; set; }
-        public int? DiasInsitu { get; set; }
-        public int? DiasRemoto { get; set; }
+        public decimal? DiasInsitu { get; set; }
+        public decimal? DiasRemoto { get; set; }
         public string HorarioTrabajo { get; set; }
         public DateTime? MesProgramado { get; set; }
         public DateTime? MesReprogramado { get; set; }

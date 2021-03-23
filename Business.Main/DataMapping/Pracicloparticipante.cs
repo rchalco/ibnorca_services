@@ -13,7 +13,7 @@ namespace Business.Main.DataMapping
         public string ParticipanteDetalleWs { get; set; }
         public int? IdCargoWs { get; set; }
         public string CargoDetalleWs { get; set; }
-        public int? Dias { get; set; }
+        public decimal? Dias { get; set; }
         public string UsuarioRegistro { get; set; }
         public DateTime? FechaDesde { get; set; }
 

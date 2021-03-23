@@ -3,6 +3,7 @@ using Business.Main.Cross;
 using Business.Main.DataMapping;
 using Business.Main.DataMapping.DTOs;
 using Business.Main.Modules.ApeeturaAuditoria.Domain;
+using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.BuscarClasificadorDTO;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.BuscarNormaIntxCodigoDTO;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.BuscarNormaxCodigoDTO;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.BuscarPaisDTO;
@@ -13,6 +14,7 @@ using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.DatosServicioD
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.EstadosDTO;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.ListarAuditoresxCargoCalificadoDTO;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.ListarCargosCalificadosDTO;
+using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.ListarContactosEmpresaDTO;
 using CoreAccesLayer.Wraper;
 using Domain.Main.AperturaAuditoria;
 using Domain.Main.Wraper;
@@ -25,6 +27,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static PlumbingProps.Document.WordHelper;
 
 namespace Business.Main.Modules.ApeeturaAuditoria
 {
@@ -32,7 +35,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
     {
         public ResponseObject<Praprogramasdeauditorium> RegisterProgramaAuditoria(Praprogramasdeauditorium req)
         {
-            ResponseObject<Praprogramasdeauditorium> response = new ResponseObject<Praprogramasdeauditorium>();
+            ResponseObject<Praprogramasdeauditorium> response = new ResponseObject<Praprogramasdeauditorium> { State = ResponseType.Success };
             try
             {
                 //Logica del negocio
@@ -42,6 +45,25 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                     response.Message = "el parametro de la persona a registrar no debe ser nulo";
                     response.Object = null;
                     response.Code = "404";
+                    return response;
+                }
+
+                ///validamos la cantidad de dias 
+
+                req.Praciclosprogauditoria.ToList().ForEach(x =>
+                {
+                    decimal totalDiasCronograma = Convert.ToDecimal(x.Praciclocronogramas.ToList().First().DiasRemoto + x.Praciclocronogramas.ToList().First().DiasInsitu);
+                    decimal totalDiasAuditor = Convert.ToDecimal(x.Pracicloparticipantes.ToList().Where(yy => yy.IdCargoWs == 2408 || yy.IdCargoWs == 2409).Sum(zz => zz.Dias));
+                    if (totalDiasCronograma != totalDiasAuditor)
+                    {
+                        response.State = ResponseType.Warning;
+                        response.Message = $"Los dias del cronograma no coinciden con los del auditor en el año {x.Anio }";
+
+                    }
+                });
+
+                if (response.State != ResponseType.Success)
+                {
                     return response;
                 }
 
@@ -239,7 +261,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                             ///TDO: Cronograma 
                             Praciclocronograma cronograma = new Praciclocronograma
                             {
-                                DiasInsitu = (int)Convert.ToDecimal(x.cantidad),
+                                DiasInsitu = (decimal)Convert.ToDecimal(x.cantidad),
                                 DiasRemoto = 0,
                                 FechaDeFinDeEjecucionAuditoria = null,
                                 FechaDesde = DateTime.Now,
@@ -497,36 +519,143 @@ namespace Business.Main.Modules.ApeeturaAuditoria
             Response response = new Response { Message = "", State = ResponseType.Success };
             try
             {
-                PraDocDesignacion praDocDesignacion = new PraDocDesignacion();
-                var resulBD = repositoryMySql.GetDataByProcedure<PraDocDesignacion>("GetPraDesignacion", IdCiclo);
-                if (resulBD.Count() == 0)
+
+                ///Obtenemos la informacion del ciclo y del programa
+                Praciclosprogauditorium praciclocronograma = repositoryMySql.SimpleSelect<Praciclosprogauditorium>(x => x.IdPrAcicloProgAuditoria == IdCiclo).ToList().FirstOrDefault();
+                Praprogramasdeauditorium praprogramasdeauditorium = repositoryMySql.SimpleSelect<Praprogramasdeauditorium>(x => x.IdPrAprogramaAuditoria == praciclocronograma.IdPrAprogramaAuditoria).ToList().FirstOrDefault();
+                if (praciclocronograma == null)
                 {
-                    response.Message = "No se cuenta con informacion sobre el ciclo";
                     response.State = ResponseType.Warning;
+                    response.Message = "No se cuenta con informacion de este cilo en la BD";
                     return response;
                 }
-                praDocDesignacion = resulBD[0];
+
+                praciclocronograma.Praciclocronogramas = repositoryMySql.SimpleSelect<Praciclocronograma>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Praciclonormassistemas = repositoryMySql.SimpleSelect<Praciclonormassistema>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Pracicloparticipantes = repositoryMySql.SimpleSelect<Pracicloparticipante>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Pradireccionespaproductos = repositoryMySql.SimpleSelect<Pradireccionespaproducto>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Pradireccionespasistemas = repositoryMySql.SimpleSelect<Pradireccionespasistema>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+
+                Cliente cliente = JsonConvert.DeserializeObject<Cliente>(praprogramasdeauditorium.OrganizacionContentWs);
+
+                ///obtenemos los contactos del cliente
+                ClientHelper clientHelper = new ClientHelper();
+                ///TDO: obtenemos los datos del servicio
+                RequestListarContactosEmpresa requestDato = new RequestListarContactosEmpresa { accion = "ListarContactosEmpresa", sIdentificador = Global.IDENTIFICADOR, sKey = Global.KEY_SERVICES, IdCliente = cliente.IdCliente };
+                ResponseListarContactosEmpresa resulServices = clientHelper.Consume<ResponseListarContactosEmpresa>(Global.URIGLOBAL_SERVICES + Global.URI_CLIENTE_CONTACTO, requestDato).Result;
+                if (!resulServices.estado)
+                {
+                    response.State = ResponseType.Warning;
+                    response.Message = $"Existe problemas al consumir el servicio de ibnorca (estados): {resulServices.mensaje}";
+                    return response;
+                }
+                ContactoEmpresa contactoEmpresa = resulServices.lstContactos?.Count > 0 ? resulServices.lstContactos[0] : null;
+
+                ///llenamos el reporte con la informacion de este ciclo
+                RepDocDesignacion praDocDesignacion = new RepDocDesignacion
+                {
+                    FechadeAuditoria = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
+                    TipodeAuditoria = praciclocronograma.Referencia,
+                    ModalidaddeAuditoria = $"Días insitu: {praciclocronograma.Praciclocronogramas.First().DiasInsitu}, días remoto: {praciclocronograma.Praciclocronogramas.First().DiasRemoto}",
+                    FechaInicioAuditoria = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
+                    FechaFinAuditoria = praciclocronograma.Praciclocronogramas.First().FechaDeFinDeEjecucionAuditoria?.ToString("dd/MM/yyyy"),
+                    CantidadDiasAuditor = praciclocronograma.Praciclocronogramas.First().DiasInsitu + praciclocronograma.Praciclocronogramas.First().DiasRemoto,
+                    OrganismoCertificador = praprogramasdeauditorium.OrganismoCertificador,
+                    CodigoDeServicioIbnorca = praprogramasdeauditorium.CodigoServicioWs,
+                    Organizacion = cliente.NombreRazon,
+                    AltaDireccion = contactoEmpresa?.NombreDrEncargado,
+                    CargoAltaDireccion = string.Empty,
+                    PersonaDeContacto = contactoEmpresa?.NombreContacto,
+                    CargoPersonaDeContacto = contactoEmpresa?.CargoContacto,
+                    TelefonoDeContacto = contactoEmpresa?.FonoContacto,
+                    CorreoElectronico = contactoEmpresa?.CorreoContacto,
+                    CodigoAIF = praprogramasdeauditorium.CodigoIafws,
+                    AlcanceDeCertificacion = string.Empty,
+                    HorarioHabitualDeTrabajo = praciclocronograma.Praciclocronogramas.First().HorarioTrabajo,
+                    FechaProximaAuditoria = praciclocronograma.Praciclocronogramas.First().MesProgramado?.AddYears(1).ToString("dd/MM/yyyy"),
+                    ListRepDesginacionParticipante = praciclocronograma.Pracicloparticipantes.Select(x =>
+                    {
+                        RepDesginacionParticipante repDesginacionParticipante = new RepDesginacionParticipante();
+                        repDesginacionParticipante.Cargo = string.Empty;
+                        if (!string.IsNullOrEmpty(x.CargoDetalleWs))
+                        {
+                            ListaCalificado cargo = JsonConvert.DeserializeObject<ListaCalificado>(x.CargoDetalleWs);
+                            repDesginacionParticipante.Cargo = cargo.CargoPuesto;
+                        }
+
+                        repDesginacionParticipante.Participante = string.Empty;
+                        if (!string.IsNullOrEmpty(x.ParticipanteDetalleWs))
+                        {
+                            ListaCalificado participante = JsonConvert.DeserializeObject<ListaCalificado>(x.ParticipanteDetalleWs);
+                            repDesginacionParticipante.Participante = participante.NombreCompleto;
+                        }
+
+                        return repDesginacionParticipante;
+                    }).ToList()
+                };
                 string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
                 WordHelper generadorWord = new WordHelper(filePlantilla);
-                string fileNameGenerado = generadorWord.GenerarDocumento(praDocDesignacion, null, $"{Global.PATH_PLANTILLA_DESIGNACION}\\Salidas");
+                praDocDesignacion.SitiosAAuditar = string.Empty;
+                praciclocronograma.Pradireccionespasistemas?.ToList().ForEach(direccion =>
+                {
+                    praDocDesignacion.SitiosAAuditar += direccion.Direccion + WordHelper.GetCodeKey(WordHelper.keys.enter);
+                });
+
+                praciclocronograma.Praciclonormassistemas?.ToList().ForEach(alcance =>
+                {
+                    praDocDesignacion.AlcanceDeCertificacion += alcance.Norma + " - " + alcance.Alcance + WordHelper.GetCodeKey(WordHelper.keys.enter);
+                });
+
+                //generamos el documento en word
+                Dictionary<string, CellTitles[]> pTitles = new Dictionary<string, CellTitles[]>();
+                CellTitles[] cellTitlesTitulo = new CellTitles[2];
+                cellTitlesTitulo[0] = new CellTitles { Title = "Calificación", Visible = true, Width = "50" };
+                cellTitlesTitulo[1] = new CellTitles { Title = "Auditor", Visible = true, Width = "50" };
+                pTitles.Add("ListRepDesginacionParticipante", cellTitlesTitulo);
+
+                string fileNameGenerado = generadorWord.GenerarDocumento(praDocDesignacion, pTitles, $"{Global.PATH_PLANTILLA_DESIGNACION}\\Salidas");
 
                 ///Convertimos en PDF
-                using (var process = new Process())
+                //using (var process = new Process())
+                //{
+                //    process.StartInfo.FileName = @"E:\ConvertPDF\ConvertExecute.exe"; // relative path. absolute path works too.
+                //    process.StartInfo.Arguments = $"{fileNameGenerado}";
+                //    process.StartInfo.CreateNoWindow = true;
+                //    process.StartInfo.UseShellExecute = false;
+                //    process.StartInfo.RedirectStandardOutput = true;
+                //    process.StartInfo.RedirectStandardError = true;
+                //    process.OutputDataReceived += (sender, data) => Console.WriteLine(data.Data);
+                //    process.ErrorDataReceived += (sender, data) => Console.WriteLine(data.Data);
+                //    process.Start();
+                //    process.BeginOutputReadLine();
+                //    process.BeginErrorReadLine();
+                //    process.WaitForExit();     // (optional) wait up to 10 seconds                    
+                //}
+                //response.Message = fileNameGenerado.Replace(".doc", ".pdf");
+                response.Message = fileNameGenerado;
+            }
+            catch (Exception ex)
+            {
+                ProcessError(ex, response);
+            }
+            return response;
+        }
+        public ResponseQuery<Clasificador> BuscarOrganismosCertificadores(RequestBuscarClasificador req)
+        {
+            ResponseQuery<Clasificador> response = new ResponseQuery<Clasificador> { Message = "Organismos obtenidos correctamente.", State = ResponseType.Success, ListEntities = new List<Clasificador>() };
+            try
+            {
+                ClientHelper clientHelper = new ClientHelper();
+                ///TDO: obtenemos los datos del servicio
+                RequestBuscarClasificador requestDato = new RequestBuscarClasificador { accion = "DatosContactoEmpresa", sIdentificador = Global.IDENTIFICADOR, sKey = Global.KEY_SERVICES, padre = req.padre };
+                ResponseBuscarClasificador resulServices = clientHelper.Consume<ResponseBuscarClasificador>(Global.URIGLOBAL_CLASIFICADOR + Global.URI_CLASIFICADOR, requestDato).Result;
+                if (!resulServices.estado)
                 {
-                    process.StartInfo.FileName = @"E:\ConvertPDF\ConvertExecute.exe"; // relative path. absolute path works too.
-                    process.StartInfo.Arguments = $"{fileNameGenerado}";
-                    process.StartInfo.CreateNoWindow = true;
-                    process.StartInfo.UseShellExecute = false;
-                    process.StartInfo.RedirectStandardOutput = true;
-                    process.StartInfo.RedirectStandardError = true;
-                    process.OutputDataReceived += (sender, data) => Console.WriteLine(data.Data);
-                    process.ErrorDataReceived += (sender, data) => Console.WriteLine(data.Data);
-                    process.Start();
-                    process.BeginOutputReadLine();
-                    process.BeginErrorReadLine();
-                    process.WaitForExit();     // (optional) wait up to 10 seconds                    
+                    response.State = ResponseType.Warning;
+                    response.Message = $"Existe problemas al consumir el servicio de ibnorca (BuscarOrganismosCertificadores): {resulServices.mensaje}";
+                    return response;
                 }
-                response.Message = fileNameGenerado.Replace(".doc", ".pdf");
+                response.ListEntities = resulServices.lista;
             }
             catch (Exception ex)
             {
@@ -538,10 +667,10 @@ namespace Business.Main.Modules.ApeeturaAuditoria
         private DateTime CalcularMesProgramado(string area, int año)
         {
             DateTime resul = DateTime.Now;
-            resul = resul.AddMonths(9 * año);
+            resul = resul.AddMonths(12 * año + 3);
             if (area.Equals("TCS"))
             {
-                resul = resul.AddMonths(1);
+                resul = resul.AddMonths(-1);
             }
             return resul;
         }

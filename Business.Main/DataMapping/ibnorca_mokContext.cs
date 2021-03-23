@@ -437,6 +437,10 @@ namespace Business.Main.DataMapping
 
                 entity.Property(e => e.IdCiclosCronogramas).HasColumnName("idCiclosCronogramas");
 
+                entity.Property(e => e.DiasInsitu).HasPrecision(10, 2);
+
+                entity.Property(e => e.DiasRemoto).HasPrecision(10, 2);
+
                 entity.Property(e => e.FechaDeFinDeEjecucionAuditoria).HasColumnType("datetime");
 
                 entity.Property(e => e.FechaDesde).HasColumnType("datetime");
@@ -529,7 +533,9 @@ namespace Business.Main.DataMapping
 
                 entity.Property(e => e.CargoDetalleWs).HasColumnType("json");
 
-                entity.Property(e => e.Dias).HasColumnName("dias");
+                entity.Property(e => e.Dias)
+                    .HasPrecision(10, 2)
+                    .HasColumnName("dias");
 
                 entity.Property(e => e.FechaDesde).HasColumnType("datetime");
 

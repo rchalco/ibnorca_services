@@ -6,8 +6,13 @@ using System.Threading.Tasks;
 
 namespace Business.Main.DataMapping.DTOs
 {
-    public class PraDocDesignacion
+    public class RepDocDesignacion
     {
+        public RepDocDesignacion()
+        {
+            ListRepDesginacionParticipante = new List<RepDesginacionParticipante>();
+        }
+
         public int IdCliente { get; set; }
         //Datos de la auditoría
         public String FechadeAuditoria { get; set; }
@@ -15,7 +20,7 @@ namespace Business.Main.DataMapping.DTOs
         public String ModalidaddeAuditoria { get; set; }
         public String FechaInicioAuditoria { get; set; }
         public String FechaFinAuditoria { get; set; }
-        public int CantidadDiasAuditor { get; set; }
+        public decimal? CantidadDiasAuditor { get; set; }
         public String OrganismoCertificador { get; set; }
         //Datos de la empresa
         public String CodigoDeServicioIbnorca { get; set; }
@@ -32,6 +37,12 @@ namespace Business.Main.DataMapping.DTOs
         public String Exclusiones { get; set; }
         public String HorarioHabitualDeTrabajo { get; set; }
         public String FechaProximaAuditoria { get; set; }
-        public List<praDesignaEquipoAuditor> userOptions = new List<praDesignaEquipoAuditor>();
+        public List<RepDesginacionParticipante> ListRepDesginacionParticipante { get; set; }
+    }
+
+    public class RepDesginacionParticipante
+    {
+        public string Cargo { get; set; }
+        public string Participante { get; set; }
     }
 }

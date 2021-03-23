@@ -10,6 +10,25 @@ namespace PlumbingProps.Document
 {
     public class WordHelper
     {
+
+        public enum keys
+        {
+            enter = 13
+        }
+
+        public static string GetCodeKey(keys key)
+        {
+            string resul = string.Empty;
+            switch (key)
+            {
+                case keys.enter:
+                    resul = WordParts.tagEnter;
+                    break;
+                default:
+                    break;
+            }
+            return resul;
+        }
         public class CellTitles
         {
             public string Title { get; set; }
@@ -53,17 +72,16 @@ namespace PlumbingProps.Document
 
                 foreach (var item in values)
                 {
-                    if (item.Value == null)
+                    if (item.Value != null && item.Value.GetType().FullName.Contains("List"))
                     {
-                        continue;
-                    }
-                    if (item.Value.GetType().FullName.Contains("List"))
-                    {
+
                         CellTitles[] vCurrentTitles = pTitles.Keys.Contains(item.Key) ? pTitles[item.Key] : new CellTitles[0];
+
                         IList Elementos = (IList)item.Value;
                         string tabalHtml = WordParts.tagTable;
                         tabalHtml += WordParts.tagStyle;
                         tabalHtml += WordParts.tagGrid;
+
                         for (int i = 0; i < vCurrentTitles.Length; i++)
                         {
                             if (vCurrentTitles[i].Visible)
@@ -101,7 +119,12 @@ namespace PlumbingProps.Document
                     }
                     else
                     {
-                        _data.Replace("Obj." + item.Key, Convert.ToString(item.Value));
+                        string val_replace = string.Empty;
+                        if (item.Value != null)
+                        {
+                            val_replace = Convert.ToString(item.Value);
+                        }
+                        _data.Replace("Obj." + item.Key, val_replace);
                     }
                 }
                 file.writeFile(_data.ToString());
