@@ -357,3 +357,6 @@ BackgroundAPIRest/bin/Debug/net5.0/Microsoft.Extensions.DependencyModel.dll
 BackgroundAPIRest/bin/Debug/net5.0/logs/2021-03-11.log
 *.log
 .vs/BackgroundCore/v16/.suo
+.vs/BackgroundCore/v16/.suo
+.vs/BackgroundCore/DesignTimeBuild/.dtbcache.v2
+.vs/BackgroundCore/v16/.suo
