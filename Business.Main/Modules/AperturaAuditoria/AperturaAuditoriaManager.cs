@@ -189,6 +189,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                             if (mode.Equals("TCP"))
                             {
                                 ciclosprogauditorium.Pradireccionespaproductos = new List<Pradireccionespaproducto>();
+                                //resulServices.DatosServicio.ListaProductoCertificado
                                 resulServices.DatosServicio.ListaProducto.ForEach(dir =>
                                 {
                                     Pradireccionespaproducto objDirProd = new Pradireccionespaproducto
