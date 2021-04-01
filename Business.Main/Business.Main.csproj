@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Modules\ElaboracionAuditoria\ElaboracionAuditoriaManager.Ivo.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="5.0.2" />
@@ -32,14 +28,6 @@
     <ProjectReference Include="..\CoreAccesLayer\CoreAccesLayer.csproj" />
     <ProjectReference Include="..\Domain.Main\Domain.Main.csproj" />
     <ProjectReference Include="..\PlumbingProps\PlumbingProps.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Modules\ElaboracionAuditoria\Reportes\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Modules\ElaboracionAuditoria\ElaboracionAuditoriaManager.Ivo.cs" />
   </ItemGroup>
 
 </Project>
