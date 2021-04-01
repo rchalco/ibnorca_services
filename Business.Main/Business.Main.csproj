@@ -30,8 +30,4 @@
     <ProjectReference Include="..\PlumbingProps\PlumbingProps.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Modules\ElaboracionAuditoria\Reportes\" />
-  </ItemGroup>
-
 </Project>
