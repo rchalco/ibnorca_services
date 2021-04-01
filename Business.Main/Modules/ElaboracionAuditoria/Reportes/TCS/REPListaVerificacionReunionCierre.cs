@@ -4,13 +4,18 @@ using System.Text;
 
 namespace Resportes.ReportDTO
 {
-    class REPListaVerificacionReunionCierre
+    /// <summary>
+    /// PLAN_REG-PRO-TCS-05-03.04 Lista de verificación reunión de cierre (Ver1.1)
+    /// </summary>
+    public class REPListaVerificacionReunionCierre
     {
 
-        public string NombreEmpresa { get; set; }
-        public string CodigoServicio { get; set; }
-        public string FechaInicio { get; set; }
-        public string TipoAuditoria { get; set; }
-        public string AuditorLider { get; set; }
+        public string NombreOrganizacion { get; set; }
+        public string CodigoDeServicio { get; set; }
+        public string FechaDeAuditoria { get; set; }
+        public string TipoDeAuditoria { get; set; }
+        public string NormasAuditadas { get; set; }
+
+        public string NombreYFirmaDeAuditorLider { get; set; }
     }
 }

@@ -8,10 +8,7 @@ namespace Business.Main.DataMapping.DTOs
 {
     public class RepDocDesignacion
     {
-        public RepDocDesignacion()
-        {
-            ListRepDesginacionParticipante = new List<RepDesginacionParticipante>();
-        }
+        
 
         public int IdCliente { get; set; }
         //Datos de la auditoría
@@ -23,6 +20,10 @@ namespace Business.Main.DataMapping.DTOs
         public decimal? CantidadDiasAuditor { get; set; }
         public String OrganismoCertificador { get; set; }
         //Datos de la empresa
+        public RepDocDesignacion()
+        {
+            ListRepDesginacionParticipante = new List<RepDesginacionParticipante>();
+        }
         public String CodigoDeServicioIbnorca { get; set; }
         public String Organizacion { get; set; }
         public String AltaDireccion { get; set; }
@@ -33,10 +34,12 @@ namespace Business.Main.DataMapping.DTOs
         public String CorreoElectronico { get; set; }
         public String CodigoAIF { get; set; }
         public String AlcanceDeCertificacion { get; set; }
+        public string SitiosDentroDeAlcance { get; set; }
         public String SitiosAAuditar { get; set; }
         public String Exclusiones { get; set; }
         public String HorarioHabitualDeTrabajo { get; set; }
         public String FechaProximaAuditoria { get; set; }
+        public string CorreoContactoibnorca { get; set; }
         public List<RepDesginacionParticipante> ListRepDesginacionParticipante { get; set; }
     }
 

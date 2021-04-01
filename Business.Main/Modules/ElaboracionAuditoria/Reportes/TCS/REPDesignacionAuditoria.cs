@@ -11,7 +11,7 @@ namespace Resportes.ReportDTO
         public string ModalidadAuditoria { get; set; }
         public string FechaInicio { get; set; }
         public string FechaFin { get; set; }
-        public string FechaInicioEnsayos { get; set; }
+        //public string FechaInicioEnsayos { get; set; }
         public string DiasAuditor { get; set; }
         public string AuditorLider { get; set; }
         public string CorreoAuditorLider { get; set; }
