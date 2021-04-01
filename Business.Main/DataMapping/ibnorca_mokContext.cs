@@ -17,11 +17,14 @@ namespace Business.Main.DataMapping
         {
         }
 
+        public virtual DbSet<Elaauditorium> Elaauditoria { get; set; }
+        public virtual DbSet<Elacronogama> Elacronogamas { get; set; }
         public virtual DbSet<Paramarea> Paramareas { get; set; }
         public virtual DbSet<Paramcargosparticipante> Paramcargosparticipantes { get; set; }
         public virtual DbSet<Paramdepartamento> Paramdepartamentos { get; set; }
         public virtual DbSet<Paramestadosparticipante> Paramestadosparticipantes { get; set; }
         public virtual DbSet<Paramestadosprogauditorium> Paramestadosprogauditoria { get; set; }
+        public virtual DbSet<Parametapaauditorium> Parametapaauditoria { get; set; }
         public virtual DbSet<Paramitemselect> Paramitemselects { get; set; }
         public virtual DbSet<Paramlistasitemselect> Paramlistasitemselects { get; set; }
         public virtual DbSet<Paramnorma> Paramnormas { get; set; }
@@ -31,9 +34,7 @@ namespace Business.Main.DataMapping
         public virtual DbSet<Person> People { get; set; }
         public virtual DbSet<Plaauditorium> Plaauditoria { get; set; }
         public virtual DbSet<Placronoequipo> Placronoequipos { get; set; }
-        public virtual DbSet<Placronogama> Placronogamas { get; set; }
         public virtual DbSet<Pladiasequipo> Pladiasequipos { get; set; }
-        public virtual DbSet<Plaplanetapa> Plaplanetapas { get; set; }
         public virtual DbSet<Praciclocronograma> Praciclocronogramas { get; set; }
         public virtual DbSet<Praciclonormassistema> Praciclonormassistemas { get; set; }
         public virtual DbSet<Pracicloparticipante> Pracicloparticipantes { get; set; }
@@ -53,6 +54,104 @@ namespace Business.Main.DataMapping
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Elaauditorium>(entity =>
+            {
+                entity.HasKey(e => e.IdelaAuditoria)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("elaauditoria");
+
+                entity.HasIndex(e => e.IdPrAcicloProgAuditoria, "fk_auditoria_ciclo_idx");
+
+                entity.Property(e => e.IdelaAuditoria)
+                    .ValueGeneratedNever()
+                    .HasColumnName("idelaAuditoria");
+
+                entity.Property(e => e.FechaRegistro).HasColumnType("datetime");
+
+                entity.Property(e => e.IdPrAcicloProgAuditoria).HasColumnName("idPrACicloProgAuditoria");
+
+                entity.Property(e => e.UsuarioRegistro)
+                    .HasColumnType("varchar(100)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.HasOne(d => d.IdPrAcicloProgAuditoriaNavigation)
+                    .WithMany(p => p.Elaauditoria)
+                    .HasForeignKey(d => d.IdPrAcicloProgAuditoria)
+                    .HasConstraintName("fk_elaauditoria_pracicloauditoria");
+            });
+
+            modelBuilder.Entity<Elacronogama>(entity =>
+            {
+                entity.HasKey(e => e.IdElAcronograma)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("elacronogama");
+
+                entity.HasIndex(e => e.IdDireccionPasistema, "fk_elacronograma_direccionessistema_idx");
+
+                entity.HasIndex(e => e.IdDireccionPaproducto, "fk_elacronograma_direccionproducto_idx");
+
+                entity.HasIndex(e => e.Idelaauditoria, "fk_elacronograma_idx");
+
+                entity.HasIndex(e => e.IdCicloParticipante, "fk_elacronograma_participantes");
+
+                entity.Property(e => e.IdElAcronograma).HasColumnName("idElACronograma");
+
+                entity.Property(e => e.FechaFin).HasColumnType("datetime");
+
+                entity.Property(e => e.FechaInicio).HasColumnType("datetime");
+
+                entity.Property(e => e.FechaRegistro).HasColumnType("datetime");
+
+                entity.Property(e => e.Horario)
+                    .HasColumnType("varchar(11)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.Property(e => e.IdCicloParticipante).HasColumnName("idCicloParticipante");
+
+                entity.Property(e => e.IdDireccionPaproducto).HasColumnName("idDireccionPAProducto");
+
+                entity.Property(e => e.IdDireccionPasistema).HasColumnName("idDireccionPASistema");
+
+                entity.Property(e => e.PersonaEntrevistadaCargo)
+                    .HasColumnType("varchar(200)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.Property(e => e.RequisitosEsquema)
+                    .HasColumnType("varchar(500)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.Property(e => e.UsuarioRegistro)
+                    .HasColumnType("varchar(50)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.HasOne(d => d.IdCicloParticipanteNavigation)
+                    .WithMany(p => p.Elacronogamas)
+                    .HasForeignKey(d => d.IdCicloParticipante)
+                    .HasConstraintName("fk_elacronograma_participantes");
+
+                entity.HasOne(d => d.IdDireccionPaproductoNavigation)
+                    .WithMany(p => p.Elacronogamas)
+                    .HasForeignKey(d => d.IdDireccionPaproducto)
+                    .HasConstraintName("fk_elacronograma_direccionproducto");
+
+                entity.HasOne(d => d.IdDireccionPasistemaNavigation)
+                    .WithMany(p => p.Elacronogamas)
+                    .HasForeignKey(d => d.IdDireccionPasistema)
+                    .HasConstraintName("fk_elacronograma_direccionessistema");
+
+                entity.HasOne(d => d.IdelaauditoriaNavigation)
+                    .WithMany(p => p.Elacronogamas)
+                    .HasForeignKey(d => d.Idelaauditoria)
+                    .HasConstraintName("fk_elacronograma");
+            });
+
             modelBuilder.Entity<Paramarea>(entity =>
             {
                 entity.HasKey(e => e.IdparamArea)
@@ -142,6 +241,23 @@ namespace Business.Main.DataMapping
                     .HasCollation("utf8mb4_0900_ai_ci");
 
                 entity.Property(e => e.FechaRegistro).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<Parametapaauditorium>(entity =>
+            {
+                entity.HasKey(e => e.IdParametapaauditoria)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("parametapaauditoria");
+
+                entity.Property(e => e.IdParametapaauditoria)
+                    .ValueGeneratedNever()
+                    .HasColumnName("idParametapaauditoria");
+
+                entity.Property(e => e.Descripcion)
+                    .HasColumnType("varchar(200)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
             });
 
             modelBuilder.Entity<Paramitemselect>(entity =>
@@ -338,39 +454,6 @@ namespace Business.Main.DataMapping
                     .HasCollation("utf8mb4_0900_ai_ci");
             });
 
-            modelBuilder.Entity<Placronogama>(entity =>
-            {
-                entity.HasKey(e => e.IdPlAcronograma)
-                    .HasName("PRIMARY");
-
-                entity.ToTable("placronogama");
-
-                entity.Property(e => e.IdPlAcronograma).HasColumnName("idPlACronograma");
-
-                entity.Property(e => e.FechaFin).HasColumnType("datetime");
-
-                entity.Property(e => e.FechaInicio).HasColumnType("datetime");
-
-                entity.Property(e => e.FechaRegistro).HasColumnType("datetime");
-
-                entity.Property(e => e.IdPlaPlanEtapa).HasColumnName("idPlaPlanEtapa");
-
-                entity.Property(e => e.PersonaEntrevistadaCargo)
-                    .HasColumnType("varchar(200)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
-
-                entity.Property(e => e.SitioCronograma)
-                    .HasColumnType("varchar(500)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
-
-                entity.Property(e => e.UsuarioRegistro)
-                    .HasColumnType("varchar(50)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
-            });
-
             modelBuilder.Entity<Pladiasequipo>(entity =>
             {
                 entity.HasKey(e => e.IdPlAdiasEquipo)
@@ -383,42 +466,6 @@ namespace Business.Main.DataMapping
                 entity.Property(e => e.FechaRegistro).HasColumnType("datetime");
 
                 entity.Property(e => e.IdCicloParticipante).HasColumnName("idCicloParticipante");
-
-                entity.Property(e => e.UsuarioRegistro)
-                    .HasColumnType("varchar(50)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
-            });
-
-            modelBuilder.Entity<Plaplanetapa>(entity =>
-            {
-                entity.HasKey(e => e.IdPlaPlanEtapa)
-                    .HasName("PRIMARY");
-
-                entity.ToTable("plaplanetapa");
-
-                entity.Property(e => e.IdPlaPlanEtapa).HasColumnName("idPlaPlanEtapa");
-
-                entity.Property(e => e.FechaDeAprobacionDeCliente).HasColumnType("datetime");
-
-                entity.Property(e => e.FechaDeElaboracionDePa)
-                    .HasColumnType("datetime")
-                    .HasColumnName("FechaDeElaboracionDePA");
-
-                entity.Property(e => e.FechaInicioPlan)
-                    .HasColumnType("varchar(150)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
-
-                entity.Property(e => e.FechaRegistro).HasColumnType("datetime");
-
-                entity.Property(e => e.IdPlAauditoria).HasColumnName("idPlAAuditoria");
-
-                entity.Property(e => e.QuejaVc)
-                    .HasColumnType("varchar(5000)")
-                    .HasColumnName("Queja_vc")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
 
                 entity.Property(e => e.UsuarioRegistro)
                     .HasColumnType("varchar(50)")
@@ -571,6 +618,8 @@ namespace Business.Main.DataMapping
 
                 entity.HasIndex(e => e.IdPrAprogramaAuditoria, "FK_PrACicloPrograma");
 
+                entity.HasIndex(e => e.IdParametapaauditoria, "FK_PraCicloEstado_idx");
+
                 entity.Property(e => e.IdPrAcicloProgAuditoria).HasColumnName("idPrACicloProgAuditoria");
 
                 entity.Property(e => e.EstadoDescripcion)
@@ -581,6 +630,8 @@ namespace Business.Main.DataMapping
                 entity.Property(e => e.FechaDesde).HasColumnType("datetime");
 
                 entity.Property(e => e.FechaHasta).HasColumnType("datetime");
+
+                entity.Property(e => e.IdParametapaauditoria).HasColumnName("idParametapaauditoria");
 
                 entity.Property(e => e.IdPrAprogramaAuditoria).HasColumnName("idPrAProgramaAuditoria");
 
@@ -603,6 +654,11 @@ namespace Business.Main.DataMapping
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
 
+                entity.HasOne(d => d.IdParametapaauditoriaNavigation)
+                    .WithMany(p => p.Praciclosprogauditoria)
+                    .HasForeignKey(d => d.IdParametapaauditoria)
+                    .HasConstraintName("FK_PraCicloEstado");
+
                 entity.HasOne(d => d.IdPrAprogramaAuditoriaNavigation)
                     .WithMany(p => p.Praciclosprogauditoria)
                     .HasForeignKey(d => d.IdPrAprogramaAuditoria)
@@ -618,7 +674,9 @@ namespace Business.Main.DataMapping
 
                 entity.HasIndex(e => e.IdPrAcicloProgAuditoria, "FK_PrACicloDireccionesProducto");
 
-                entity.Property(e => e.IdDireccionPaproducto).HasColumnName("idDireccionPAProducto");
+                entity.Property(e => e.IdDireccionPaproducto)
+                    .ValueGeneratedNever()
+                    .HasColumnName("idDireccionPAProducto");
 
                 entity.Property(e => e.Ciudad)
                     .HasColumnType("varchar(100)")
@@ -697,7 +755,9 @@ namespace Business.Main.DataMapping
 
                 entity.HasIndex(e => e.IdPrAcicloProgAuditoria, "FK_PrACicloDireccionesSistema");
 
-                entity.Property(e => e.IdDireccionPasistema).HasColumnName("idDireccionPASistema");
+                entity.Property(e => e.IdDireccionPasistema)
+                    .ValueGeneratedNever()
+                    .HasColumnName("idDireccionPASistema");
 
                 entity.Property(e => e.Ciudad)
                     .HasColumnType("varchar(100)")

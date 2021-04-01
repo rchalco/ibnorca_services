@@ -81,6 +81,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                         if (cronograma.FechaInicioDeEjecucionDeAuditoria != null)
                         {
                             ciclo.EstadoDescripcion = "Con fecha de auditoría";
+                            ciclo.IdparamEstadosProgAuditoria = 2;
                         }
                     });
                     ciclo.Praciclonormassistemas?.ToList().ForEach(norma => { norma.IdPrAcicloProgAuditoria = ciclo.IdPrAcicloProgAuditoria; });
@@ -182,7 +183,8 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                                 Referencia = x.descripcion,
                                 IdparamTipoAuditoria = 1,
                                 NombreOrganizacionCertificado = responseBusquedaCliente.resultados[0].NombreRazon,
-                                EstadoDescripcion = "SIN FECHA DE AUDITORIA"
+                                EstadoDescripcion = "SIN FECHA DE AUDITORIA",
+                                IdparamEstadosProgAuditoria = 1
                             };
 
                             ///TDO: TCP - Cert. de Productos 

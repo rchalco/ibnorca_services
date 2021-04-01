@@ -1,6 +1,7 @@
 ﻿using BackgroundAPIRest.Contracts;
 using Business.Main.DataMapping;
 using Business.Main.Modules.ElaboracionAuditoria;
+using Business.Main.Modules.ElaboracionAuditoria.DTO;
 using Domain.Main.Wraper;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
@@ -22,6 +23,20 @@ namespace BackgroundAPIRest.Controllers
         {
             ElaboracionAuditoriaManager elaboracionAuditoriaManager = new ElaboracionAuditoriaManager();
             return elaboracionAuditoriaManager.GetListasVerificacion(requestGetListasVerificacion.IdLista);
+        }
+        [HttpPost("ObtenerCiclosPorIdAuditor")]
+        [EnableCors("MyPolicy")]
+        public ResponseQuery<ResumeCicloDTO> ObtenerCiclosPorIdAuditor(RequestObtenerCiclosPorIdAuditor requestObtenerCiclosPorIdAuditor)
+        {
+            ElaboracionAuditoriaManager elaboracionAuditoriaManager = new ElaboracionAuditoriaManager();
+            return elaboracionAuditoriaManager.ObtenerCiclosPorIdAuditor(requestObtenerCiclosPorIdAuditor.IdAuditor);
+        }
+        [HttpPost("ObtenerPlanAuditoria")]
+        [EnableCors("MyPolicy")]
+        public ResponseObject<PlanAuditoriaDTO> ObtenerPlanAuditoria(RequestObtenerPlanAuditoria requestObtenerPlanAuditoria)
+        {
+            ElaboracionAuditoriaManager elaboracionAuditoriaManager = new ElaboracionAuditoriaManager();
+            return elaboracionAuditoriaManager.ObtenerPlanAuditoria(requestObtenerPlanAuditoria.IdCicloPrograma, requestObtenerPlanAuditoria.usuario);
         }
     }
 }
