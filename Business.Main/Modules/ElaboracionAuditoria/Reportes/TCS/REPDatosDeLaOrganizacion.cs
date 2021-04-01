@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCS
+{
 
     /// <summary>
     /// PLAN_REG-PRO-TCS-05-08.03 Datos de la organizacion (Ver 1.0)    /// </summary>
-public class REPDatosDeLaOrganizacion
+    public class REPDatosDeLaOrganizacion
     {
         public string FechaDeAuditoria { get; set; }
         public string TipoDeAuditoria { get; set; }
