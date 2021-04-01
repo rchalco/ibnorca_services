@@ -14,7 +14,7 @@ using CoreAccesLayer.Wraper;
 
 namespace Business.Main.Modules.ElaboracionAuditoria
 {
-    public class ElaboracionAuditoriaManager : BaseManager
+    public partial class ElaboracionAuditoriaManager : BaseManager
     {
         public Response RegistrarPlanAuditoria(PlanAuditoriaDTO planAuditoriaDTO)
         {
