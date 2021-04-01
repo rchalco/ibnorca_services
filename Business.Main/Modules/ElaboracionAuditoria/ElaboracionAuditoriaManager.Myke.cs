@@ -18,8 +18,8 @@ using static PlumbingProps.Document.WordHelper;
 
 namespace Business.Main.Modules.ElaboracionAuditoria
 {
-	public partial class ElaboracionAuditoriaManager
-	{
+    public partial class ElaboracionAuditoriaManager
+    {
         /// <summary>
         /// RRG.......
         /// </summary>
@@ -71,7 +71,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 });
 
                 string alcance = "";
-                praciclocronograma.Praciclonormassistemas.ToList().ForEach(x => 
+                praciclocronograma.Praciclonormassistemas.ToList().ForEach(x =>
                 {
                     alcance += x.Alcance + WordHelper.GetCodeKey(WordHelper.keys.enter);
                 });
@@ -98,13 +98,15 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     Seguimiento = praciclocronograma.Referencia,
                     FechaLiteral2 = fechaLiteral.ToString("dd/MM/yyyy"),
                     DirectorEjecutivo = "XXXXXX" /// TODO:Pendiente
-                    
+
                 };
-                string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
+                //string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
+                string filePlantilla = pathPlantilla;
                 WordHelper generadorWord = new WordHelper(filePlantilla);
-               
+
                 //generamos el documento en word
-                string fileNameGenerado = generadorWord.GenerarDocumento(praSuspension, null, $"{Global.PATH_PLANTILLA_DESIGNACION}\\Salidas");
+                //string fileNameGenerado = generadorWord.GenerarDocumento(praSuspension, null, $"{Global.PATH_PLANTILLA_DESIGNACION}\\Salidas");
+                string fileNameGenerado = generadorWord.GenerarDocumento(praSuspension, null, @$"c:\Salidas");
                 response.Message = fileNameGenerado;
             }
             catch (Exception ex)
