@@ -138,8 +138,18 @@ namespace NUnitBusinessMain
         [Test]
         public void ObtenerProgramaAuditoriaTest() {
             AperturaAuditoriaManager aperturaAuditoriaManager = new AperturaAuditoriaManager();
+            //var resul = aperturaAuditoriaManager.ObtenerProgramaAuditoria(14455, "rchalco");
+            var resul = aperturaAuditoriaManager.ObtenerProgramaAuditoria(7665, "rchalco");
+        }
+
+        [Test]
+        public void ObtenerProgramaAuditoriaTest1()
+        {
+            AperturaAuditoriaManager aperturaAuditoriaManager = new AperturaAuditoriaManager();
             var resul = aperturaAuditoriaManager.ObtenerProgramaAuditoria(14455, "rchalco");
         }
+
+
 
     }
 }
