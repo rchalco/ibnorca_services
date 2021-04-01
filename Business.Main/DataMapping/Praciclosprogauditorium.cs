@@ -9,6 +9,7 @@ namespace Business.Main.DataMapping
     {
         public Praciclosprogauditorium()
         {
+            Elaauditoria = new HashSet<Elaauditorium>();
             Praciclocronogramas = new HashSet<Praciclocronograma>();
             Praciclonormassistemas = new HashSet<Praciclonormassistema>();
             Pracicloparticipantes = new HashSet<Pracicloparticipante>();
@@ -27,8 +28,11 @@ namespace Business.Main.DataMapping
         public string UsuarioRegistro { get; set; }
         public DateTime? FechaDesde { get; set; }
         public DateTime? FechaHasta { get; set; }
+        public int? IdParametapaauditoria { get; set; }
 
+        public virtual Parametapaauditorium IdParametapaauditoriaNavigation { get; set; }
         public virtual Praprogramasdeauditorium IdPrAprogramaAuditoriaNavigation { get; set; }
+        public virtual ICollection<Elaauditorium> Elaauditoria { get; set; }
         public virtual ICollection<Praciclocronograma> Praciclocronogramas { get; set; }
         public virtual ICollection<Praciclonormassistema> Praciclonormassistemas { get; set; }
         public virtual ICollection<Pracicloparticipante> Pracicloparticipantes { get; set; }
