@@ -5,18 +5,33 @@ using System.Text;
 namespace Resportes.ReportDTO
 {
     /// <summary>
-    /// REG-PRO-TCP-05-01.01 Plan de Auditoria
+    /// REG-PRO-TCS-05-01.07 Plan de auditoria V.1.0
     /// </summary>
     public class REPPlanAuditoria
     {
         public string NombreEmpresa { get; set; }
-        public string Direccion { get; set; }
-        public string Contacto { get; set; }
-        public string TelefonoCelular { get; set; }
-        public string CorreoElectronico { get; set; }
         public string CodigoServicio { get; set; }
         public string TipoAuditoria { get; set; }
-        public string FechaInicio { get; set; }
+        public string ModalidadAuditoria { get; set; }
+        public string NormaAuditadas { get; set; }
+        public string FechaAuditoria { get; set; }
+        public string ObjetivosAuditoria { get; set; }
+        public string CambiosAlcance { get; set; }
+        public string Certificacion { get; set; }
+        public string SitiosFisicos { get; set; }
+        public string EquipoAuditor { get; set; }
+        public string Normas { get; set; }
+        public List<RepCronograma> ListCronograma { get; set; }
+        public string FechaElaboracion { get; set; }
+        public string FechaAprobacion { get; set; }
 
     }
+    public class RepCronograma
+    {
+        public string EquipoAuditor { get; set; }
+        public string NombreCompleto { get; set; }
+        public string TotalDiasInSitu { get; set; }
+        public string TotalDiasRemoto { get; set; }
+    }
+
 }
