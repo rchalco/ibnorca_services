@@ -53,7 +53,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                 req.Praciclosprogauditoria.ToList().ForEach(x =>
                 {
                     decimal totalDiasCronograma = Convert.ToDecimal(x.Praciclocronogramas.ToList().First().DiasRemoto + x.Praciclocronogramas.ToList().First().DiasInsitu);
-                    decimal totalDiasAuditor = Convert.ToDecimal(x.Pracicloparticipantes.ToList().Where(yy => yy.IdCargoWs == 2408 || yy.IdCargoWs == 2409).Sum(zz => zz.Dias));
+                    decimal totalDiasAuditor = Convert.ToDecimal(x.Pracicloparticipantes.ToList().Where(yy => yy.IdCargoWs == 2408 || yy.IdCargoWs == 2409).Sum(zz => zz.DiasInsistu + zz.DiasRemoto));
                     if (totalDiasCronograma != totalDiasAuditor)
                     {
                         response.State = ResponseType.Warning;
@@ -189,7 +189,6 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                             if (mode.Equals("TCP"))
                             {
                                 ciclosprogauditorium.Pradireccionespaproductos = new List<Pradireccionespaproducto>();
-                                //resulServices.DatosServicio.ListaProductoCertificado
                                 resulServices.DatosServicio.ListaProducto.ForEach(dir =>
                                 {
                                     Pradireccionespaproducto objDirProd = new Pradireccionespaproducto
