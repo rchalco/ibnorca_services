@@ -11,11 +11,10 @@ namespace NUnitBusinessMain.TesReportes
     public class ReportIvo
     {
         [Test]
-        public void GenerarDescisionFavorableCertificacion()
+        public void GenerarREPDatosDeLaOrganizacion()
         {
-            ElaboracionAuditoriaManager elaboracionAuditoriaManager = new ElaboracionAuditoriaManager();
-            //var response = elaboracionAuditoriaManager.GenerarNotaSuspension(81, @"C:\Ivo\Projects\ibnorca\Documentos\00 Dcumentos\Repositorio\REG-PRO-TCS-07-01.00 Nota de suspensión de certificacion V.1.0.doc", "Ruben Chalco", "Director Ejecutivo");
-            var response = elaboracionAuditoriaManager.GenerarDescisionFavorableCertificacion(81, @"C:\Ivo\Projects\ibnorca\Documentos\00 Dcumentos\Repositorio\REG-PRO-TCS-07-01.00 Nota de suspensión de certificacion V.1.0.doc", "Ruben Chalco", "Director Ejecutivo");
+            ElaboracionAuditoriaManager elaboracionAuditoriaManager = new ElaboracionAuditoriaManager();            
+            var response = elaboracionAuditoriaManager.GenerarREPDatosDeLaOrganizacion(81, @"REG-PRO-TCS-05-08.03 Datos de la organizacion (Ver 1.0).doc", "Ruben Chalco", "Director Ejecutivo", "Juan Perez");
         }
     }
 }

@@ -134,8 +134,8 @@ namespace PlumbingProps.Document
             {
                 throw ex;
             }
-
-            return file.NameFile.Replace(@"\\", @"\");
+            return file.NameFile;
+            //return file.NameFile.Replace(@"\\", @"\");
             // return vResul + ".doc";
         }
     }
