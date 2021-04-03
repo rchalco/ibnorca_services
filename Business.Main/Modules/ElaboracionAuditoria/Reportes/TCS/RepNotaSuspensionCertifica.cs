@@ -27,6 +27,6 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCS
         public string Seguimiento { get; set; }
         public string FechaLiteral2 { get; set; }
         public string DirectorEjecutivo { get; set; }
-        public string CCArchivo { get; set; }
+
     }
 }

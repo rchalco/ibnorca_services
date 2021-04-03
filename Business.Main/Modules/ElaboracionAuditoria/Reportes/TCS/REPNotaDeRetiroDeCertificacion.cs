@@ -12,6 +12,8 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCS
     public class REPNotaDeRetiroDeCertificacion
     {
         public string FechaIbnorca { get; set; }
+        
+        public string CorrelativoCabecera { get; set; }
         public string ReferenciaIbnorca { get; set; }
         public string NombreApellidos { get; set; }
         public string Cargo { get; set; }

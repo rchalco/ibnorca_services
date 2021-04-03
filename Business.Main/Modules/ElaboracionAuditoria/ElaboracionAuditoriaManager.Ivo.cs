@@ -14,12 +14,209 @@ using PlumbingProps.Document;
 using Business.Main.Cross;
 using static PlumbingProps.Document.WordHelper;
 using Business.Main.Modules.ElaboracionAuditoria.Reportes.TCS;
+using Business.Main.DataMapping.DTOs;
+using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.ListarAuditoresxCargoCalificadoDTO;
 
 namespace Business.Main.Modules.ElaboracionAuditoria
 {
-	public partial class ElaboracionAuditoriaManager
-	{
-        public Response GenerarDescisionFavorableCertificacion(int IdCiclo, string pathPlantilla,string nombre,string cargo)
+    public partial class ElaboracionAuditoriaManager
+    {
+        
+
+        public Response GenerarREPDatosDeLaOrganizacion(int IdCiclo, string pathPlantilla, string nombreAuditorLider, string nombreCargoRepresentanteOrg, string coordinadorAuditoria)
+        {
+            Response response = new Response { Message = "", State = ResponseType.Success };
+            try
+            {
+
+                ///Obtenemos la informacion del ciclo y del programa
+                Praciclosprogauditorium praciclocronograma = repositoryMySql.SimpleSelect<Praciclosprogauditorium>(x => x.IdPrAcicloProgAuditoria == IdCiclo).ToList().FirstOrDefault();
+                Praprogramasdeauditorium praprogramasdeauditorium = repositoryMySql.SimpleSelect<Praprogramasdeauditorium>(x => x.IdPrAprogramaAuditoria == praciclocronograma.IdPrAprogramaAuditoria).ToList().FirstOrDefault();
+                if (praciclocronograma == null)
+                {
+                    response.State = ResponseType.Warning;
+                    response.Message = "No se cuenta con informacion de este cilo en la BD";
+                    return response;
+                }
+
+                praciclocronograma.Praciclocronogramas = repositoryMySql.SimpleSelect<Praciclocronograma>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Praciclonormassistemas = repositoryMySql.SimpleSelect<Praciclonormassistema>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Pracicloparticipantes = repositoryMySql.SimpleSelect<Pracicloparticipante>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Pradireccionespaproductos = repositoryMySql.SimpleSelect<Pradireccionespaproducto>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Pradireccionespasistemas = repositoryMySql.SimpleSelect<Pradireccionespasistema>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+
+                Cliente cliente = JsonConvert.DeserializeObject<Cliente>(praprogramasdeauditorium.OrganizacionContentWs);
+
+                ///obtenemos los contactos del cliente
+                ClientHelper clientHelper = new ClientHelper();
+                ///TDO: obtenemos los datos del servicio
+                RequestListarContactosEmpresa requestDato = new RequestListarContactosEmpresa { accion = "ListarContactosEmpresa", sIdentificador = Global.IDENTIFICADOR, sKey = Global.KEY_SERVICES, IdCliente = cliente.IdCliente };
+                ResponseListarContactosEmpresa resulServices = clientHelper.Consume<ResponseListarContactosEmpresa>(Global.URIGLOBAL_SERVICES + Global.URI_CLIENTE_CONTACTO, requestDato).Result;
+                if (!resulServices.estado)
+                {
+                    response.State = ResponseType.Warning;
+                    response.Message = $"Existe problemas al consumir el servicio de ibnorca (estados): {resulServices.mensaje}";
+                    return response;
+                }
+                ContactoEmpresa contactoEmpresa = resulServices.lstContactos?.Count > 0 ? resulServices.lstContactos[0] : null;
+
+                string normas = "";
+
+                praciclocronograma.Praciclonormassistemas.ToList().ForEach(x =>
+                {
+                    normas += x.Norma;
+                });
+                string alcance = "";
+                praciclocronograma.Praciclonormassistemas.ToList().ForEach(x =>
+                {
+                    alcance += x.Alcance + WordHelper.GetCodeKey(WordHelper.keys.enter);
+                });
+
+                string sitios = "";
+                praciclocronograma.Pradireccionespasistemas.ToList().ForEach(x =>
+                {
+                    sitios += x.Direccion + WordHelper.GetCodeKey(WordHelper.keys.enter);
+                });
+
+                ///llenamos el reporte con la informacion de este ciclo
+                REPDatosDeLaOrganizacion praDatosDeLaOrganizacion = new REPDatosDeLaOrganizacion
+                {
+                    FechaDeAuditoria = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
+                    TipoDeAuditoria = praciclocronograma.Referencia,
+                    NombreDeLaOrganizacion = cliente.NombreRazon,
+                    Norma = normas,
+                    Alcance = alcance,
+                    Sitios = sitios,
+                    NombreAuditorLider = nombreAuditorLider,
+                    NombreCargoRepresentanteOrg = nombreCargoRepresentanteOrg,
+                    CoordinadorAuditoria = coordinadorAuditoria,
+                    FechaActual = DateTime.Now.ToString("dd/MM/yyyy")
+
+
+                };
+                string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
+                WordHelper generadorWord = new WordHelper(filePlantilla);
+
+
+                //generamos el documento en word
+
+                string fileNameGenerado = generadorWord.GenerarDocumento(praDatosDeLaOrganizacion, null, $"{Global.PATH_PLANTILLA_DESIGNACION}\\Salidas");
+
+
+                response.Message = fileNameGenerado;
+            }
+            catch (Exception ex)
+            {
+                ProcessError(ex, response);
+            }
+            return response;
+        }
+
+        public Response GenerarREPEvaluacionYRecomendacionesParaProceso(int IdCiclo, string pathPlantilla, string expertoCertificacion, string fechaAsignacionProceso,string redaccionSugerida)
+        {
+            Response response = new Response { Message = "", State = ResponseType.Success };
+            try
+            {
+
+                ///Obtenemos la informacion del ciclo y del programa
+                Praciclosprogauditorium praciclocronograma = repositoryMySql.SimpleSelect<Praciclosprogauditorium>(x => x.IdPrAcicloProgAuditoria == IdCiclo).ToList().FirstOrDefault();
+                Praprogramasdeauditorium praprogramasdeauditorium = repositoryMySql.SimpleSelect<Praprogramasdeauditorium>(x => x.IdPrAprogramaAuditoria == praciclocronograma.IdPrAprogramaAuditoria).ToList().FirstOrDefault();
+                if (praciclocronograma == null)
+                {
+                    response.State = ResponseType.Warning;
+                    response.Message = "No se cuenta con informacion de este cilo en la BD";
+                    return response;
+                }
+
+                praciclocronograma.Praciclocronogramas = repositoryMySql.SimpleSelect<Praciclocronograma>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Praciclonormassistemas = repositoryMySql.SimpleSelect<Praciclonormassistema>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Pracicloparticipantes = repositoryMySql.SimpleSelect<Pracicloparticipante>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Pradireccionespaproductos = repositoryMySql.SimpleSelect<Pradireccionespaproducto>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Pradireccionespasistemas = repositoryMySql.SimpleSelect<Pradireccionespasistema>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+
+                Cliente cliente = JsonConvert.DeserializeObject<Cliente>(praprogramasdeauditorium.OrganizacionContentWs);
+
+                ///obtenemos los contactos del cliente
+                ClientHelper clientHelper = new ClientHelper();
+                ///TDO: obtenemos los datos del servicio
+                RequestListarContactosEmpresa requestDato = new RequestListarContactosEmpresa { accion = "ListarContactosEmpresa", sIdentificador = Global.IDENTIFICADOR, sKey = Global.KEY_SERVICES, IdCliente = cliente.IdCliente };
+                ResponseListarContactosEmpresa resulServices = clientHelper.Consume<ResponseListarContactosEmpresa>(Global.URIGLOBAL_SERVICES + Global.URI_CLIENTE_CONTACTO, requestDato).Result;
+                if (!resulServices.estado)
+                {
+                    response.State = ResponseType.Warning;
+                    response.Message = $"Existe problemas al consumir el servicio de ibnorca (estados): {resulServices.mensaje}";
+                    return response;
+                }
+                ContactoEmpresa contactoEmpresa = resulServices.lstContactos?.Count > 0 ? resulServices.lstContactos[0] : null;
+
+                string normas = "";
+
+                praciclocronograma.Praciclonormassistemas.ToList().ForEach(x =>
+                {
+                    normas += x.Norma;
+                });
+                string alcance = "";
+                praciclocronograma.Praciclonormassistemas.ToList().ForEach(x =>
+                {
+                    alcance += x.Alcance + WordHelper.GetCodeKey(WordHelper.keys.enter);
+                });
+
+                string sitios = "";
+                praciclocronograma.Pradireccionespasistemas.ToList().ForEach(x =>
+                {
+                    sitios += x.Direccion + WordHelper.GetCodeKey(WordHelper.keys.enter);
+                });
+
+                ///llenamos el reporte con la informacion de este ciclo
+                REPEvaluacionYRecomendacionesParaProceso praEvaluacionYRecomendacionesParaProceso = new REPEvaluacionYRecomendacionesParaProceso
+                {
+                    Orgaizacion = cliente.NombreRazon,
+                    CodigoDeServicio = praprogramasdeauditorium.CodigoServicioWs,
+                    FechaDeAuditoria = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
+                    TipoDeAuditoria = praciclocronograma.Referencia,
+                    NormasAuditadas = normas,
+                    EquipoAuditoNombreCargo = praciclocronograma.Pracicloparticipantes.Select(x =>
+                    {   
+                        RepDesginacionParticipante repDesginacionParticipante = new RepDesginacionParticipante();
+                        repDesginacionParticipante.Cargo = string.Empty;
+                        if (!string.IsNullOrEmpty(x.CargoDetalleWs))
+                        {
+                            ListaCalificado cargo = JsonConvert.DeserializeObject<ListaCalificado>(x.CargoDetalleWs);
+                            repDesginacionParticipante.Cargo = cargo.CargoPuesto;
+                         }
+
+                        repDesginacionParticipante.Participante = string.Empty;
+                        if (!string.IsNullOrEmpty(x.ParticipanteDetalleWs))
+                        {
+                            ListaCalificado participante = JsonConvert.DeserializeObject<ListaCalificado>(x.ParticipanteDetalleWs);
+                            repDesginacionParticipante.Participante = participante.NombreCompleto;
+                        }
+
+                        return repDesginacionParticipante;
+                      }).ToList(),
+                    ExpertoCertificacion= expertoCertificacion,
+                    FechaAsignacionProceso = fechaAsignacionProceso,
+                    RedaccionSugerida= redaccionSugerida
+                };
+    string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
+    WordHelper generadorWord = new WordHelper(filePlantilla);
+
+
+    //generamos el documento en word
+
+    string fileNameGenerado = generadorWord.GenerarDocumento(praEvaluacionYRecomendacionesParaProceso, null, $"{Global.PATH_PLANTILLA_DESIGNACION}\\Salidas");
+
+
+    response.Message = fileNameGenerado;
+            }
+            catch (Exception ex)
+{
+    ProcessError(ex, response);
+}
+return response;
+        }
+
+        public Response GenerarDescisionFavorableCertificacion(int IdCiclo, string pathPlantilla, string nombre, string cargo)
         {
             Response response = new Response { Message = "", State = ResponseType.Success };
             try
@@ -66,15 +263,15 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 ///llenamos el reporte con la informacion de este ciclo
                 REPDecisionFavorableCertificacion praDecisionFavorable = new REPDecisionFavorableCertificacion
                 {
-                    FechaIbnorca = DateTime.Now.ToString("dd/MM/yyyy"),
-                    ReferenciaIbnorca= praciclocronograma.Referencia,
-                    NombreApellidos=nombre,
-                    Cargo=cargo,
-                    Organizacion=cliente.NombreRazon,
-                    NbIso=normas,
-                    OtorgarRenovarMantener= praciclocronograma.Referencia,
-                    Etapa=praciclocronograma.Referencia,
-                    NroCertificacion ="pendiente "
+                    FechaIbnorca = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
+                    ReferenciaIbnorca = praciclocronograma.Referencia,
+                    NombreApellidos = nombre,
+                    Cargo = cargo,
+                    Organizacion = cliente.NombreRazon,
+                    NbIso = normas,
+                    OtorgarRenovarMantener = praciclocronograma.Referencia,
+                    Etapa = praciclocronograma.Referencia,
+                    NroCertificacion = "PENDIENTE"
 
 
                     /*FechadeAuditoria = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
@@ -118,13 +315,107 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 };
                 string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
                 WordHelper generadorWord = new WordHelper(filePlantilla);
-                
+
 
                 //generamos el documento en word
-                
+
                 string fileNameGenerado = generadorWord.GenerarDocumento(praDecisionFavorable, null, $"{Global.PATH_PLANTILLA_DESIGNACION}\\Salidas");
 
-                
+
+                response.Message = fileNameGenerado;
+            }
+            catch (Exception ex)
+            {
+                ProcessError(ex, response);
+            }
+            return response;
+        }
+        public Response GenerarREPDecisionNOFavorable(int IdCiclo, string pathPlantilla, string nombreApellidos, string cargo, string otorgarRenovarMantener,string sistemaDeGestionNB,string consideracionesNumeradas,string nroCertificadoIbnorca)
+        {
+            Response response = new Response { Message = "", State = ResponseType.Success };
+            try
+            {
+
+                ///Obtenemos la informacion del ciclo y del programa
+                Praciclosprogauditorium praciclocronograma = repositoryMySql.SimpleSelect<Praciclosprogauditorium>(x => x.IdPrAcicloProgAuditoria == IdCiclo).ToList().FirstOrDefault();
+                Praprogramasdeauditorium praprogramasdeauditorium = repositoryMySql.SimpleSelect<Praprogramasdeauditorium>(x => x.IdPrAprogramaAuditoria == praciclocronograma.IdPrAprogramaAuditoria).ToList().FirstOrDefault();
+                if (praciclocronograma == null)
+                {
+                    response.State = ResponseType.Warning;
+                    response.Message = "No se cuenta con informacion de este cilo en la BD";
+                    return response;
+                }
+
+                praciclocronograma.Praciclocronogramas = repositoryMySql.SimpleSelect<Praciclocronograma>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Praciclonormassistemas = repositoryMySql.SimpleSelect<Praciclonormassistema>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Pracicloparticipantes = repositoryMySql.SimpleSelect<Pracicloparticipante>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Pradireccionespaproductos = repositoryMySql.SimpleSelect<Pradireccionespaproducto>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Pradireccionespasistemas = repositoryMySql.SimpleSelect<Pradireccionespasistema>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+
+                Cliente cliente = JsonConvert.DeserializeObject<Cliente>(praprogramasdeauditorium.OrganizacionContentWs);
+
+                ///obtenemos los contactos del cliente
+                ClientHelper clientHelper = new ClientHelper();
+                ///TDO: obtenemos los datos del servicio
+                RequestListarContactosEmpresa requestDato = new RequestListarContactosEmpresa { accion = "ListarContactosEmpresa", sIdentificador = Global.IDENTIFICADOR, sKey = Global.KEY_SERVICES, IdCliente = cliente.IdCliente };
+                ResponseListarContactosEmpresa resulServices = clientHelper.Consume<ResponseListarContactosEmpresa>(Global.URIGLOBAL_SERVICES + Global.URI_CLIENTE_CONTACTO, requestDato).Result;
+                if (!resulServices.estado)
+                {
+                    response.State = ResponseType.Warning;
+                    response.Message = $"Existe problemas al consumir el servicio de ibnorca (estados): {resulServices.mensaje}";
+                    return response;
+                }
+                ContactoEmpresa contactoEmpresa = resulServices.lstContactos?.Count > 0 ? resulServices.lstContactos[0] : null;
+
+                string normas = "";
+
+                praciclocronograma.Praciclonormassistemas.ToList().ForEach(x =>
+                {
+                    normas += x.Norma;
+                });
+                string alcance = "";
+                praciclocronograma.Praciclonormassistemas.ToList().ForEach(x =>
+                {
+                    alcance += x.Alcance + WordHelper.GetCodeKey(WordHelper.keys.enter);
+                });
+
+                string sitios = "";
+                praciclocronograma.Pradireccionespasistemas.ToList().ForEach(x =>
+                {
+                    sitios += x.Direccion + WordHelper.GetCodeKey(WordHelper.keys.enter);
+                });
+
+                ///llenamos el reporte con la informacion de este ciclo
+                REPDecisionNOFavorable praDecisionNOFavorable = new REPDecisionNOFavorable
+                {
+
+                    FechaIbnorca= praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
+                    ReferenciaIbnorca= praciclocronograma.Referencia,
+                    NombreApellidos = nombreApellidos,
+                    Cargo =cargo,
+                    Organizacion = cliente.NombreRazon,
+                    OtorgarRenovarMantener= otorgarRenovarMantener,
+                    NbIso = normas,
+                    CertificacionRenovacion= praciclocronograma.Referencia,
+                    SistemaDeGestionNB= sistemaDeGestionNB,
+                    ConsideracionesNumeradas= consideracionesNumeradas,
+                    Seguimiento = praciclocronograma.Referencia,
+
+                    NroCertificadoIbnorca= nroCertificadoIbnorca,
+                    Alcance =alcance,
+                    Sitios =sitios
+
+        
+                };
+                string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
+                WordHelper generadorWord = new WordHelper(filePlantilla);
+
+
+                //generamos el documento en word
+
+                string fileNameGenerado = generadorWord.GenerarDocumento(praDecisionNOFavorable, null, $"{Global.PATH_PLANTILLA_DESIGNACION}\\Salidas");
+
+
                 response.Message = fileNameGenerado;
             }
             catch (Exception ex)
@@ -134,7 +425,188 @@ namespace Business.Main.Modules.ElaboracionAuditoria
             return response;
         }
 
+        public Response GenerarRepNotaSuspensionCertifica(int IdCiclo, string pathPlantilla, string correlativoCabecera,string nombreNota,string cargo,string texto1,string nroCertificado,string directorEjecutivo)
+        {
+            Response response = new Response { Message = "", State = ResponseType.Success };
+            try
+            {
 
+                ///Obtenemos la informacion del ciclo y del programa
+                Praciclosprogauditorium praciclocronograma = repositoryMySql.SimpleSelect<Praciclosprogauditorium>(x => x.IdPrAcicloProgAuditoria == IdCiclo).ToList().FirstOrDefault();
+                Praprogramasdeauditorium praprogramasdeauditorium = repositoryMySql.SimpleSelect<Praprogramasdeauditorium>(x => x.IdPrAprogramaAuditoria == praciclocronograma.IdPrAprogramaAuditoria).ToList().FirstOrDefault();
+                if (praciclocronograma == null)
+                {
+                    response.State = ResponseType.Warning;
+                    response.Message = "No se cuenta con informacion de este cilo en la BD";
+                    return response;
+                }
+
+                praciclocronograma.Praciclocronogramas = repositoryMySql.SimpleSelect<Praciclocronograma>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Praciclonormassistemas = repositoryMySql.SimpleSelect<Praciclonormassistema>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Pracicloparticipantes = repositoryMySql.SimpleSelect<Pracicloparticipante>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Pradireccionespaproductos = repositoryMySql.SimpleSelect<Pradireccionespaproducto>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Pradireccionespasistemas = repositoryMySql.SimpleSelect<Pradireccionespasistema>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+
+                Cliente cliente = JsonConvert.DeserializeObject<Cliente>(praprogramasdeauditorium.OrganizacionContentWs);
+
+                ///obtenemos los contactos del cliente
+                ClientHelper clientHelper = new ClientHelper();
+                ///TDO: obtenemos los datos del servicio
+                RequestListarContactosEmpresa requestDato = new RequestListarContactosEmpresa { accion = "ListarContactosEmpresa", sIdentificador = Global.IDENTIFICADOR, sKey = Global.KEY_SERVICES, IdCliente = cliente.IdCliente };
+                ResponseListarContactosEmpresa resulServices = clientHelper.Consume<ResponseListarContactosEmpresa>(Global.URIGLOBAL_SERVICES + Global.URI_CLIENTE_CONTACTO, requestDato).Result;
+                if (!resulServices.estado)
+                {
+                    response.State = ResponseType.Warning;
+                    response.Message = $"Existe problemas al consumir el servicio de ibnorca (estados): {resulServices.mensaje}";
+                    return response;
+                }
+                ContactoEmpresa contactoEmpresa = resulServices.lstContactos?.Count > 0 ? resulServices.lstContactos[0] : null;
+
+                string normas = "";
+
+                praciclocronograma.Praciclonormassistemas.ToList().ForEach(x =>
+                {
+                    normas += x.Norma;
+                });
+                string alcance = "";
+                praciclocronograma.Praciclonormassistemas.ToList().ForEach(x =>
+                {
+                    alcance += x.Alcance + WordHelper.GetCodeKey(WordHelper.keys.enter);
+                });
+
+                string sitios = "";
+                praciclocronograma.Pradireccionespasistemas.ToList().ForEach(x =>
+                {
+                    sitios += x.Direccion + WordHelper.GetCodeKey(WordHelper.keys.enter);
+                });
+
+                ///llenamos el reporte con la informacion de este ciclo
+                RepNotaSuspensionCertifica praNotaSuspensionCertifica = new RepNotaSuspensionCertifica
+                {
+
+                    FechaCabecera=DateTime.Now.ToString("dd/MM/yyyy"),
+                    CorrelativoCabecera=correlativoCabecera,
+                    NombreNota= nombreNota,
+                    Cargo =cargo,
+                    NombreEmpresa = cliente.NombreRazon,
+                    ReferenciaNota = praciclocronograma.Referencia,
+                    Texto1 =texto1,
+                    IbnorcaRTM =praprogramasdeauditorium.CodigoServicioWs,
+                    NroCertificado = nroCertificado,
+                    NombreEmpresaTexto = cliente.NombreRazon,
+                    DescripcionOtrogado =alcance,
+                    Sitios =sitios,
+                    FechaLiteral1 = DateTime.Now.ToString("dd/MM/yyyy"),
+                    Seguimiento = praciclocronograma.Referencia,
+                    FechaLiteral2 = DateTime.Now.ToString("dd/MM/yyyy"),
+                    DirectorEjecutivo = directorEjecutivo
+
+                };
+                string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
+                WordHelper generadorWord = new WordHelper(filePlantilla);
+
+
+                //generamos el documento en word
+
+                string fileNameGenerado = generadorWord.GenerarDocumento(praNotaSuspensionCertifica, null, $"{Global.PATH_PLANTILLA_DESIGNACION}\\Salidas");
+
+
+                response.Message = fileNameGenerado;
+            }
+            catch (Exception ex)
+            {
+                ProcessError(ex, response);
+            }
+            return response;
+        }
+
+        public Response GenerarREPNotaDeRetiroDeCertificacion(int IdCiclo, string pathPlantilla, string correlativoCabecera, string nombreApellidos, string cargo, string nroCertificado)
+        {
+            Response response = new Response { Message = "", State = ResponseType.Success };
+            try
+            {
+
+                ///Obtenemos la informacion del ciclo y del programa
+                Praciclosprogauditorium praciclocronograma = repositoryMySql.SimpleSelect<Praciclosprogauditorium>(x => x.IdPrAcicloProgAuditoria == IdCiclo).ToList().FirstOrDefault();
+                Praprogramasdeauditorium praprogramasdeauditorium = repositoryMySql.SimpleSelect<Praprogramasdeauditorium>(x => x.IdPrAprogramaAuditoria == praciclocronograma.IdPrAprogramaAuditoria).ToList().FirstOrDefault();
+                if (praciclocronograma == null)
+                {
+                    response.State = ResponseType.Warning;
+                    response.Message = "No se cuenta con informacion de este cilo en la BD";
+                    return response;
+                }
+
+                praciclocronograma.Praciclocronogramas = repositoryMySql.SimpleSelect<Praciclocronograma>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Praciclonormassistemas = repositoryMySql.SimpleSelect<Praciclonormassistema>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Pracicloparticipantes = repositoryMySql.SimpleSelect<Pracicloparticipante>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Pradireccionespaproductos = repositoryMySql.SimpleSelect<Pradireccionespaproducto>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Pradireccionespasistemas = repositoryMySql.SimpleSelect<Pradireccionespasistema>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+
+                Cliente cliente = JsonConvert.DeserializeObject<Cliente>(praprogramasdeauditorium.OrganizacionContentWs);
+
+                ///obtenemos los contactos del cliente
+                ClientHelper clientHelper = new ClientHelper();
+                ///TDO: obtenemos los datos del servicio
+                RequestListarContactosEmpresa requestDato = new RequestListarContactosEmpresa { accion = "ListarContactosEmpresa", sIdentificador = Global.IDENTIFICADOR, sKey = Global.KEY_SERVICES, IdCliente = cliente.IdCliente };
+                ResponseListarContactosEmpresa resulServices = clientHelper.Consume<ResponseListarContactosEmpresa>(Global.URIGLOBAL_SERVICES + Global.URI_CLIENTE_CONTACTO, requestDato).Result;
+                if (!resulServices.estado)
+                {
+                    response.State = ResponseType.Warning;
+                    response.Message = $"Existe problemas al consumir el servicio de ibnorca (estados): {resulServices.mensaje}";
+                    return response;
+                }
+                ContactoEmpresa contactoEmpresa = resulServices.lstContactos?.Count > 0 ? resulServices.lstContactos[0] : null;
+
+                string normas = "";
+
+                praciclocronograma.Praciclonormassistemas.ToList().ForEach(x =>
+                {
+                    normas += x.Norma;
+                });
+                string alcance = "";
+                praciclocronograma.Praciclonormassistemas.ToList().ForEach(x =>
+                {
+                    alcance += x.Alcance + WordHelper.GetCodeKey(WordHelper.keys.enter);
+                });
+
+                string sitios = "";
+                praciclocronograma.Pradireccionespasistemas.ToList().ForEach(x =>
+                {
+                    sitios += x.Direccion + WordHelper.GetCodeKey(WordHelper.keys.enter);
+                });
+
+                ///llenamos el reporte con la informacion de este ciclo
+                REPNotaDeRetiroDeCertificacion praNotaDeRetiroDeCertificacion = new REPNotaDeRetiroDeCertificacion
+                {
+
+                    FechaIbnorca = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
+                    CorrelativoCabecera= correlativoCabecera,
+                    ReferenciaIbnorca = praciclocronograma.Referencia,
+                    NombreApellidos = nombreApellidos,
+                    Cargo = cargo,
+                    Organizacion = cliente.NombreRazon,
+                    NbIso =normas,
+                    SistemaDeGestion = praciclocronograma.Referencia,
+                    Alcance =alcance,
+                    Sitios =sitios,
+                    NroCertificadoIbnorca = nroCertificado
+
+                };
+                string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
+                WordHelper generadorWord = new WordHelper(filePlantilla);
+
+
+                //generamos el documento en word
+
+                string fileNameGenerado = generadorWord.GenerarDocumento(praNotaDeRetiroDeCertificacion, null, $"{Global.PATH_PLANTILLA_DESIGNACION}\\Salidas");
+                response.Message = fileNameGenerado;
+            }
+            catch (Exception ex)
+            {
+                ProcessError(ex, response);
+            }
+            return response;
+        }
 
     }
 
