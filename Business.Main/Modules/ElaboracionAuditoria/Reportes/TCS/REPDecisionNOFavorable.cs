@@ -19,7 +19,6 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCS
         public string OtorgarRenovarMantener { get; set; }
         public string NbIso { get; set; }
         public string CertificacionRenovacion { get; set; }
-        public string OtorgarRenovar { get; set; }
         public string SistemaDeGestionNB { get; set; }
         public string ConsideracionesNumeradas { get; set; }
         public string Seguimiento { get; set; }

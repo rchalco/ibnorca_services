@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Business.Main.DataMapping.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,9 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCS
         public string FechaDeAuditoria { get; set; }
         public string TipoDeAuditoria { get; set; }
         public string NormasAuditadas { get; set; }
-        public string EquipoAuditoNombreCargo { get; set; }
+       // public string EquipoAuditoNombreCargo { get; set; }
+
+        public List<RepDesginacionParticipante> EquipoAuditoNombreCargo { get; set; }
         public string ExpertoCertificacion { get; set; }
         public string FechaAsignacionProceso { get; set; }
         public string RedaccionSugerida { get; set; }
