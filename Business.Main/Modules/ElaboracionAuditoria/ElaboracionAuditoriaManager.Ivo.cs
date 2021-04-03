@@ -112,6 +112,11 @@ namespace Business.Main.Modules.ElaboracionAuditoria
             return response;
         }
 
+        public object GenerarREPDecisionNOFavorable(int v1, string v2, string v3, string v4, string v5, string v6, string v7)
+        {
+            throw new NotImplementedException();
+        }
+
         public Response GenerarREPEvaluacionYRecomendacionesParaProceso(int IdCiclo, string pathPlantilla, string expertoCertificacion, string fechaAsignacionProceso,string redaccionSugerida)
         {
             Response response = new Response { Message = "", State = ResponseType.Success };
@@ -201,10 +206,16 @@ namespace Business.Main.Modules.ElaboracionAuditoria
     string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
     WordHelper generadorWord = new WordHelper(filePlantilla);
 
+                //generamos el documento en word
+                Dictionary<string, CellTitles[]> pTitles = new Dictionary<string, CellTitles[]>();
+                CellTitles[] cellTitlesTitulo = new CellTitles[2];
+                cellTitlesTitulo[0] = new CellTitles { Title = "Calificación", Visible = true, Width = "50" };
+                cellTitlesTitulo[1] = new CellTitles { Title = "Auditor", Visible = true, Width = "50" };
+                pTitles.Add("EquipoAuditoNombreCargo", cellTitlesTitulo);
 
-    //generamos el documento en word
+                //generamos el documento en word
 
-    string fileNameGenerado = generadorWord.GenerarDocumento(praEvaluacionYRecomendacionesParaProceso, null, $"{Global.PATH_PLANTILLA_DESIGNACION}\\Salidas");
+                string fileNameGenerado = generadorWord.GenerarDocumento(praEvaluacionYRecomendacionesParaProceso, pTitles, $"{Global.PATH_PLANTILLA_DESIGNACION}\\Salidas");
 
 
     response.Message = fileNameGenerado;
@@ -394,7 +405,7 @@ return response;
                     NombreApellidos = nombreApellidos,
                     Cargo =cargo,
                     Organizacion = cliente.NombreRazon,
-                    OtorgarRenovarMantener= otorgarRenovarMantener,
+                    OtorgarRenovar= otorgarRenovarMantener,
                     NbIso = normas,
                     CertificacionRenovacion= praciclocronograma.Referencia,
                     SistemaDeGestionNB= sistemaDeGestionNB,
