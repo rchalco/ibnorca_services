@@ -38,5 +38,11 @@ namespace BackgroundAPIRest.Controllers
             ElaboracionAuditoriaManager elaboracionAuditoriaManager = new ElaboracionAuditoriaManager();
             return elaboracionAuditoriaManager.ObtenerPlanAuditoria(requestObtenerPlanAuditoria.IdCicloPrograma, requestObtenerPlanAuditoria.usuario);
         }
+        [HttpPost("GetListasPredefinidas")]
+        [EnableCors("MyPolicy")]
+        public ResponseQuery<Elalistaspredefinida> GetListasPredefinidas() {
+            ElaboracionAuditoriaManager elaboracionAuditoriaManager = new ElaboracionAuditoriaManager();
+            return elaboracionAuditoriaManager.GetListasPredefinidas();
+        }
     }
 }
