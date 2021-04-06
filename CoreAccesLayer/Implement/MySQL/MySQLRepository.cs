@@ -49,6 +49,11 @@ namespace CoreAccesLayer.Implement.MySQL
             return _dbContext.Set<T>().Where(predicate).ToList<T>();
         }
 
+        public List<T> Getall<T>() where T : class, new()
+        {
+            return _dbContext.Set<T>().ToList<T>();
+        }
+
         public bool SaveObject<T>(Entity<T> entity) where T : class, new()
         {
             if (entity == null)

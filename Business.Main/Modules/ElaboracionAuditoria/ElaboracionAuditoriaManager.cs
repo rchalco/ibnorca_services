@@ -136,5 +136,22 @@ namespace Business.Main.Modules.ElaboracionAuditoria
             }
             return response;
         }
+
+        public ResponseQuery<Elalistaspredefinida> GetListasPredefinidas()
+        {
+            ResponseQuery<Elalistaspredefinida> response = new ResponseQuery<Elalistaspredefinida>();
+            try
+            {
+                response.ListEntities = repositoryMySql.Getall<Elalistaspredefinida>();
+                response.State = ResponseType.Success;
+                response.Message = "Lista obtenida correctamente";
+            }
+            catch (Exception ex)
+            {
+                ProcessError(ex, response);
+            }
+            return response;
+        }
+
     }
 }

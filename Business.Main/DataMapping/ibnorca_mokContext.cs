@@ -19,6 +19,7 @@ namespace Business.Main.DataMapping
 
         public virtual DbSet<Elaauditorium> Elaauditoria { get; set; }
         public virtual DbSet<Elacronogama> Elacronogamas { get; set; }
+        public virtual DbSet<Elalistaspredefinida> Elalistaspredefinidas { get; set; }
         public virtual DbSet<Paramarea> Paramareas { get; set; }
         public virtual DbSet<Paramcargosparticipante> Paramcargosparticipantes { get; set; }
         public virtual DbSet<Paramdepartamento> Paramdepartamentos { get; set; }
@@ -48,7 +49,7 @@ namespace Business.Main.DataMapping
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseMySql("server=192.168.0.106;database=ibnorca_mok;user=ibnorca;password=admin.123;treattinyasboolean=true", Microsoft.EntityFrameworkCore.ServerVersion.FromString("8.0.22-mysql"));
+                optionsBuilder.UseMySql("server=localhost;database=ibnorca_mok;user=root;password=admin.123;treattinyasboolean=true", Microsoft.EntityFrameworkCore.ServerVersion.FromString("8.0.22-mysql"));
             }
         }
 
@@ -150,6 +151,36 @@ namespace Business.Main.DataMapping
                     .WithMany(p => p.Elacronogamas)
                     .HasForeignKey(d => d.Idelaauditoria)
                     .HasConstraintName("fk_elacronograma");
+            });
+
+            modelBuilder.Entity<Elalistaspredefinida>(entity =>
+            {
+                entity.HasKey(e => e.Idelalistaspredefinidas)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("elalistaspredefinidas");
+
+                entity.Property(e => e.Idelalistaspredefinidas).HasColumnName("idelalistaspredefinidas");
+
+                entity.Property(e => e.Categoria)
+                    .HasColumnType("varchar(50)")
+                    .HasColumnName("categoria")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.Property(e => e.Decripcion)
+                    .HasColumnType("varchar(1000)")
+                    .HasColumnName("decripcion")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.Property(e => e.Nemotico)
+                    .HasColumnType("varchar(100)")
+                    .HasColumnName("nemotico")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.Property(e => e.Orden).HasColumnName("orden");
             });
 
             modelBuilder.Entity<Paramarea>(entity =>
