@@ -18,5 +18,14 @@ namespace NUnitBusinessMain.TesReportes
             var response = elaboracionAuditoriaManager.GenerarNotaSuspension(81, @"E:\PROYECTOS\ibnorca\Documentos\Plantillas_Oficial\REG-PRO-TCS-07-01.00 Nota de suspensión de certificacion V.1.0.doc", "Ruben Chalco", "Director Ejecutivo", DateTime.Now);
 
         }
+
+        [Test]
+        public void GenerarPlanAuditoria()
+        {
+            ElaboracionAuditoriaManager elaboracionAuditoriaManager = new ElaboracionAuditoriaManager();
+            //var response = elaboracionAuditoriaManager.GenerarPlanAuditoria(81, @"E:\PROYECTOS\ibnorca\Documentos\Plantillas_Oficial\REG-PRO-TCS-07-01.00 Nota de suspensión de certificacion V.1.0.doc", "Ruben Chalco", "Director Ejecutivo", DateTime.Now);
+            var response = elaboracionAuditoriaManager.GenerarPlanAuditoria(81, @"REG-PRO-TCS-05-01.07 Plan de auditoria V.1.0.doc", "Objetios a llenar", "Cambio a llenar", "certificacion");
+
+        }
     }
 }
