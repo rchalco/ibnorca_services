@@ -40,9 +40,24 @@ namespace BackgroundAPIRest.Controllers
         }
         [HttpPost("GetListasPredefinidas")]
         [EnableCors("MyPolicy")]
-        public ResponseQuery<Elalistaspredefinida> GetListasPredefinidas() {
+        public ResponseQuery<Elalistaspredefinida> GetListasPredefinidas()
+        {
             ElaboracionAuditoriaManager elaboracionAuditoriaManager = new ElaboracionAuditoriaManager();
             return elaboracionAuditoriaManager.GetListasPredefinidas();
+        }
+        [HttpPost("GetListasDocumetos")]
+        [EnableCors("MyPolicy")]
+        public ResponseQuery<Paramdocumento> GetListasDocumetos(RequestGetListasDocumetos requestGetListasDocumetos)
+        {
+            ElaboracionAuditoriaManager elaboracionAuditoriaManager = new ElaboracionAuditoriaManager();
+            return elaboracionAuditoriaManager.GetListasDocumetos(requestGetListasDocumetos.area);
+        }
+        [HttpPost("GenerarDocumento")]
+        [EnableCors("MyPolicy")]
+        public Response GenerarDocumento(RequestGenerarDocumento requestGenerarDocumento)
+        {
+            ElaboracionAuditoriaManager elaboracionAuditoriaManager = new ElaboracionAuditoriaManager();
+            return elaboracionAuditoriaManager.GenerarDocumento(requestGenerarDocumento.plantilla, requestGenerarDocumento.IdCicloAuditoria);
         }
     }
 }

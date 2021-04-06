@@ -17,12 +17,14 @@ namespace Business.Main.DataMapping
         {
         }
 
+        public virtual DbSet<ElaContenidoauditorium> ElaContenidoauditoria { get; set; }
         public virtual DbSet<Elaauditorium> Elaauditoria { get; set; }
         public virtual DbSet<Elacronogama> Elacronogamas { get; set; }
         public virtual DbSet<Elalistaspredefinida> Elalistaspredefinidas { get; set; }
         public virtual DbSet<Paramarea> Paramareas { get; set; }
         public virtual DbSet<Paramcargosparticipante> Paramcargosparticipantes { get; set; }
         public virtual DbSet<Paramdepartamento> Paramdepartamentos { get; set; }
+        public virtual DbSet<Paramdocumento> Paramdocumentos { get; set; }
         public virtual DbSet<Paramestadosparticipante> Paramestadosparticipantes { get; set; }
         public virtual DbSet<Paramestadosprogauditorium> Paramestadosprogauditoria { get; set; }
         public virtual DbSet<Parametapaauditorium> Parametapaauditoria { get; set; }
@@ -55,6 +57,41 @@ namespace Business.Main.DataMapping
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<ElaContenidoauditorium>(entity =>
+            {
+                entity.HasKey(e => e.IdelaContenidoauditoria)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("ela_contenidoauditoria");
+
+                entity.HasIndex(e => e.IdelaAuditoria, "ela_contenido_auditoria_idx");
+
+                entity.Property(e => e.IdelaContenidoauditoria).HasColumnName("idela_contenidoauditoria");
+
+                entity.Property(e => e.Contenido)
+                    .HasColumnType("varchar(1000)")
+                    .HasColumnName("contenido")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.Property(e => e.IdelaAuditoria).HasColumnName("idelaAuditoria");
+
+                entity.Property(e => e.Nemotico)
+                    .HasColumnType("varchar(100)")
+                    .HasColumnName("nemotico")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.Property(e => e.Seleccionado)
+                    .HasColumnType("bit(1)")
+                    .HasColumnName("seleccionado");
+
+                entity.HasOne(d => d.IdelaAuditoriaNavigation)
+                    .WithMany(p => p.ElaContenidoauditoria)
+                    .HasForeignKey(d => d.IdelaAuditoria)
+                    .HasConstraintName("ela_contenido_auditoria");
+            });
+
             modelBuilder.Entity<Elaauditorium>(entity =>
             {
                 entity.HasKey(e => e.IdelaAuditoria)
@@ -238,6 +275,36 @@ namespace Business.Main.DataMapping
                 entity.Property(e => e.FechaRegistro).HasColumnType("datetime");
 
                 entity.Property(e => e.IdparamPais).HasColumnName("idparamPais");
+            });
+
+            modelBuilder.Entity<Paramdocumento>(entity =>
+            {
+                entity.HasKey(e => e.Idparamdocumentos)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("paramdocumentos");
+
+                entity.Property(e => e.Idparamdocumentos).HasColumnName("idparamdocumentos");
+
+                entity.Property(e => e.Area)
+                    .HasColumnType("varchar(20)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.Property(e => e.Descripcion)
+                    .HasColumnType("varchar(100)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.Property(e => e.NombrePlantilla)
+                    .HasColumnType("varchar(100)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.Property(e => e.Path)
+                    .HasColumnType("varchar(300)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
             });
 
             modelBuilder.Entity<Paramestadosparticipante>(entity =>
