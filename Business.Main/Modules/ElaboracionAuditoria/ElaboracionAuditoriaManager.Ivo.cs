@@ -610,15 +610,16 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     FechaDeAuditoria = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
                     TipoDeAuditoria = praciclocronograma.Referencia,
                     NormasAuditadas = normas,
-                    EquipoAuditoNombreCargo = praciclocronograma.Pracicloparticipantes.Select(x =>
-                    {   
+                    //EquipoAuditoNombreCargo = null,
+                    ListEquipoAuditoNombreCargo = praciclocronograma.Pracicloparticipantes.Select(x =>
+                    {
                         RepDesginacionParticipante repDesginacionParticipante = new RepDesginacionParticipante();
                         repDesginacionParticipante.Cargo = string.Empty;
                         if (!string.IsNullOrEmpty(x.CargoDetalleWs))
                         {
                             ListaCalificado cargo = JsonConvert.DeserializeObject<ListaCalificado>(x.CargoDetalleWs);
                             repDesginacionParticipante.Cargo = cargo.CargoPuesto;
-                         }
+                        }
 
                         repDesginacionParticipante.Participante = string.Empty;
                         if (!string.IsNullOrEmpty(x.ParticipanteDetalleWs))
@@ -628,10 +629,10 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                         }
 
                         return repDesginacionParticipante;
-                      }).ToList(),
-                    ExpertoCertificacion= expertoCertificacion,
+                    }).ToList(),
+                    ExpertoCertificacion = expertoCertificacion,
                     FechaAsignacionProceso = fechaAsignacionProceso,
-                    RedaccionSugerida= redaccionSugerida
+                    RedaccionSugerida = redaccionSugerida
                 };
     string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
     WordHelper generadorWord = new WordHelper(filePlantilla);
@@ -641,7 +642,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 CellTitles[] cellTitlesTitulo = new CellTitles[2];
                 cellTitlesTitulo[0] = new CellTitles { Title = "Calificación", Visible = true, Width = "50" };
                 cellTitlesTitulo[1] = new CellTitles { Title = "Auditor", Visible = true, Width = "50" };
-                pTitles.Add("EquipoAuditoNombreCargo", cellTitlesTitulo);
+                pTitles.Add("ListEquipoAuditoNombreCargo", cellTitlesTitulo);
 
                 //generamos el documento en word
 
