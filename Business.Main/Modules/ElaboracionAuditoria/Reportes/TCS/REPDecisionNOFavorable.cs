@@ -16,7 +16,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCS
         public string NombreApellidos { get; set; }
         public string Cargo { get; set; }
         public string Organizacion { get; set; }
-        public string OtorgarRenovarMantener { get; set; }
+        public string OtorgarRenovar { get; set; }
         public string NbIso { get; set; }
         public string CertificacionRenovacion { get; set; }
         public string SistemaDeGestionNB { get; set; }
