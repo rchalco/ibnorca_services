@@ -7,11 +7,6 @@ namespace Business.Main.DataMapping
 {
     public partial class Pracicloparticipante
     {
-        public Pracicloparticipante()
-        {
-            Elacronogamas = new HashSet<Elacronogama>();
-        }
-
         public long IdCicloParticipante { get; set; }
         public long? IdPrAcicloProgAuditoria { get; set; }
         public int? IdParticipanteWs { get; set; }
@@ -24,6 +19,5 @@ namespace Business.Main.DataMapping
         public DateTime? FechaDesde { get; set; }
 
         public virtual Praciclosprogauditorium IdPrAcicloProgAuditoriaNavigation { get; set; }
-        public virtual ICollection<Elacronogama> Elacronogamas { get; set; }
     }
 }
