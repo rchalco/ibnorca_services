@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Business.Main.DataMapping
 {
-    public partial class ElaContenidoauditorium
+    public partial class Elacontenidoauditorium
     {
         public int IdelaContenidoauditoria { get; set; }
         public int? IdelaAuditoria { get; set; }

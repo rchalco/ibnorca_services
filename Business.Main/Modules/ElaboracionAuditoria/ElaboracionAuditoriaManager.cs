@@ -148,12 +148,12 @@ namespace Business.Main.Modules.ElaboracionAuditoria
             }
             return response;
         }
-        public ResponseQuery<Paramdocumento> GetListasDocumetos(string area)
+        public ResponseQuery<Paramdocumento> GetListasDocumetos(string area, string proceso)
         {
             ResponseQuery<Paramdocumento> response = new ResponseQuery<Paramdocumento>();
             try
             {
-                response.ListEntities = repositoryMySql.SimpleSelect<Paramdocumento>(x => x.Area == area);
+                response.ListEntities = repositoryMySql.SimpleSelect<Paramdocumento>(x => x.Area == area && x.Proceso == proceso);
                 response.State = ResponseType.Success;
                 response.Message = "Lista obtenida correctamente";
             }
@@ -163,7 +163,6 @@ namespace Business.Main.Modules.ElaboracionAuditoria
             }
             return response;
         }
-
         public Response GenerarDocumento(string plantilla, int IdCicloAuditoria)
         {
             Response resul = new Response();

@@ -8,5 +8,6 @@ namespace BackgroundAPIRest.Contracts
     public class RequestGetListasDocumetos
     {
         public string area { get; set; }
+        public string proceso { get; set; }
     }
 }

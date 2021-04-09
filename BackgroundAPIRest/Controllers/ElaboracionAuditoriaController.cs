@@ -50,7 +50,7 @@ namespace BackgroundAPIRest.Controllers
         public ResponseQuery<Paramdocumento> GetListasDocumetos(RequestGetListasDocumetos requestGetListasDocumetos)
         {
             ElaboracionAuditoriaManager elaboracionAuditoriaManager = new ElaboracionAuditoriaManager();
-            return elaboracionAuditoriaManager.GetListasDocumetos(requestGetListasDocumetos.area);
+            return elaboracionAuditoriaManager.GetListasDocumetos(requestGetListasDocumetos.area, requestGetListasDocumetos.proceso);
         }
         [HttpPost("GenerarDocumento")]
         [EnableCors("MyPolicy")]
