@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Resportes.ReportDTO
+namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCP
 {
-    class TCPREPListaVerificacionAuditor
+    public class TCPREPListaVerificacionAuditor
     {
         public string NombreEmpresa { get; set; }
         public string Sitios { get; set; }
@@ -13,12 +13,10 @@ namespace Resportes.ReportDTO
         public string Fecha { get; set; }
         public string Usuario { get; set; }
         public string Cargo { get; set; }
-
-
-
-
         public string ProcesoAuditado { get; set; }
         public string NombreAuditado { get; set; }
         public string Sitio { get; set; }
+        public string Hallazgos { get; set; }
+
     }
 }

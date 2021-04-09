@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Resportes.ReportDTO
+namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCP
 {
-    class TCPREPDesignacionAuditoria
+    public class TCPREPDesignacionAuditoria
     {
 
         public string TipoAuditoria { get; set; }
@@ -29,7 +29,7 @@ namespace Resportes.ReportDTO
         public string Cargo { get; set; }
         public string Contacto { get; set; }
         public string CargoContacto { get; set; }
-        public string TelefonoCargo { get; set; }
+        public string TelefonoContacto { get; set; }
         public string CorreoElectronicoContacto { get; set; }
         public string CodigoIAF { get; set; }
         public string Alcance { get; set; }
