@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Resportes.ReportDTO
+namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCP
 {
-    class TCPREPListaAsistencia
+    public class TCPREPListaAsistencia
     {
         public string NombreEmpresa { get; set; }
         public string CodigoServicio { get; set; }
         public string FechaInicio { get; set; }
+        public string FechaFin { get; set; }
         public string TipoAuditoria { get; set; }
     }
 }
