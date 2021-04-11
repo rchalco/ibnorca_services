@@ -9,6 +9,7 @@ namespace Business.Main.DataMapping
     {
         public long IdElAcronograma { get; set; }
         public int? Idelaauditoria { get; set; }
+        public long? IdCicloParticipante { get; set; }
         public long? IdDireccionPaproducto { get; set; }
         public long? IdDireccionPasistema { get; set; }
         public DateTime? FechaInicio { get; set; }
@@ -18,10 +19,8 @@ namespace Business.Main.DataMapping
         public string PersonaEntrevistadaCargo { get; set; }
         public string UsuarioRegistro { get; set; }
         public DateTime? FechaRegistro { get; set; }
-        public string ProcesoArea { get; set; }
-        public string Auditor { get; set; }
-        public string Cargo { get; set; }
 
+        public virtual Pracicloparticipante IdCicloParticipanteNavigation { get; set; }
         public virtual Pradireccionespaproducto IdDireccionPaproductoNavigation { get; set; }
         public virtual Pradireccionespasistema IdDireccionPasistemaNavigation { get; set; }
         public virtual Elaauditorium IdelaauditoriaNavigation { get; set; }

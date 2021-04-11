@@ -17,16 +17,11 @@ namespace Business.Main.DataMapping
         {
         }
 
-        public virtual DbSet<Elaadp> Elaadps { get; set; }
         public virtual DbSet<Elaauditorium> Elaauditoria { get; set; }
-        public virtual DbSet<Elacontenidoauditorium> Elacontenidoauditoria { get; set; }
         public virtual DbSet<Elacronogama> Elacronogamas { get; set; }
-        public virtual DbSet<Elahallazgo> Elahallazgos { get; set; }
-        public virtual DbSet<Elalistaspredefinida> Elalistaspredefinidas { get; set; }
         public virtual DbSet<Paramarea> Paramareas { get; set; }
         public virtual DbSet<Paramcargosparticipante> Paramcargosparticipantes { get; set; }
         public virtual DbSet<Paramdepartamento> Paramdepartamentos { get; set; }
-        public virtual DbSet<Paramdocumento> Paramdocumentos { get; set; }
         public virtual DbSet<Paramestadosparticipante> Paramestadosparticipantes { get; set; }
         public virtual DbSet<Paramestadosprogauditorium> Paramestadosprogauditoria { get; set; }
         public virtual DbSet<Parametapaauditorium> Parametapaauditoria { get; set; }
@@ -53,46 +48,12 @@ namespace Business.Main.DataMapping
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseMySql("server=localhost;database=ibnorca_mok;user=root;password=admin.123;treattinyasboolean=true", Microsoft.EntityFrameworkCore.ServerVersion.FromString("8.0.22-mysql"));
+                optionsBuilder.UseMySql("server=192.168.0.106;database=ibnorca_mok;user=ibnorca;password=admin.123;treattinyasboolean=true", Microsoft.EntityFrameworkCore.ServerVersion.FromString("8.0.22-mysql"));
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Elaadp>(entity =>
-            {
-                entity.HasKey(e => e.Idelaadp)
-                    .HasName("PRIMARY");
-
-                entity.ToTable("elaadp");
-
-                entity.HasComment("registro de areas de preocupacion	");
-
-                entity.Property(e => e.Idelaadp)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("idelaadp");
-
-                entity.Property(e => e.Area)
-                    .HasColumnType("varchar(100)")
-                    .HasColumnName("area")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
-
-                entity.Property(e => e.Descripcion)
-                    .HasColumnType("varchar(1000)")
-                    .HasColumnName("descripcion")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
-
-                entity.Property(e => e.IdelaAuditoria).HasColumnName("idelaAuditoria");
-
-                entity.HasOne(d => d.IdelaadpNavigation)
-                    .WithOne(p => p.Elaadp)
-                    .HasForeignKey<Elaadp>(d => d.Idelaadp)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_apd_auditoria");
-            });
-
             modelBuilder.Entity<Elaauditorium>(entity =>
             {
                 entity.HasKey(e => e.IdelaAuditoria)
@@ -121,41 +82,6 @@ namespace Business.Main.DataMapping
                     .HasConstraintName("fk_elaauditoria_pracicloauditoria");
             });
 
-            modelBuilder.Entity<Elacontenidoauditorium>(entity =>
-            {
-                entity.HasKey(e => e.IdelaContenidoauditoria)
-                    .HasName("PRIMARY");
-
-                entity.ToTable("elacontenidoauditoria");
-
-                entity.HasIndex(e => e.IdelaAuditoria, "ela_contenido_auditoria_idx");
-
-                entity.Property(e => e.IdelaContenidoauditoria).HasColumnName("idela_contenidoauditoria");
-
-                entity.Property(e => e.Contenido)
-                    .HasColumnType("varchar(1000)")
-                    .HasColumnName("contenido")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
-
-                entity.Property(e => e.IdelaAuditoria).HasColumnName("idelaAuditoria");
-
-                entity.Property(e => e.Nemotico)
-                    .HasColumnType("varchar(100)")
-                    .HasColumnName("nemotico")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
-
-                entity.Property(e => e.Seleccionado)
-                    .HasColumnType("bit(1)")
-                    .HasColumnName("seleccionado");
-
-                entity.HasOne(d => d.IdelaAuditoriaNavigation)
-                    .WithMany(p => p.Elacontenidoauditoria)
-                    .HasForeignKey(d => d.IdelaAuditoria)
-                    .HasConstraintName("ela_contenido_auditoria");
-            });
-
             modelBuilder.Entity<Elacronogama>(entity =>
             {
                 entity.HasKey(e => e.IdElAcronograma)
@@ -163,23 +89,15 @@ namespace Business.Main.DataMapping
 
                 entity.ToTable("elacronogama");
 
-                entity.HasIndex(e => e.IdDireccionPaproducto, "fk_elacronograma_direccionproducto_idx");
+                entity.HasIndex(e => e.IdDireccionPasistema, "fk_elacronograma_direccionessistema_idx");
 
-                entity.HasIndex(e => e.IdDireccionPasistema, "fk_elacronograma_direccionsisterma_idx");
+                entity.HasIndex(e => e.IdDireccionPaproducto, "fk_elacronograma_direccionproducto_idx");
 
                 entity.HasIndex(e => e.Idelaauditoria, "fk_elacronograma_idx");
 
+                entity.HasIndex(e => e.IdCicloParticipante, "fk_elacronograma_participantes");
+
                 entity.Property(e => e.IdElAcronograma).HasColumnName("idElACronograma");
-
-                entity.Property(e => e.Auditor)
-                    .HasColumnType("varchar(100)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
-
-                entity.Property(e => e.Cargo)
-                    .HasColumnType("varchar(100)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
 
                 entity.Property(e => e.FechaFin).HasColumnType("datetime");
 
@@ -192,17 +110,14 @@ namespace Business.Main.DataMapping
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
 
+                entity.Property(e => e.IdCicloParticipante).HasColumnName("idCicloParticipante");
+
                 entity.Property(e => e.IdDireccionPaproducto).HasColumnName("idDireccionPAProducto");
 
                 entity.Property(e => e.IdDireccionPasistema).HasColumnName("idDireccionPASistema");
 
                 entity.Property(e => e.PersonaEntrevistadaCargo)
                     .HasColumnType("varchar(200)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
-
-                entity.Property(e => e.ProcesoArea)
-                    .HasColumnType("varchar(100)")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
 
@@ -216,6 +131,11 @@ namespace Business.Main.DataMapping
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
 
+                entity.HasOne(d => d.IdCicloParticipanteNavigation)
+                    .WithMany(p => p.Elacronogamas)
+                    .HasForeignKey(d => d.IdCicloParticipante)
+                    .HasConstraintName("fk_elacronograma_participantes");
+
                 entity.HasOne(d => d.IdDireccionPaproductoNavigation)
                     .WithMany(p => p.Elacronogamas)
                     .HasForeignKey(d => d.IdDireccionPaproducto)
@@ -224,102 +144,12 @@ namespace Business.Main.DataMapping
                 entity.HasOne(d => d.IdDireccionPasistemaNavigation)
                     .WithMany(p => p.Elacronogamas)
                     .HasForeignKey(d => d.IdDireccionPasistema)
-                    .HasConstraintName("fk_elacronograma_direccionsisterma");
+                    .HasConstraintName("fk_elacronograma_direccionessistema");
 
                 entity.HasOne(d => d.IdelaauditoriaNavigation)
                     .WithMany(p => p.Elacronogamas)
                     .HasForeignKey(d => d.Idelaauditoria)
                     .HasConstraintName("fk_elacronograma");
-            });
-
-            modelBuilder.Entity<Elahallazgo>(entity =>
-            {
-                entity.HasKey(e => e.Idelahallazgo)
-                    .HasName("PRIMARY");
-
-                entity.ToTable("elahallazgo");
-
-                entity.Property(e => e.Idelahallazgo)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("idelahallazgo");
-
-                entity.Property(e => e.Fecha)
-                    .HasColumnType("datetime")
-                    .HasColumnName("fecha");
-
-                entity.Property(e => e.Hallazgo)
-                    .HasColumnType("varchar(1000)")
-                    .HasColumnName("hallazgo")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
-
-                entity.Property(e => e.IdelaAuditoria).HasColumnName("idelaAuditoria");
-
-                entity.Property(e => e.Normas)
-                    .HasColumnType("varchar(500)")
-                    .HasColumnName("normas")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
-
-                entity.Property(e => e.Proceso)
-                    .HasColumnType("varchar(200)")
-                    .HasColumnName("proceso")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
-
-                entity.Property(e => e.Sitio)
-                    .HasColumnType("varchar(200)")
-                    .HasColumnName("sitio")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
-
-                entity.Property(e => e.Tipo)
-                    .HasColumnType("varchar(45)")
-                    .HasColumnName("tipo")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
-
-                entity.Property(e => e.Usuario)
-                    .HasColumnType("varchar(100)")
-                    .HasColumnName("usuario")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
-
-                entity.HasOne(d => d.IdelahallazgoNavigation)
-                    .WithOne(p => p.Elahallazgo)
-                    .HasForeignKey<Elahallazgo>(d => d.Idelahallazgo)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_hallazgo_auditoria");
-            });
-
-            modelBuilder.Entity<Elalistaspredefinida>(entity =>
-            {
-                entity.HasKey(e => e.Idelalistaspredefinidas)
-                    .HasName("PRIMARY");
-
-                entity.ToTable("elalistaspredefinidas");
-
-                entity.Property(e => e.Idelalistaspredefinidas).HasColumnName("idelalistaspredefinidas");
-
-                entity.Property(e => e.Categoria)
-                    .HasColumnType("varchar(50)")
-                    .HasColumnName("categoria")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
-
-                entity.Property(e => e.Decripcion)
-                    .HasColumnType("varchar(1000)")
-                    .HasColumnName("decripcion")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
-
-                entity.Property(e => e.Nemotico)
-                    .HasColumnType("varchar(100)")
-                    .HasColumnName("nemotico")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
-
-                entity.Property(e => e.Orden).HasColumnName("orden");
             });
 
             modelBuilder.Entity<Paramarea>(entity =>
@@ -377,41 +207,6 @@ namespace Business.Main.DataMapping
                 entity.Property(e => e.FechaRegistro).HasColumnType("datetime");
 
                 entity.Property(e => e.IdparamPais).HasColumnName("idparamPais");
-            });
-
-            modelBuilder.Entity<Paramdocumento>(entity =>
-            {
-                entity.HasKey(e => e.Idparamdocumentos)
-                    .HasName("PRIMARY");
-
-                entity.ToTable("paramdocumentos");
-
-                entity.Property(e => e.Idparamdocumentos).HasColumnName("idparamdocumentos");
-
-                entity.Property(e => e.Area)
-                    .HasColumnType("varchar(20)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
-
-                entity.Property(e => e.Descripcion)
-                    .HasColumnType("varchar(100)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
-
-                entity.Property(e => e.NombrePlantilla)
-                    .HasColumnType("varchar(100)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
-
-                entity.Property(e => e.Path)
-                    .HasColumnType("varchar(300)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
-
-                entity.Property(e => e.Proceso)
-                    .HasColumnType("varchar(70)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
             });
 
             modelBuilder.Entity<Paramestadosparticipante>(entity =>
@@ -879,7 +674,9 @@ namespace Business.Main.DataMapping
 
                 entity.HasIndex(e => e.IdPrAcicloProgAuditoria, "FK_PrACicloDireccionesProducto");
 
-                entity.Property(e => e.IdDireccionPaproducto).HasColumnName("idDireccionPAProducto");
+                entity.Property(e => e.IdDireccionPaproducto)
+                    .ValueGeneratedNever()
+                    .HasColumnName("idDireccionPAProducto");
 
                 entity.Property(e => e.Ciudad)
                     .HasColumnType("varchar(100)")

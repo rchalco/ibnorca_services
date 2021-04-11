@@ -29,6 +29,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
             }
             return response;
         }
+
         public ResponseQuery<ResumeCicloDTO> ObtenerCiclosPorIdAuditor(int IdAuditor)
         {
             ResponseQuery<ResumeCicloDTO> response = new ResponseQuery<ResumeCicloDTO> { Message = "Ciclos obtenidos correctamente", ListEntities = new List<ResumeCicloDTO>(), State = ResponseType.Success };
@@ -42,6 +43,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
             }
             return response;
         }
+
         public ResponseObject<PlanAuditoriaDTO> ObtenerPlanAuditoria(int IdCicloPrograma, string usuario)
         {
             ResponseObject<PlanAuditoriaDTO> response = new ResponseObject<PlanAuditoriaDTO>
@@ -118,6 +120,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
             }
             return response;
         }
+
         public ResponseQuery<Paramitemselect> GetListasVerificacion(int IdLista)
         {
             ResponseQuery<Paramitemselect> response = new ResponseQuery<Paramitemselect>();
@@ -132,53 +135,6 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 ProcessError(ex, response);
             }
             return response;
-        }
-        public ResponseQuery<Elalistaspredefinida> GetListasPredefinidas()
-        {
-            ResponseQuery<Elalistaspredefinida> response = new ResponseQuery<Elalistaspredefinida>();
-            try
-            {
-                response.ListEntities = repositoryMySql.Getall<Elalistaspredefinida>();
-                response.State = ResponseType.Success;
-                response.Message = "Lista obtenida correctamente";
-            }
-            catch (Exception ex)
-            {
-                ProcessError(ex, response);
-            }
-            return response;
-        }
-        public ResponseQuery<Paramdocumento> GetListasDocumetos(string area, string proceso)
-        {
-            ResponseQuery<Paramdocumento> response = new ResponseQuery<Paramdocumento>();
-            try
-            {
-                response.ListEntities = repositoryMySql.SimpleSelect<Paramdocumento>(x => x.Area == area && x.Proceso == proceso);
-                response.State = ResponseType.Success;
-                response.Message = "Lista obtenida correctamente";
-            }
-            catch (Exception ex)
-            {
-                ProcessError(ex, response);
-            }
-            return response;
-        }
-        public Response GenerarDocumento(string plantilla, int IdCicloAuditoria)
-        {
-            Response resul = new Response();
-            try
-            {
-                switch (plantilla)
-                {
-                    default:
-                        break;
-                }
-            }
-            catch (Exception ex)
-            {
-                ProcessError(ex, resul);
-            }
-            return resul;
         }
     }
 }

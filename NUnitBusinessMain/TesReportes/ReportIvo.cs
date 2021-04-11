@@ -11,7 +11,7 @@ namespace NUnitBusinessMain.TesReportes
     public class ReportIvo
     {
 
-        //bien
+        //pendiente
         [Test]
         public void GenerarREPListaVerificacionReunionApertura()
         {
@@ -54,13 +54,12 @@ namespace NUnitBusinessMain.TesReportes
             ElaboracionAuditoriaManager elaboracionAuditoriaManager = new ElaboracionAuditoriaManager();            
             var response = elaboracionAuditoriaManager.GenerarREPDatosDeLaOrganizacion(81, @"REG-PRO-TCS-05-08.03 Datos de la organizacion (Ver 1.0).doc", "Ruben Chalco", "Director Ejecutivo", "Juan Perez");
         }
-        //bien
+        //Pendiente
         [Test]
         public void GenerarREPEvaluacionYRecomendacionesParaProceso()
         {
             ElaboracionAuditoriaManager elaboracionAuditoriaManager = new ElaboracionAuditoriaManager();
-            //var response = elaboracionAuditoriaManager.GenerarREPEvaluacionYRecomendacionesParaProceso(81, @"EquipoAuditor.doc", "Ruben Chalco","03/04/2021","Redacción sugerida");
-            var response = elaboracionAuditoriaManager.GenerarREPEvaluacionYRecomendacionesParaProceso(81, @"REG-PRO-TCS-06-01_00 EvaluacionYRecomendacionParaUnProcesoDeCertificacion(Ver 1.0).doc", "Ruben Chalco", "03/04/2021", "Redacción sugerida");
+            var response = elaboracionAuditoriaManager.GenerarREPEvaluacionYRecomendacionesParaProceso(81, @"REG-PRO-TCS-06-01_00 EvaluacionYRecomendacionParaUnProcesoDeCertificacion(Ver 1.0).doc", "Ruben Chalco","03/04/2021","Redacción sugerida");
         }
         //bien
         [Test]

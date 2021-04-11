@@ -19,7 +19,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCS
         public string NormasAuditadas { get; set; }
        // public string EquipoAuditoNombreCargo { get; set; }
 
-        public List<RepDesginacionParticipante> ListEquipoAuditoNombreCargo { get; set; }
+        public List<RepDesginacionParticipante> EquipoAuditoNombreCargo { get; set; }
         public string ExpertoCertificacion { get; set; }
         public string FechaAsignacionProceso { get; set; }
         public string RedaccionSugerida { get; set; }

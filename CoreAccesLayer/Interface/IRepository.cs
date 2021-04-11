@@ -14,7 +14,6 @@ namespace CoreAccesLayer.Interface
         bool CallProcedure<T>(string nameProcedure, params object[] parameters) where T : class, new();
         List<T> GetDataByProcedure<T>(string nameProcedure, params object[] parameters) where T : class, new();
         List<T> SimpleSelect<T>(Expression<Func<T, bool>> predicate) where T : class, new();
-        List<T> Getall<T>() where T : class, new();
         bool Commit();
         bool Rollback();
 

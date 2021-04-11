@@ -2,14 +2,18 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCP
+namespace Resportes.NewFolder
 {
-    public class TCPREPListaAsistencia
+    class REPPlanAuditoria
     {
         public string NombreEmpresa { get; set; }
+       
         public string CodigoServicio { get; set; }
-        public string FechaInicio { get; set; }
-        public string FechaFin { get; set; }
         public string TipoAuditoria { get; set; }
+        public string ModalidadAuditoria { get; set; }
+        public string Norma { get; set; }
+        public string FechaInicio { get; set; }
+
+
     }
 }

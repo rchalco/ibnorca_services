@@ -62,10 +62,10 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                     }
                 });
 
-                //if (response.State != ResponseType.Success)
-                //{
-                //    return response;
-                //}
+                if (response.State != ResponseType.Success)
+                {
+                    return response;
+                }
 
                 Entity<Praprogramasdeauditorium> entity = new Entity<Praprogramasdeauditorium> { EntityDB = req, stateEntity = StateEntity.add };
                 if (req.IdPrAprogramaAuditoria != 0)
