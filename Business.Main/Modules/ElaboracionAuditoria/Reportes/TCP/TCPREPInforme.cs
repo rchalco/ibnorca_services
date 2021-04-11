@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Resportes.ReportDTO
 {
-    public class REPInforme
+    class TCPREPInforme
     {
         public string IDCliente { get; set; }
         public string TipoAuditoria { get; set; }

@@ -19,8 +19,10 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCP
         public string FechaInicio { get; set; }
         public List<RepEquipoTCP> ListEquipoAuditor { get; set; }
         public List<RepCronogramaEquipoTCP> ListCronograma { get; set; }
+        
 
     }
+
     public class RepEquipoTCP
     {
         public string EquipoAuditor { get; set; }
@@ -38,5 +40,4 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCP
         public string EquipoAuditado { get; set; }
         public string ResponsableOrganiza { get; set; }
     }
-
 }

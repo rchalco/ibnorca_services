@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Resportes.ReportDTO
 {
-    class REPDesignacionAuditoria
+    public class REPDesignacionAuditoria
     {
 
         public string TipoAuditoria { get; set; }

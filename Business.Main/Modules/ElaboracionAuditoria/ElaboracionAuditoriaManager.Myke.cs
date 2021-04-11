@@ -4,11 +4,14 @@ using Business.Main.DataMapping.DTOs;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.BuscarxIdClienteEmpresaDTO;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.ListarAuditoresxCargoCalificadoDTO;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.ListarContactosEmpresaDTO;
+using Business.Main.Modules.ElaboracionAuditoria.Reportes.TCP;
 using Business.Main.Modules.ElaboracionAuditoria.Reportes.TCS;
+using Business.Main.Modules.ElaboracionAuditoria.Resportes.TCS;
 using Domain.Main.Wraper;
 using Newtonsoft.Json;
 using PlumbingProps.Document;
 using PlumbingProps.Services;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -115,8 +118,6 @@ namespace Business.Main.Modules.ElaboracionAuditoria
             }
             return response;
         }
-<<<<<<< Updated upstream
-=======
 
         /// <summary>
         /// 
@@ -327,7 +328,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 //string filePlantilla = pathPlantilla;
                 string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
                 WordHelper generadorWord = new WordHelper(filePlantilla);
-
+              
 
                 //generamos el documento en word
                 //string fileNameGenerado = generadorWord.GenerarDocumento(praSuspension, null, $"{Global.PATH_PLANTILLA_DESIGNACION}\\Salidas");
@@ -1004,6 +1005,5 @@ namespace Business.Main.Modules.ElaboracionAuditoria
             }
             return response;
         }
->>>>>>> Stashed changes
     }
 }

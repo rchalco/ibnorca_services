@@ -22,12 +22,12 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCP
         public string AuditorEnsayos { get; set; }
         public string Experto { get; set; }
         public string AuditorFormacion { get; set; }
-
+        
         public string CriterioAuditoria { get; set; }
         public string Si1 { get; set; }
         public string No1 { get; set; }
         public string Descripcion1 { get; set; }
-
+        
         public string Si2 { get; set; }
         public string No2 { get; set; }
         public string NA2 { get; set; }
@@ -48,7 +48,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCP
         public List<TCPListCorrecciones> ListCorrecciones { get; set; }
         public string CoordinadorAuditoria { get; set; }
         public List<TCPListProductos> ListProductos { get; set; }
-
+        
 
         //public string CorreoElectronico { get; set; }
 
@@ -59,7 +59,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCP
         public string Producto { get; set; }
         public string Normas { get; set; }
     }
-    public class TCPListaHallazgos
+    public class TCPListaHallazgos 
     {
         public string Fortaleza { get; set; }
         public string OportunidadMejora { get; set; }
