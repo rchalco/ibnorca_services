@@ -35,7 +35,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
     {
         public ResponseObject<Praprogramasdeauditorium> RegisterProgramaAuditoria(Praprogramasdeauditorium req)
         {
-            ResponseObject<Praprogramasdeauditorium> response = new ResponseObject<Praprogramasdeauditorium> { State = ResponseType.Success };
+            ResponseObject<Praprogramasdeauditorium> response = new ResponseObject<Praprogramasdeauditorium> { State = ResponseType.Success }; 
             try
             {
                 //Logica del negocio
