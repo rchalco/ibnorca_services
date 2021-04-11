@@ -22,8 +22,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
 {
     public partial class ElaboracionAuditoriaManager
     {
-
-        public Response GenerarREPListaVerificacionReunionApertura(int IdCiclo, string pathPlantilla,string fechaInicio,string fechaFin, string nombreYFirmaDeAuditorLider)
+        public Response GenerarREPListaVerificacionReunionApertura(int IdCiclo, string pathPlantilla, string fechaInicio, string fechaFin, string nombreYFirmaDeAuditorLider)
         {
             Response response = new Response { Message = "", State = ResponseType.Success };
             try
@@ -86,7 +85,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     FechaInicio = fechaInicio,
                     FechaFin = fechaFin,
                     TipoAuditoria = praciclocronograma.Referencia,
-                    Norma =normas,
+                    Norma = normas,
                     AuditorLider = nombreYFirmaDeAuditorLider
 
 
@@ -171,8 +170,8 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     CodigoDeServicio = praprogramasdeauditorium.CodigoIafws,
                     FechaDeAuditoria = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
                     TipoDeAuditoria = praciclocronograma.Referencia,
-                    NormasAuditadas =normas,
-                    NombreYFirmaDeAuditorLider= nombreYFirmaDeAuditorLider
+                    NormasAuditadas = normas,
+                    NombreYFirmaDeAuditorLider = nombreYFirmaDeAuditorLider
 
                 };
                 string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
@@ -258,7 +257,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     TipoAuditoria = praciclocronograma.Referencia,
                     Norma = normas
 
-                   
+
                 };
                 string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
                 WordHelper generadorWord = new WordHelper(filePlantilla);
@@ -277,9 +276,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
             }
             return response;
         }
-
-
-        public Response GenerarREPListaVerificacionAuditor(int IdCiclo, string pathPlantilla, string usuario, string cargo, string procesoAuditado,string nombreAuditado )
+        public Response GenerarREPListaVerificacionAuditor(int IdCiclo, string pathPlantilla, string usuario, string cargo, string procesoAuditado, string nombreAuditado)
         {
             Response response = new Response { Message = "", State = ResponseType.Success };
             try
@@ -340,16 +337,16 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     NombreEmpresa = cliente.NombreRazon,
                     Sitios = sitios,
                     TipoAuditoria = praciclocronograma.Referencia,
-                    Norma =normas,
+                    Norma = normas,
                     FechaAuditoria = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
-                    Usuario =usuario,
+                    Usuario = usuario,
                     Cargo = cargo,
                     ProcesoAuditado = procesoAuditado,
                     NombreAuditado = nombreAuditado,
                     Fecha = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
-                    SitiosAuditado= sitios
+                    SitiosAuditado = sitios
 
-                   
+
                 };
                 string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
                 WordHelper generadorWord = new WordHelper(filePlantilla);
@@ -368,7 +365,6 @@ namespace Business.Main.Modules.ElaboracionAuditoria
             }
             return response;
         }
-
         public Response GenerarREPLIstaVerificacionBPM(int IdCiclo, string pathPlantilla, string nombreYApellidos, string responsabilidadORol)
         {
             Response response = new Response { Message = "", State = ResponseType.Success };
@@ -452,7 +448,6 @@ namespace Business.Main.Modules.ElaboracionAuditoria
             }
             return response;
         }
-
         public Response GenerarREPDatosDeLaOrganizacion(int IdCiclo, string pathPlantilla, string nombreAuditorLider, string nombreCargoRepresentanteOrg, string coordinadorAuditoria)
         {
             Response response = new Response { Message = "", State = ResponseType.Success };
@@ -541,13 +536,11 @@ namespace Business.Main.Modules.ElaboracionAuditoria
             }
             return response;
         }
-
         public object GenerarREPDecisionNOFavorable(int v1, string v2, string v3, string v4, string v5, string v6, string v7)
         {
             throw new NotImplementedException();
         }
-
-        public Response GenerarREPEvaluacionYRecomendacionesParaProceso(int IdCiclo, string pathPlantilla, string expertoCertificacion, string fechaAsignacionProceso,string redaccionSugerida)
+        public Response GenerarREPEvaluacionYRecomendacionesParaProceso(int IdCiclo, string pathPlantilla, string expertoCertificacion, string fechaAsignacionProceso, string redaccionSugerida)
         {
             Response response = new Response { Message = "", State = ResponseType.Success };
             try
@@ -610,15 +603,16 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     FechaDeAuditoria = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
                     TipoDeAuditoria = praciclocronograma.Referencia,
                     NormasAuditadas = normas,
-                    EquipoAuditoNombreCargo = praciclocronograma.Pracicloparticipantes.Select(x =>
-                    {   
+                    //EquipoAuditoNombreCargo = null,
+                    ListEquipoAuditoNombreCargo = praciclocronograma.Pracicloparticipantes.Select(x =>
+                    {
                         RepDesginacionParticipante repDesginacionParticipante = new RepDesginacionParticipante();
                         repDesginacionParticipante.Cargo = string.Empty;
                         if (!string.IsNullOrEmpty(x.CargoDetalleWs))
                         {
                             ListaCalificado cargo = JsonConvert.DeserializeObject<ListaCalificado>(x.CargoDetalleWs);
                             repDesginacionParticipante.Cargo = cargo.CargoPuesto;
-                         }
+                        }
 
                         repDesginacionParticipante.Participante = string.Empty;
                         if (!string.IsNullOrEmpty(x.ParticipanteDetalleWs))
@@ -628,35 +622,34 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                         }
 
                         return repDesginacionParticipante;
-                      }).ToList(),
-                    ExpertoCertificacion= expertoCertificacion,
+                    }).ToList(),
+                    ExpertoCertificacion = expertoCertificacion,
                     FechaAsignacionProceso = fechaAsignacionProceso,
-                    RedaccionSugerida= redaccionSugerida
+                    RedaccionSugerida = redaccionSugerida
                 };
-    string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
-    WordHelper generadorWord = new WordHelper(filePlantilla);
+                string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
+                WordHelper generadorWord = new WordHelper(filePlantilla);
 
                 //generamos el documento en word
                 Dictionary<string, CellTitles[]> pTitles = new Dictionary<string, CellTitles[]>();
                 CellTitles[] cellTitlesTitulo = new CellTitles[2];
                 cellTitlesTitulo[0] = new CellTitles { Title = "Calificación", Visible = true, Width = "50" };
                 cellTitlesTitulo[1] = new CellTitles { Title = "Auditor", Visible = true, Width = "50" };
-                pTitles.Add("EquipoAuditoNombreCargo", cellTitlesTitulo);
+                pTitles.Add("ListEquipoAuditoNombreCargo", cellTitlesTitulo);
 
                 //generamos el documento en word
 
                 string fileNameGenerado = generadorWord.GenerarDocumento(praEvaluacionYRecomendacionesParaProceso, pTitles, $"{Global.PATH_PLANTILLA_DESIGNACION}\\Salidas");
 
 
-    response.Message = fileNameGenerado;
+                response.Message = fileNameGenerado;
             }
             catch (Exception ex)
-{
-    ProcessError(ex, response);
-}
-return response;
+            {
+                ProcessError(ex, response);
+            }
+            return response;
         }
-
         public Response GenerarDescisionFavorableCertificacion(int IdCiclo, string pathPlantilla, string nombre, string cargo)
         {
             Response response = new Response { Message = "", State = ResponseType.Success };
@@ -753,7 +746,7 @@ return response;
 
                         return repDesginacionParticipante;
                     }).ToList()*/
-    };
+                };
                 string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
                 WordHelper generadorWord = new WordHelper(filePlantilla);
 
@@ -771,7 +764,7 @@ return response;
             }
             return response;
         }
-        public Response GenerarREPDecisionNOFavorable(int IdCiclo, string pathPlantilla, string nombreApellidos, string cargo, string otorgarRenovarMantener,string sistemaDeGestionNB,string consideracionesNumeradas,string nroCertificadoIbnorca)
+        public Response GenerarREPDecisionNOFavorable(int IdCiclo, string pathPlantilla, string nombreApellidos, string cargo, string otorgarRenovarMantener, string sistemaDeGestionNB, string consideracionesNumeradas, string nroCertificadoIbnorca)
         {
             Response response = new Response { Message = "", State = ResponseType.Success };
             try
@@ -830,23 +823,23 @@ return response;
                 REPDecisionNOFavorable praDecisionNOFavorable = new REPDecisionNOFavorable
                 {
 
-                    FechaIbnorca= praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
-                    ReferenciaIbnorca= praciclocronograma.Referencia,
+                    FechaIbnorca = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
+                    ReferenciaIbnorca = praciclocronograma.Referencia,
                     NombreApellidos = nombreApellidos,
-                    Cargo =cargo,
+                    Cargo = cargo,
                     Organizacion = cliente.NombreRazon,
-                    OtorgarRenovar= otorgarRenovarMantener,
+                    OtorgarRenovar = otorgarRenovarMantener,
                     NbIso = normas,
-                    CertificacionRenovacion= praciclocronograma.Referencia,
-                    SistemaDeGestionNB= sistemaDeGestionNB,
-                    ConsideracionesNumeradas= consideracionesNumeradas,
+                    CertificacionRenovacion = praciclocronograma.Referencia,
+                    SistemaDeGestionNB = sistemaDeGestionNB,
+                    ConsideracionesNumeradas = consideracionesNumeradas,
                     Seguimiento = praciclocronograma.Referencia,
 
-                    NroCertificadoIbnorca= nroCertificadoIbnorca,
-                    Alcance =alcance,
-                    Sitios =sitios
+                    NroCertificadoIbnorca = nroCertificadoIbnorca,
+                    Alcance = alcance,
+                    Sitios = sitios
 
-        
+
                 };
                 string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
                 WordHelper generadorWord = new WordHelper(filePlantilla);
@@ -865,8 +858,7 @@ return response;
             }
             return response;
         }
-
-        public Response GenerarRepNotaSuspensionCertifica(int IdCiclo, string pathPlantilla, string correlativoCabecera,string nombreNota,string cargo,string texto1,string nroCertificado,string directorEjecutivo)
+        public Response GenerarRepNotaSuspensionCertifica(int IdCiclo, string pathPlantilla, string correlativoCabecera, string nombreNota, string cargo, string texto1, string nroCertificado, string directorEjecutivo)
         {
             Response response = new Response { Message = "", State = ResponseType.Success };
             try
@@ -925,18 +917,18 @@ return response;
                 RepNotaSuspensionCertifica praNotaSuspensionCertifica = new RepNotaSuspensionCertifica
                 {
 
-                    FechaCabecera=DateTime.Now.ToString("dd/MM/yyyy"),
-                    CorrelativoCabecera=correlativoCabecera,
-                    NombreNota= nombreNota,
-                    Cargo =cargo,
+                    FechaCabecera = DateTime.Now.ToString("dd/MM/yyyy"),
+                    CorrelativoCabecera = correlativoCabecera,
+                    NombreNota = nombreNota,
+                    Cargo = cargo,
                     NombreEmpresa = cliente.NombreRazon,
                     ReferenciaNota = praciclocronograma.Referencia,
-                    Texto1 =texto1,
-                    IbnorcaRTM =praprogramasdeauditorium.CodigoServicioWs,
+                    Texto1 = texto1,
+                    IbnorcaRTM = praprogramasdeauditorium.CodigoServicioWs,
                     NroCertificado = nroCertificado,
                     NombreEmpresaTexto = cliente.NombreRazon,
-                    DescripcionOtrogado =alcance,
-                    Sitios =sitios,
+                    DescripcionOtrogado = alcance,
+                    Sitios = sitios,
                     FechaLiteral1 = DateTime.Now.ToString("dd/MM/yyyy"),
                     Seguimiento = praciclocronograma.Referencia,
                     FechaLiteral2 = DateTime.Now.ToString("dd/MM/yyyy"),
@@ -960,7 +952,6 @@ return response;
             }
             return response;
         }
-
         public Response GenerarREPNotaDeRetiroDeCertificacion(int IdCiclo, string pathPlantilla, string correlativoCabecera, string nombreApellidos, string cargo, string nroCertificado)
         {
             Response response = new Response { Message = "", State = ResponseType.Success };
@@ -1021,15 +1012,15 @@ return response;
                 {
 
                     FechaIbnorca = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
-                    CorrelativoCabecera= correlativoCabecera,
+                    CorrelativoCabecera = correlativoCabecera,
                     ReferenciaIbnorca = praciclocronograma.Referencia,
                     NombreApellidos = nombreApellidos,
                     Cargo = cargo,
                     Organizacion = cliente.NombreRazon,
-                    NbIso =normas,
+                    NbIso = normas,
                     SistemaDeGestion = praciclocronograma.Referencia,
-                    Alcance =alcance,
-                    Sitios =sitios,
+                    Alcance = alcance,
+                    Sitios = sitios,
                     NroCertificadoIbnorca = nroCertificado
 
                 };
