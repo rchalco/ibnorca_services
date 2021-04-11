@@ -4,11 +4,7 @@ using System.Text;
 
 namespace Resportes.NewFolder
 {
-<<<<<<< Updated upstream:Business.Main/Modules/ElaboracionAuditoria/Reportes/TCP/REPDesignacionAuditoria.cs
     class REPDesignacionAuditoria
-=======
-    class TCPREPDesignacionAuditoria
->>>>>>> Stashed changes:Business.Main/Modules/ElaboracionAuditoria/Reportes/TCP/TCPREPDesignacionAuditoria.cs
     {
 
         public string TipoAuditoria { get; set; }
