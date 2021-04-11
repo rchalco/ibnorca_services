@@ -54,11 +54,11 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCP
 
     }
 
-    public class TCPListProductos
-    {
-        public string Producto { get; set; }
-        public string Normas { get; set; }
-    }
+        public class TCPListProductos
+        {
+            public string Producto { get; set; }
+            public string Normas { get; set; }
+        }
     public class TCPListaHallazgos 
     {
         public string Fortaleza { get; set; }
