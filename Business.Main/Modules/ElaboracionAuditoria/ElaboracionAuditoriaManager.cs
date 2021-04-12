@@ -133,12 +133,13 @@ namespace Business.Main.Modules.ElaboracionAuditoria
             }
             return response;
         }
-        public ResponseQuery<Elalistaspredefinida> GetListasPredefinidas()
+        public ResponseQuery<Elalistaspredefinida> GetListasPredefinidas(string area)
         {
             ResponseQuery<Elalistaspredefinida> response = new ResponseQuery<Elalistaspredefinida>();
             try
             {
-                response.ListEntities = repositoryMySql.Getall<Elalistaspredefinida>();
+                //response.ListEntities = repositoryMySql.SimpleSelect<Elalistaspredefinida>(y => y.Area == area).OrderBy(x => x.Nemotico).ThenBy(z => z.Orden).ToList();
+                response.ListEntities = repositoryMySql.SimpleSelect<Elalistaspredefinida>(y => y.Area == area);
                 response.State = ResponseType.Success;
                 response.Message = "Lista obtenida correctamente";
             }

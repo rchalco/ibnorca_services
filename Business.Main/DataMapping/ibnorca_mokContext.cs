@@ -132,13 +132,33 @@ namespace Business.Main.DataMapping
 
                 entity.Property(e => e.IdelaContenidoauditoria).HasColumnName("idela_contenidoauditoria");
 
+                entity.Property(e => e.Area)
+                    .HasColumnType("varchar(45)")
+                    .HasColumnName("area")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.Property(e => e.Categoria)
+                    .HasColumnType("varchar(50)")
+                    .HasColumnName("categoria")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
                 entity.Property(e => e.Contenido)
                     .HasColumnType("varchar(1000)")
                     .HasColumnName("contenido")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
 
+                entity.Property(e => e.Endocumento).HasColumnName("endocumento");
+
                 entity.Property(e => e.IdelaAuditoria).HasColumnName("idelaAuditoria");
+
+                entity.Property(e => e.Label)
+                    .HasColumnType("varchar(500)")
+                    .HasColumnName("label")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
 
                 entity.Property(e => e.Nemotico)
                     .HasColumnType("varchar(100)")
@@ -146,9 +166,13 @@ namespace Business.Main.DataMapping
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
 
-                entity.Property(e => e.Seleccionado)
-                    .HasColumnType("bit(1)")
-                    .HasColumnName("seleccionado");
+                entity.Property(e => e.Seleccionado).HasColumnName("seleccionado");
+
+                entity.Property(e => e.Titulo)
+                    .HasColumnType("varchar(100)")
+                    .HasColumnName("titulo")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
 
                 entity.HasOne(d => d.IdelaAuditoriaNavigation)
                     .WithMany(p => p.Elacontenidoauditoria)
@@ -301,6 +325,12 @@ namespace Business.Main.DataMapping
 
                 entity.Property(e => e.Idelalistaspredefinidas).HasColumnName("idelalistaspredefinidas");
 
+                entity.Property(e => e.Area)
+                    .HasColumnType("varchar(45)")
+                    .HasColumnName("area")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
                 entity.Property(e => e.Categoria)
                     .HasColumnType("varchar(50)")
                     .HasColumnName("categoria")
@@ -313,6 +343,14 @@ namespace Business.Main.DataMapping
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
 
+                entity.Property(e => e.Endocumento).HasColumnName("endocumento");
+
+                entity.Property(e => e.Label)
+                    .HasColumnType("varchar(500)")
+                    .HasColumnName("label")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
                 entity.Property(e => e.Nemotico)
                     .HasColumnType("varchar(100)")
                     .HasColumnName("nemotico")
@@ -320,6 +358,12 @@ namespace Business.Main.DataMapping
                     .HasCollation("utf8mb4_0900_ai_ci");
 
                 entity.Property(e => e.Orden).HasColumnName("orden");
+
+                entity.Property(e => e.Titulo)
+                    .HasColumnType("varchar(100)")
+                    .HasColumnName("titulo")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
             });
 
             modelBuilder.Entity<Paramarea>(entity =>

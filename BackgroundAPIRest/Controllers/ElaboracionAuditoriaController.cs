@@ -40,10 +40,10 @@ namespace BackgroundAPIRest.Controllers
         }
         [HttpPost("GetListasPredefinidas")]
         [EnableCors("MyPolicy")]
-        public ResponseQuery<Elalistaspredefinida> GetListasPredefinidas()
+        public ResponseQuery<Elalistaspredefinida> GetListasPredefinidas(RequestGetListasPredefinidas requestGetListasPredefinidas)
         {
             ElaboracionAuditoriaManager elaboracionAuditoriaManager = new ElaboracionAuditoriaManager();
-            return elaboracionAuditoriaManager.GetListasPredefinidas();
+            return elaboracionAuditoriaManager.GetListasPredefinidas(requestGetListasPredefinidas.area);
         }
         [HttpPost("GetListasDocumetos")]
         [EnableCors("MyPolicy")]
