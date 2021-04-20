@@ -1012,13 +1012,40 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 });
 
                 Elaauditorium elaauditorium = repositoryMySql.SimpleSelect<Elaauditorium>(x => x.IdPrAcicloProgAuditoria == IdCiclo).First();
-                var contenidos = repositoryMySql.SimpleSelect<Elacontenidoauditorium>(x=>x.IdelaAuditoria == elaauditorium.IdelaAuditoria);
+                var contenidos = repositoryMySql.SimpleSelect<Elacontenidoauditorium>(x => x.IdelaAuditoria == elaauditorium.IdelaAuditoria);
                 Elacontenidoauditorium elaContenido = new Elacontenidoauditorium();
                 elaContenido = contenidos.Where(x => x.Nemotico == "PLAN_CRITERIO").First();
-                string cadenaSINO;
-                contenidos.Where(x => x.Nemotico == "INFPRE_DESVIACION").ToList().ForEach(x=>{
-                    cadenaSINO = x.Label + " " + x.Contenido + (x.Seleccionado == 1 ? WordHelper.GetCodeKey(WordHelper.keys.enter):WordHelper.GetCodeKey(WordHelper.keys.enter));
+                string cadenaSINO = "";
+                contenidos.Where(x => x.Nemotico == "INFPRE_DESVIACION").ToList().ForEach(x =>
+                {
+                    cadenaSINO = (x.Seleccionado == 1 ? WordHelper.GetCodeKey(WordHelper.keys.SI) : WordHelper.GetCodeKey(WordHelper.keys.NO)) + " " + x.Label + " " + x.Contenido + WordHelper.GetCodeKey(WordHelper.keys.enter);
+
                 });
+
+                string cadenaSINO1 = "";
+                contenidos.Where(x => x.Nemotico == "INFPRE_REMOTO").ToList().ForEach(x =>
+                {
+                    cadenaSINO1 = (x.Seleccionado == 1 ? WordHelper.GetCodeKey(WordHelper.keys.SI) : WordHelper.GetCodeKey(WordHelper.keys.NO)) + " " + x.Label + " " + x.Contenido + WordHelper.GetCodeKey(WordHelper.keys.enter);
+                });
+
+                string planMuestreo = "";
+                contenidos.Where(x => x.Nemotico == "ACTAMUESTREO_PLAN").ToList().ForEach(x =>
+                {
+                    planMuestreo = x.Contenido;
+                });
+
+                var elahallazgos = repositoryMySql.SimpleSelect<Elahallazgo>(x => x.IdelaAuditoria == elaauditorium.IdelaAuditoria);
+                int nroFortaleza = 0;
+                nroFortaleza = elahallazgos.Count(x => x.TipoNemotico == "F");
+
+                int oportunidad = 0;
+                oportunidad = elahallazgos.Count(x => x.TipoNemotico == "OM");
+
+                int noConformidadMayor = 0;
+                noConformidadMayor = elahallazgos.Count(x => x.TipoNemotico == "NCM");
+
+                int noConformidadMenor = 0;
+                noConformidadMenor = elahallazgos.Count(x => x.TipoNemotico == "NCm");
 
 
                 //EquipoAuditoNombreCargo = null,
@@ -1037,16 +1064,17 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     //AuditorLider = auditor.nombreCompleto, //No se tiene
                     EquipoAuditor = equipoAuditor,
                     CriterioAuditoria = elaContenido.Contenido,
+                    SiNODescripcion1 = cadenaSINO,
+                    SiNoDescripcion2 = cadenaSINO1,
+                    PlanMuestreo = planMuestreo,
 
-
-
-                    ListHallazgos = praciclocronograma.Pracicloparticipantes.Select(x =>
+                    ListHallazgos = elahallazgos.Select(x =>
                     {
                         TCPListaHallazgos repRep = new TCPListaHallazgos();
-                        repRep.Fortaleza = string.Empty;
-                        repRep.OportunidadMejora = string.Empty;
-                        repRep.ConformidadMayor = string.Empty;
-                        repRep.ConformidadMenor = string.Empty;
+                        repRep.Fortaleza = nroFortaleza.ToString();
+                        repRep.OportunidadMejora = oportunidad.ToString();
+                        repRep.ConformidadMayor = noConformidadMayor.ToString();
+                        repRep.ConformidadMenor = noConformidadMenor.ToString();
 
 
                         return repRep;
