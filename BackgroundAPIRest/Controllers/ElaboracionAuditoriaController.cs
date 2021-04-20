@@ -17,6 +17,14 @@ namespace BackgroundAPIRest.Controllers
     [ApiController]
     public class ElaboracionAuditoriaController : ControllerBase
     {
+        [HttpPost("RegistrarPlanAuditoria")]
+        [EnableCors("MyPolicy")]
+        public ResponseObject<PlanAuditoriaDTO> RegistrarPlanAuditoria(PlanAuditoriaDTO planAuditoriaDTO)
+        {
+            ElaboracionAuditoriaManager elaboracionAuditoriaManager = new ElaboracionAuditoriaManager();
+            return elaboracionAuditoriaManager.RegistrarPlanAuditoria(planAuditoriaDTO);
+        }
+
         [HttpPost("GetListasVerificacion")]
         [EnableCors("MyPolicy")]
         public ResponseQuery<Paramitemselect> GetListasVerificacion(RequestGetListasVerificacion requestGetListasVerificacion)

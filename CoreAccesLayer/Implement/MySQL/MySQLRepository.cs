@@ -71,16 +71,18 @@ namespace CoreAccesLayer.Implement.MySQL
             else if (entity.stateEntity == StateEntity.add)
             {
                 _dbContext.Add(entity.EntityDB);
+                _dbContext.SaveChanges();
             }
             else if (entity.stateEntity == StateEntity.modify)
             {
                 _dbContext.Update(entity.EntityDB);
+                _dbContext.SaveChanges();
             }
             else if (entity.stateEntity == StateEntity.remove)
             {
                 _dbContext.Remove(entity.EntityDB);
             }
-            _dbContext.SaveChanges();
+            
             return true;
         }
     }

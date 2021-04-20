@@ -9,8 +9,10 @@ namespace Business.Main.DataMapping
     {
         public Elaauditorium()
         {
+            Elaadps = new HashSet<Elaadp>();
             Elacontenidoauditoria = new HashSet<Elacontenidoauditorium>();
             Elacronogamas = new HashSet<Elacronogama>();
+            Elahallazgos = new HashSet<Elahallazgo>();
         }
 
         public int IdelaAuditoria { get; set; }
@@ -19,9 +21,9 @@ namespace Business.Main.DataMapping
         public string UsuarioRegistro { get; set; }
 
         public virtual Praciclosprogauditorium IdPrAcicloProgAuditoriaNavigation { get; set; }
-        public virtual Elaadp Elaadp { get; set; }
-        public virtual Elahallazgo Elahallazgo { get; set; }
+        public virtual ICollection<Elaadp> Elaadps { get; set; }
         public virtual ICollection<Elacontenidoauditorium> Elacontenidoauditoria { get; set; }
         public virtual ICollection<Elacronogama> Elacronogamas { get; set; }
+        public virtual ICollection<Elahallazgo> Elahallazgos { get; set; }
     }
 }

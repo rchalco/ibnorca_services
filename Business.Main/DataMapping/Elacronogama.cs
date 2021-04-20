@@ -11,8 +11,8 @@ namespace Business.Main.DataMapping
         public int? Idelaauditoria { get; set; }
         public long? IdDireccionPaproducto { get; set; }
         public long? IdDireccionPasistema { get; set; }
-        public DateTime? FechaInicio { get; set; }
-        public DateTime? FechaFin { get; set; }
+        public string FechaInicio { get; set; }
+        public string FechaFin { get; set; }
         public string Horario { get; set; }
         public string RequisitosEsquema { get; set; }
         public string PersonaEntrevistadaCargo { get; set; }
@@ -22,8 +22,6 @@ namespace Business.Main.DataMapping
         public string Auditor { get; set; }
         public string Cargo { get; set; }
 
-        public virtual Pradireccionespaproducto IdDireccionPaproductoNavigation { get; set; }
-        public virtual Pradireccionespasistema IdDireccionPasistemaNavigation { get; set; }
         public virtual Elaauditorium IdelaauditoriaNavigation { get; set; }
     }
 }

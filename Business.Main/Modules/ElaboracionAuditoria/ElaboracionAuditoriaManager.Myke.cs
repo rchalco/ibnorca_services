@@ -328,7 +328,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 //string filePlantilla = pathPlantilla;
                 string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
                 WordHelper generadorWord = new WordHelper(filePlantilla);
-              
+
 
                 //generamos el documento en word
                 //string fileNameGenerado = generadorWord.GenerarDocumento(praSuspension, null, $"{Global.PATH_PLANTILLA_DESIGNACION}\\Salidas");
@@ -384,6 +384,14 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     return response;
                 }
                 ContactoEmpresa contactoEmpresa = resulServices.lstContactos?.Count > 0 ? resulServices.lstContactos[0] : null;
+
+                ///TDO obtener contenido para documento
+                var resulDBAuditoria = repositoryMySql.SimpleSelect<Elaauditorium>(x => x.IdPrAcicloProgAuditoria == IdCiclo);
+                var resulDBContenidoAuditoria = repositoryMySql.SimpleSelect<Elacontenidoauditorium>(x => x.IdelaAuditoria == resulDBAuditoria.First().IdelaAuditoria);
+
+                //INFPROD_CONCLUSION
+                var resulConclusiones = resulDBContenidoAuditoria.Where(x => x.Nemotico == "INFPROD_CONCLUSION");
+                //resulConclusiones.First().Contenido
 
                 string normas = "";
 
