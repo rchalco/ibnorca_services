@@ -28,7 +28,7 @@ namespace Business.Main.Cross
         public static string IDENTIFICADOR = "iauditoria";
 
         ///Seccion de plantillas
-        public static string PATH_PLANTILLA_DESIGNACION = ConfigManager.GetConfiguration().GetSection("PLANTILLA_DESGINACION_ROOT").Value; 
+        public static string PATH_PLANTILLA_DESIGNACION = ConfigManager.GetConfiguration().GetSection("PLANTILLAS__PATH").Value; 
 
     }
 }

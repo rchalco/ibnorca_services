@@ -11,11 +11,13 @@ using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.BuscarxIdClien
 using PlumbingProps.Services;
 using Business.Main.Cross;
 using CoreAccesLayer.Wraper;
+using System.IO;
 
 namespace Business.Main.Modules.ElaboracionAuditoria
 {
     public partial class ElaboracionAuditoriaManager : BaseManager
     {
+
         public ResponseObject<PlanAuditoriaDTO> RegistrarPlanAuditoria(PlanAuditoriaDTO planAuditoriaDTO)
         {
             ResponseObject<PlanAuditoriaDTO> response = new ResponseObject<PlanAuditoriaDTO>
@@ -257,16 +259,18 @@ namespace Business.Main.Modules.ElaboracionAuditoria
             }
             return response;
         }
-        public Response GenerarDocumento(string plantilla, int IdCicloAuditoria)
+        public Response GenerarDocumento(string NombrePlantilla, string area, int IdCicloAuditoria)
         {
             Response resul = new Response();
             try
             {
-                switch (plantilla)
+                //string pathPlantilla = Path.Combine(Global.PATH_PLANTILLAS, area);
+                ElaboracionAuditoriaManager elaboracionAuditoriaManager = new ElaboracionAuditoriaManager();
+                if (NombrePlantilla.Equals("REG-PRO-TCS-05-01.07") && area.Equals("TCS")) //Plan de auditoria
                 {
-                    default:
-                        break;
+                    //elaboracionAuditoriaManager.GenerarPlanAuditoria(IdCicloAuditoria,)
                 }
+
             }
             catch (Exception ex)
             {
