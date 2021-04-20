@@ -16,12 +16,58 @@ namespace Business.Main.Modules.ElaboracionAuditoria
 {
     public partial class ElaboracionAuditoriaManager : BaseManager
     {
-        public Response RegistrarPlanAuditoria(PlanAuditoriaDTO planAuditoriaDTO)
+        public ResponseObject<PlanAuditoriaDTO> RegistrarPlanAuditoria(PlanAuditoriaDTO planAuditoriaDTO)
         {
-            Response response = new Response();
+            ResponseObject<PlanAuditoriaDTO> response = new ResponseObject<PlanAuditoriaDTO>
+            {
+                Message = "Se registro correctamente el plan de auditoria",
+                State = ResponseType.Success,
+                Object = planAuditoriaDTO
+            };
             try
             {
+                ///TODO: verfificamos que exista la auditoria
+                if (planAuditoriaDTO.Elaauditorium == null)
+                {
+                    response.Message = "el objeto elaauditoria llego nulo, imposible ralizar el registro";
+                    response.State = ResponseType.Warning;
+                    return response;
+                }
 
+                ///TODO: se registra la auditoria
+                ///asignamos las llaves correctas
+                planAuditoriaDTO.Elaauditorium.Elaadps?.ToList().ForEach(x =>
+                {
+                    x.IdelaAuditoria = planAuditoriaDTO.Elaauditorium.IdelaAuditoria;
+                    x.IdelaAuditoriaNavigation = planAuditoriaDTO.Elaauditorium;
+                });
+                planAuditoriaDTO.Elaauditorium.Elacontenidoauditoria?.ToList().ForEach(x =>
+                {
+                    x.IdelaAuditoria = planAuditoriaDTO.Elaauditorium.IdelaAuditoria;
+                    x.IdelaAuditoriaNavigation = planAuditoriaDTO.Elaauditorium;
+                });
+                planAuditoriaDTO.Elaauditorium.Elacronogamas?.ToList().ForEach(x =>
+                {
+                    x.Idelaauditoria = planAuditoriaDTO.Elaauditorium.IdelaAuditoria;
+                    x.IdelaauditoriaNavigation = planAuditoriaDTO.Elaauditorium;
+                });
+                planAuditoriaDTO.Elaauditorium.Elahallazgos?.ToList().ForEach(x =>
+                {
+                    x.IdelaAuditoria = planAuditoriaDTO.Elaauditorium.IdelaAuditoria;
+                    x.IdelaAuditoriaNavigation = planAuditoriaDTO.Elaauditorium;
+                });
+
+                ///Eliminamos los cronogramas
+                var lCronogramas = repositoryMySql.SimpleSelect<Elacronogama>(x => x.Idelaauditoria == planAuditoriaDTO.Elaauditorium.IdelaAuditoria);
+                lCronogramas.ToList().ForEach(x =>
+                {
+                    Entity<Elacronogama> entityCronograma = new Entity<Elacronogama> { EntityDB = x, stateEntity = StateEntity.remove };
+                    repositoryMySql.SaveObject<Elacronogama>(entityCronograma);
+                });
+                ///guardamos la auditoria
+                Entity<Elaauditorium> entity = new Entity<Elaauditorium> { EntityDB = planAuditoriaDTO.Elaauditorium, stateEntity = StateEntity.modify };
+                repositoryMySql.SaveObject<Elaauditorium>(entity);
+                response.Object.Elaauditorium = entity.EntityDB;
             }
             catch (Exception ex)
             {
@@ -82,14 +128,27 @@ namespace Business.Main.Modules.ElaboracionAuditoria
 
                 response.Object.Cliente = responseBusquedaCliente.resultados.First();
                 response.Object.NombreClienteCertificado = resulDBCicloPrograma.First().NombreOrganizacionCertificado;
-                ///TDO falta corregir la relacion 1 - n del equipo auditor con el cronograma o dejarlo como JSON
                 ///TDO llenamos las listas para TCP y TCS 
                 response.Object.Praciclonormassistema = repositoryMySql.SimpleSelect<Praciclonormassistema>(x => x.IdPrAcicloProgAuditoria == resulDBCicloPrograma.First().IdPrAcicloProgAuditoria);
                 response.Object.Pradireccionespaproducto = repositoryMySql.SimpleSelect<Pradireccionespaproducto>(x => x.IdPrAcicloProgAuditoria == resulDBCicloPrograma.First().IdPrAcicloProgAuditoria);
                 response.Object.Pradireccionespasistema = repositoryMySql.SimpleSelect<Pradireccionespasistema>(x => x.IdPrAcicloProgAuditoria == resulDBCicloPrograma.First().IdPrAcicloProgAuditoria);
 
+                ///TDO llenamos las normas
+                response.Object.Normas = new List<string>();
+                response.Object.Pradireccionespaproducto?.ForEach(x =>
+                {
+                    response.Object.Normas.Add(x.Norma);
+                });
+                response.Object.Praciclonormassistema?.ForEach(x =>
+                {
+                    response.Object.Normas.Add(x.Norma);
+                });
+
+                ///TDO asignamos el area
+                response.Object.Area = resulBDPrograma.First().IdparamArea == 39 ? "TCP" : "TCS";
                 ///verfificamos si existe la auditoria asociada a un ciclo
                 var resulDBAuditoria = repositoryMySql.SimpleSelect<Elaauditorium>(x => x.IdPrAcicloProgAuditoria == IdCicloPrograma);
+
                 if (resulDBAuditoria.Count == 0)
                 {
                     //Registramos el item de auditoria en la BD
@@ -103,11 +162,30 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     Entity<Elaauditorium> entity = new Entity<Elaauditorium> { EntityDB = response.Object.Elaauditorium, stateEntity = StateEntity.add };
                     repositoryMySql.SaveObject<Elaauditorium>(entity);
                     response.Object.Elaauditorium.IdelaAuditoria = entity.EntityDB.IdelaAuditoria;
+                    ///TDO llenamos la informacion sobre el contenido del informe y otros documentos
+                    response.Object.Elaauditorium.Elacontenidoauditoria = repositoryMySql.SimpleSelect<Elalistaspredefinida>(y => y.Area == response.Object.Area)
+                        .Select(x => new Elacontenidoauditorium()
+                        {
+                            Area = response.Object.Area,
+                            Categoria = x.Categoria,
+                            Contenido = x.Decripcion,
+                            Endocumento = x.Endocumento,
+                            IdelaAuditoria = response.Object.Elaauditorium.IdelaAuditoria,
+                            Label = x.Label,
+                            Nemotico = x.Nemotico,
+                            Seleccionado = 0,
+                            Titulo = x.Titulo
+                        }).ToList();
+                    entity = new Entity<Elaauditorium> { EntityDB = response.Object.Elaauditorium, stateEntity = StateEntity.modify };
+                    repositoryMySql.SaveObject<Elaauditorium>(entity);
                 }
-                //por si no existe en el plan
                 else
                 {
                     response.Object.Elaauditorium = resulDBAuditoria.First();
+                    response.Object.Elaauditorium.Elaadps = repositoryMySql.SimpleSelect<Elaadp>(x => x.IdelaAuditoria == response.Object.Elaauditorium.IdelaAuditoria);
+                    response.Object.Elaauditorium.Elacontenidoauditoria = repositoryMySql.SimpleSelect<Elacontenidoauditorium>(x => x.IdelaAuditoria == response.Object.Elaauditorium.IdelaAuditoria);
+                    response.Object.Elaauditorium.Elacronogamas = repositoryMySql.SimpleSelect<Elacronogama>(x => x.Idelaauditoria == response.Object.Elaauditorium.IdelaAuditoria);
+                    response.Object.Elaauditorium.Elahallazgos = repositoryMySql.SimpleSelect<Elahallazgo>(x => x.IdelaAuditoria == response.Object.Elaauditorium.IdelaAuditoria);
                 }
 
 

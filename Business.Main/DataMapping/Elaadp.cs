@@ -11,7 +11,9 @@ namespace Business.Main.DataMapping
         public int? IdelaAuditoria { get; set; }
         public string Area { get; set; }
         public string Descripcion { get; set; }
+        public string Fecha { get; set; }
+        public string Usuario { get; set; }
 
-        public virtual Elaauditorium IdelaadpNavigation { get; set; }
+        public virtual Elaauditorium IdelaAuditoriaNavigation { get; set; }
     }
 }

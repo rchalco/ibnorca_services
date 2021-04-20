@@ -18,6 +18,8 @@ namespace Business.Main.Modules.ElaboracionAuditoria.DTO
         public List<Pradireccionespaproducto> Pradireccionespaproducto { get; set; }
         public List<Pradireccionespasistema> Pradireccionespasistema { get; set; }
         public string NombreClienteCertificado { get; set; }
+        public string Area { get; set; }
+        public List<string> Normas { get; set; }
     }
     public class Designacion
     {
