@@ -13,7 +13,9 @@ namespace PlumbingProps.Document
 
         public enum keys
         {
-            enter = 13
+            enter = 13,
+            SI,
+            NO
         }
 
         public static string GetCodeKey(keys key)
@@ -23,6 +25,12 @@ namespace PlumbingProps.Document
             {
                 case keys.enter:
                     resul = WordParts.tagEnter;
+                    break;
+                case keys.SI:
+                    resul = WordParts.tagOK;
+                    break;
+                case keys.NO:
+                    resul = WordParts.tagNO;
                     break;
                 default:
                     break;

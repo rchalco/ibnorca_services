@@ -185,6 +185,12 @@
   <data name="tagGridRowEnd" xml:space="preserve">
     <value>&lt;/w:tr&gt;</value>
   </data>
+  <data name="tagNO" xml:space="preserve">
+    <value>NO</value>
+  </data>
+  <data name="tagOK" xml:space="preserve">
+    <value>SI</value>
+  </data>
   <data name="tagStyle" xml:space="preserve">
     <value>&lt;w:tblPr&gt;
     &lt;w:tblW w:w="0" w:type="auto" /&gt;

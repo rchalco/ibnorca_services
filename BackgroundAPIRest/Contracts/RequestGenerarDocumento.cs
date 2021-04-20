@@ -7,7 +7,8 @@ namespace BackgroundAPIRest.Contracts
 {
     public class RequestGenerarDocumento
     {
-        public string plantilla { get; set; }
-        public int IdCicloAuditoria { get; set; }
+        public int idCicloAuditoria { get; set; }
+        public string nombrePlantilla { get; set; }
+        public string area { get; set; }
     }
 }

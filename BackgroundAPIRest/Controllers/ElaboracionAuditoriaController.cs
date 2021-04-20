@@ -65,7 +65,7 @@ namespace BackgroundAPIRest.Controllers
         public Response GenerarDocumento(RequestGenerarDocumento requestGenerarDocumento)
         {
             ElaboracionAuditoriaManager elaboracionAuditoriaManager = new ElaboracionAuditoriaManager();
-            return elaboracionAuditoriaManager.GenerarDocumento(requestGenerarDocumento.plantilla, requestGenerarDocumento.IdCicloAuditoria);
+            return elaboracionAuditoriaManager.GenerarDocumento(requestGenerarDocumento.nombrePlantilla, requestGenerarDocumento.area, requestGenerarDocumento.idCicloAuditoria);
         }
     }
 }

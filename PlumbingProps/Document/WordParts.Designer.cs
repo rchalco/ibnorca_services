@@ -173,6 +173,24 @@ namespace PlumbingProps.Document {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to NO.
+        /// </summary>
+        internal static string tagNO {
+            get {
+                return ResourceManager.GetString("tagNO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SI.
+        /// </summary>
+        internal static string tagOK {
+            get {
+                return ResourceManager.GetString("tagOK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;w:tblPr&gt;
         ///    &lt;w:tblW w:w=&quot;0&quot; w:type=&quot;auto&quot; /&gt;
         ///    &lt;w:tblBorders&gt;
