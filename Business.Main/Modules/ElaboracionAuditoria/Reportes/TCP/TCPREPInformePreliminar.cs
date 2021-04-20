@@ -16,13 +16,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCP
         public string TipoAuditoria { get; set; }
         public string FechaInicio { get; set; }
         public string Fecha { get; set; }
-        public string AuditorLider { get; set; }
-        public string Auditor { get; set; }
-
-        public string AuditorEnsayos { get; set; }
-        public string Experto { get; set; }
-        public string AuditorFormacion { get; set; }
-        
+        public string EquipoAuditor { get; set; }
         public string CriterioAuditoria { get; set; }
         public string Si1 { get; set; }
         public string No1 { get; set; }

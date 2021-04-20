@@ -17,6 +17,11 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCP
         public string CodigoServicio { get; set; }
         public string TipoAuditoria { get; set; }
         public string FechaInicio { get; set; }
+        public string Productos { get; set; }
+        public string Ensayos { get; set; }
+        public string FechaElaboracionPlan { get; set; }
+        public string CambiosAlcances { get; set; }
+        
         public List<RepEquipoTCP> ListEquipoAuditor { get; set; }
         public List<RepCronogramaEquipoTCP> ListCronograma { get; set; }
         
