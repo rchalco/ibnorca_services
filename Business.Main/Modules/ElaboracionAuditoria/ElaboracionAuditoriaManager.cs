@@ -64,6 +64,21 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     Entity<Elacronogama> entityCronograma = new Entity<Elacronogama> { EntityDB = x, stateEntity = StateEntity.remove };
                     repositoryMySql.SaveObject<Elacronogama>(entityCronograma);
                 });
+                //Eliminamos los hallazgos 
+                var lHallazgos = repositoryMySql.SimpleSelect<Elahallazgo>(x => x.IdelaAuditoria == planAuditoriaDTO.Elaauditorium.IdelaAuditoria);
+                lHallazgos.ToList().ForEach(x =>
+                {
+                    Entity<Elahallazgo> entityCronograma = new Entity<Elahallazgo> { EntityDB = x, stateEntity = StateEntity.remove };
+                    repositoryMySql.SaveObject<Elahallazgo>(entityCronograma);
+                });
+                //Eliminamos los adps
+                var lAdps = repositoryMySql.SimpleSelect<Elaadp>(x => x.IdelaAuditoria == planAuditoriaDTO.Elaauditorium.IdelaAuditoria);
+                lAdps.ToList().ForEach(x =>
+                {
+                    Entity<Elaadp> entityCronograma = new Entity<Elaadp> { EntityDB = x, stateEntity = StateEntity.remove };
+                    repositoryMySql.SaveObject<Elaadp>(entityCronograma);
+                });
+
                 ///guardamos la auditoria
                 Entity<Elaauditorium> entity = new Entity<Elaauditorium> { EntityDB = planAuditoriaDTO.Elaauditorium, stateEntity = StateEntity.modify };
                 repositoryMySql.SaveObject<Elaauditorium>(entity);
