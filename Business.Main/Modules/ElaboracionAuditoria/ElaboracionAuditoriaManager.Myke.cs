@@ -996,7 +996,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 cellTitlesTitulo[0] = new CellTitles { Title = "Producto", Visible = true, Width = "50" };
                 cellTitlesTitulo[1] = new CellTitles { Title = "Norma", Visible = true, Width = "120" };
                 pTitles.Add("ListProductos", cellTitlesTitulo);
-                response.Object = new GlobalDataReport { data = praReporte, HeadersTables = null };
+                response.Object = new GlobalDataReport { data = praReporte, HeadersTables = pTitles };
 
             }
             catch (Exception ex)
