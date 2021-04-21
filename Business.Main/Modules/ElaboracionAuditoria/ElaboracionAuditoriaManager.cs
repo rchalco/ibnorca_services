@@ -262,10 +262,10 @@ namespace Business.Main.Modules.ElaboracionAuditoria
         }
         public Response GenerarDocumento(string NombrePlantilla, int IdCicloAuditoria)
         {
-            Response resul = new Response();
+            Response resul = new Response { State = ResponseType.Success };
             try
             {
-                ElaboracionAuditoriaManager elaboracionAuditoriaManager = new ElaboracionAuditoriaManager();                
+                ElaboracionAuditoriaManager elaboracionAuditoriaManager = new ElaboracionAuditoriaManager();
                 var resulBDDocumento = repositoryMySql.SimpleSelect<Paramdocumento>(x => x.NombrePlantilla == NombrePlantilla);
                 if (resulBDDocumento.Count == 0 || string.IsNullOrEmpty(resulBDDocumento.First().Method))
                 {
@@ -275,7 +275,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 }
 
                 string pathPlantilla = Path.Combine(Global.PATH_PLANTILLAS, resulBDDocumento.First().Area, resulBDDocumento.First().Path);
-                string pathOutPlantilla = Path.Combine(Global.PATH_PLANTILLAS, resulBDDocumento.First().Area, "salida");
+                string pathOutPlantilla = Path.Combine(Global.PATH_PLANTILLAS, resulBDDocumento.First().Area, "salidas");
                 string methodPlantilla = resulBDDocumento.First().Method;
                 RequestDataReport requestDataReport = new RequestDataReport { IdCiclo = IdCicloAuditoria };
                 //llamamos el metodo para recuperar data

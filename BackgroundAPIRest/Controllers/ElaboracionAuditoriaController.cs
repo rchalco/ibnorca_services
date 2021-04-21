@@ -6,6 +6,7 @@ using Domain.Main.Wraper;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PlumbingProps.Logger;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -66,6 +67,15 @@ namespace BackgroundAPIRest.Controllers
         {
             ElaboracionAuditoriaManager elaboracionAuditoriaManager = new ElaboracionAuditoriaManager();
             return elaboracionAuditoriaManager.GenerarDocumento(requestGenerarDocumento.nombrePlantilla, requestGenerarDocumento.idCicloAuditoria);
+        }
+
+        [HttpGet("ObtenerArchivo")]
+        [EnableCors("MyPolicy")]
+        public IActionResult ObtenerArchivo(string fileName)
+        {
+            Binnacle.ProcessEvent(new Event { category = Event.Category.Information, description = $"Metodo BuscarPais llamado" });
+            fileName = fileName.StartsWith("\\") ? "\\" + fileName : fileName;
+            return new PhysicalFileResult(fileName, System.Net.Mime.MediaTypeNames.Application.Octet);
         }
     }
 }
