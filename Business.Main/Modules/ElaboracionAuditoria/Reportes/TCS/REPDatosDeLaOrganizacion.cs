@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Business.Main.Base;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCS
 
     /// <summary>
     /// PLAN_REG-PRO-TCS-05-08.03 Datos de la organizacion (Ver 1.0)    /// </summary>
-    public class REPDatosDeLaOrganizacion
+    public class REPDatosDeLaOrganizacion : IObjectReport
     {
         public string FechaDeAuditoria { get; set; }
         public string TipoDeAuditoria { get; set; }

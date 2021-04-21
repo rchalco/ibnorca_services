@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Business.Main.Base;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Resportes.ReportDTO
 {
-    public class REPDesignacionAuditoria
+    public class REPDesignacionAuditoria : IObjectReport
     {
 
         public string TipoAuditoria { get; set; }

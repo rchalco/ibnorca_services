@@ -1,4 +1,5 @@
-﻿using Business.Main.Cross;
+﻿using Business.Main.Base;
+using Business.Main.Cross;
 using Business.Main.DataMapping;
 using Business.Main.DataMapping.DTOs;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.BuscarxIdClienteEmpresaDTO;
@@ -12,7 +13,6 @@ using Domain.Main.Wraper;
 using Newtonsoft.Json;
 using PlumbingProps.Document;
 using PlumbingProps.Services;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,18 +24,14 @@ namespace Business.Main.Modules.ElaboracionAuditoria
 {
     public partial class ElaboracionAuditoriaManager
     {
-        /// <summary>
-        /// RRG.......
-        /// </summary>
-        /// <param name="IdCiclo"></param>
-        /// <param name="pathPlantilla"></param>
-        /// <returns></returns>
-        public Response GenerarNotaSuspension(int IdCiclo, string pathPlantilla, string nombre, string cargo, DateTime fechaLiteral)
+        #region TCS       
+        public ResponseObject<GlobalDataReport> TCSGenerarNotaSuspension(RequestDataReport requestDataReport)
         {
-            Response response = new Response { Message = "", State = ResponseType.Success };
+            ResponseObject<GlobalDataReport> response = new ResponseObject<GlobalDataReport> { Message = "", State = ResponseType.Success };
             try
             {
-
+                int IdCiclo = requestDataReport.IdCiclo;
+                string nombre = string.Empty, cargo = string.Empty, fechaLiteral = string.Empty;
                 ///Obtenemos la informacion del ciclo y del programa
                 Praciclosprogauditorium praciclocronograma = repositoryMySql.SimpleSelect<Praciclosprogauditorium>(x => x.IdPrAcicloProgAuditoria == IdCiclo).ToList().FirstOrDefault();
                 Praprogramasdeauditorium praprogramasdeauditorium = repositoryMySql.SimpleSelect<Praprogramasdeauditorium>(x => x.IdPrAprogramaAuditoria == praciclocronograma.IdPrAprogramaAuditoria).ToList().FirstOrDefault();
@@ -100,18 +96,12 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     Sitios = sitios,
                     FechaLiteral1 = "XXXXX", // TODO:Pendiente 
                     Seguimiento = praciclocronograma.Referencia,
-                    FechaLiteral2 = fechaLiteral.ToString("dd/MM/yyyy"),
+                    FechaLiteral2 = fechaLiteral,
                     DirectorEjecutivo = "XXXXXX" /// TODO:Pendiente
 
                 };
-                //string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
-                string filePlantilla = pathPlantilla;
-                WordHelper generadorWord = new WordHelper(filePlantilla);
+                response.Object = new GlobalDataReport { data = praSuspension, HeadersTables = null };
 
-                //generamos el documento en word
-                //string fileNameGenerado = generadorWord.GenerarDocumento(praSuspension, null, $"{Global.PATH_PLANTILLA_DESIGNACION}\\Salidas");
-                string fileNameGenerado = generadorWord.GenerarDocumento(praSuspension, null, @$"c:\Salidas");
-                response.Message = fileNameGenerado;
             }
             catch (Exception ex)
             {
@@ -119,19 +109,13 @@ namespace Business.Main.Modules.ElaboracionAuditoria
             }
             return response;
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="IdCiclo"></param>
-        /// <param name="pathPlantilla"></param>
-        /// <returns></returns>
-        public Response GenerarPlanAuditoria(int IdCiclo, string pathPlantilla, string objetivosAuditoria, string cambiosAlcance, string certificacion)
+        public ResponseObject<GlobalDataReport> TCSGenerarPlanAuditoria(RequestDataReport requestDataReport)
         {
-            Response response = new Response { Message = "", State = ResponseType.Success };
+            ResponseObject<GlobalDataReport> response = new ResponseObject<GlobalDataReport> { Message = "", State = ResponseType.Success };
             try
             {
-
+                int IdCiclo = requestDataReport.IdCiclo;
+                string pathPlantilla = string.Empty, objetivosAuditoria = string.Empty, cambiosAlcance = string.Empty, certificacion = string.Empty;
                 ///Obtenemos la informacion del ciclo y del programa
                 Praciclosprogauditorium praciclocronograma = repositoryMySql.SimpleSelect<Praciclosprogauditorium>(x => x.IdPrAcicloProgAuditoria == IdCiclo).ToList().FirstOrDefault();
                 Praprogramasdeauditorium praprogramasdeauditorium = repositoryMySql.SimpleSelect<Praprogramasdeauditorium>(x => x.IdPrAprogramaAuditoria == praciclocronograma.IdPrAprogramaAuditoria).ToList().FirstOrDefault();
@@ -229,10 +213,6 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     FechaAprobacion = DateTime.Now.ToString("dd/MM/yyyy")
 
                 };
-                //string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
-                //string filePlantilla = pathPlantilla;
-                string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
-                WordHelper generadorWord = new WordHelper(filePlantilla);
 
                 //generamos el documento en word
                 Dictionary<string, CellTitles[]> pTitles = new Dictionary<string, CellTitles[]>();
@@ -250,10 +230,8 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 cellTitlesTitulo[4] = new CellTitles { Title = "Equipo Auditado", Visible = true, Width = "50" };
                 cellTitlesTitulo[5] = new CellTitles { Title = "Responsable Organiza", Visible = true, Width = "50" };
                 pTitles.Add("ListCronograma", cellTitlesTitulo);
-                //generamos el documento en word
-                //string fileNameGenerado = generadorWord.GenerarDocumento(praSuspension, null, $"{Global.PATH_PLANTILLA_DESIGNACION}\\Salidas");
-                string fileNameGenerado = generadorWord.GenerarDocumento(praPlanAuditoria, pTitles, $"{Global.PATH_PLANTILLA_DESIGNACION}\\Salidas");
-                response.Message = fileNameGenerado;
+                response.Object = new GlobalDataReport { data = praPlanAuditoria, HeadersTables = pTitles };
+
             }
             catch (Exception ex)
             {
@@ -261,19 +239,15 @@ namespace Business.Main.Modules.ElaboracionAuditoria
             }
             return response;
         }
+        #endregion
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="IdCiclo"></param>
-        /// <param name="pathPlantilla"></param>
-        /// <returns></returns>
-        public Response TCPRepDesignacionAuditoria(int IdCiclo, string pathPlantilla)
+        #region TCP
+        public ResponseObject<GlobalDataReport> TCPRepDesignacionAuditoria(RequestDataReport requestDataReport)
         {
-            Response response = new Response { Message = "", State = ResponseType.Success };
+            ResponseObject<GlobalDataReport> response = new ResponseObject<GlobalDataReport> { Message = "", State = ResponseType.Success };
             try
             {
-
+                int IdCiclo = requestDataReport.IdCiclo;
                 ///Obtenemos la informacion del ciclo y del programa
                 Praciclosprogauditorium praciclocronograma = repositoryMySql.SimpleSelect<Praciclosprogauditorium>(x => x.IdPrAcicloProgAuditoria == IdCiclo).ToList().FirstOrDefault();
                 Praprogramasdeauditorium praprogramasdeauditorium = repositoryMySql.SimpleSelect<Praprogramasdeauditorium>(x => x.IdPrAprogramaAuditoria == praciclocronograma.IdPrAprogramaAuditoria).ToList().FirstOrDefault();
@@ -318,23 +292,14 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     sitios += x.Direccion + WordHelper.GetCodeKey(WordHelper.keys.enter);
                 });
 
-                //EquipoAuditoNombreCargo = null,
                 ///llenamos el reporte con la informacion de este ciclo
                 TCPREPDesignacionAuditoria praReporte = new TCPREPDesignacionAuditoria
                 {
                     TipoAuditoria = praciclocronograma.Referencia,
 
                 };
-                //string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
-                //string filePlantilla = pathPlantilla;
-                string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
-                WordHelper generadorWord = new WordHelper(filePlantilla);
+                response.Object = new GlobalDataReport { data = praReporte, HeadersTables = null };
 
-
-                //generamos el documento en word
-                //string fileNameGenerado = generadorWord.GenerarDocumento(praSuspension, null, $"{Global.PATH_PLANTILLA_DESIGNACION}\\Salidas");
-                string fileNameGenerado = generadorWord.GenerarDocumento(praReporte, null, $"{Global.PATH_PLANTILLA_DESIGNACION}\\Salidas");
-                response.Message = fileNameGenerado;
             }
             catch (Exception ex)
             {
@@ -342,19 +307,12 @@ namespace Business.Main.Modules.ElaboracionAuditoria
             }
             return response;
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="IdCiclo"></param>
-        /// <param name="pathPlantilla"></param>
-        /// <returns></returns>
-        public Response TCPREPPlanAuditoria(int IdCiclo, string pathPlantilla)
+        public ResponseObject<GlobalDataReport> TCPREPPlanAuditoria(RequestDataReport requestDataReport)
         {
-            Response response = new Response { Message = "", State = ResponseType.Success };
+            ResponseObject<GlobalDataReport> response = new ResponseObject<GlobalDataReport> { Message = "", State = ResponseType.Success };
             try
             {
-
+                int IdCiclo = requestDataReport.IdCiclo;
                 ///Obtenemos la informacion del ciclo y del programa
                 Praciclosprogauditorium praciclocronograma = repositoryMySql.SimpleSelect<Praciclosprogauditorium>(x => x.IdPrAcicloProgAuditoria == IdCiclo).ToList().FirstOrDefault();
                 Praprogramasdeauditorium praprogramasdeauditorium = repositoryMySql.SimpleSelect<Praprogramasdeauditorium>(x => x.IdPrAprogramaAuditoria == praciclocronograma.IdPrAprogramaAuditoria).ToList().FirstOrDefault();
@@ -485,10 +443,6 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                         return repRepCronograma;
                     }).ToList(),
                 };
-                //string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
-                //string filePlantilla = pathPlantilla;
-                string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
-                WordHelper generadorWord = new WordHelper(filePlantilla);
 
                 //generamos el documento en word
                 Dictionary<string, CellTitles[]> pTitles = new Dictionary<string, CellTitles[]>();
@@ -508,9 +462,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 cellTitlesTitulo[5] = new CellTitles { Title = "Responsable Organiza", Visible = true, Width = "50" };
                 pTitles.Add("ListCronograma", cellTitlesTitulo);
                 //generamos el documento en word
-                //string fileNameGenerado = generadorWord.GenerarDocumento(praSuspension, null, $"{Global.PATH_PLANTILLA_DESIGNACION}\\Salidas");
-                string fileNameGenerado = generadorWord.GenerarDocumento(praReporte, pTitles, $"{Global.PATH_PLANTILLA_DESIGNACION}\\Salidas");
-                response.Message = fileNameGenerado;
+                response.Object = new GlobalDataReport { data = praReporte, HeadersTables = pTitles };
             }
             catch (Exception ex)
             {
@@ -518,19 +470,12 @@ namespace Business.Main.Modules.ElaboracionAuditoria
             }
             return response;
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="IdCiclo"></param>
-        /// <param name="pathPlantilla"></param>
-        /// <returns></returns>
-        public Response TCPREPListaVerificacionReunionApertura(int IdCiclo, string pathPlantilla)
+        public ResponseObject<GlobalDataReport> TCPREPListaVerificacionReunionApertura(RequestDataReport requestDataReport)
         {
-            Response response = new Response { Message = "", State = ResponseType.Success };
+            ResponseObject<GlobalDataReport> response = new ResponseObject<GlobalDataReport> { Message = "", State = ResponseType.Success };
             try
             {
-
+                int IdCiclo = requestDataReport.IdCiclo;
                 ///Obtenemos la informacion del ciclo y del programa
                 Praciclosprogauditorium praciclocronograma = repositoryMySql.SimpleSelect<Praciclosprogauditorium>(x => x.IdPrAcicloProgAuditoria == IdCiclo).ToList().FirstOrDefault();
                 Praprogramasdeauditorium praprogramasdeauditorium = repositoryMySql.SimpleSelect<Praprogramasdeauditorium>(x => x.IdPrAprogramaAuditoria == praciclocronograma.IdPrAprogramaAuditoria).ToList().FirstOrDefault();
@@ -583,16 +528,8 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     TipoAuditoria = praciclocronograma.Referencia,
 
                 };
-                //string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
-                //string filePlantilla = pathPlantilla;
-                string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
-                WordHelper generadorWord = new WordHelper(filePlantilla);
+                response.Object = new GlobalDataReport { data = praReporte, HeadersTables = null };
 
-
-                //generamos el documento en word
-                //string fileNameGenerado = generadorWord.GenerarDocumento(praSuspension, null, $"{Global.PATH_PLANTILLA_DESIGNACION}\\Salidas");
-                string fileNameGenerado = generadorWord.GenerarDocumento(praReporte, null, $"{Global.PATH_PLANTILLA_DESIGNACION}\\Salidas");
-                response.Message = fileNameGenerado;
             }
             catch (Exception ex)
             {
@@ -600,19 +537,12 @@ namespace Business.Main.Modules.ElaboracionAuditoria
             }
             return response;
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="IdCiclo"></param>
-        /// <param name="pathPlantilla"></param>
-        /// <returns></returns>
-        public Response TCPREPListaVerificacionReunionCierre(int IdCiclo, string pathPlantilla)
+        public ResponseObject<GlobalDataReport> TCPREPListaVerificacionReunionCierre(RequestDataReport requestDataReport)
         {
-            Response response = new Response { Message = "", State = ResponseType.Success };
+            ResponseObject<GlobalDataReport> response = new ResponseObject<GlobalDataReport> { Message = "", State = ResponseType.Success };
             try
             {
-
+                int IdCiclo = requestDataReport.IdCiclo;
                 ///Obtenemos la informacion del ciclo y del programa
                 Praciclosprogauditorium praciclocronograma = repositoryMySql.SimpleSelect<Praciclosprogauditorium>(x => x.IdPrAcicloProgAuditoria == IdCiclo).ToList().FirstOrDefault();
                 Praprogramasdeauditorium praprogramasdeauditorium = repositoryMySql.SimpleSelect<Praprogramasdeauditorium>(x => x.IdPrAprogramaAuditoria == praciclocronograma.IdPrAprogramaAuditoria).ToList().FirstOrDefault();
@@ -665,14 +595,8 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     TipoAuditoria = praciclocronograma.Referencia,
 
                 };
-                //string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
-                //string filePlantilla = pathPlantilla;
-                string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
-                WordHelper generadorWord = new WordHelper(filePlantilla);
-                //generamos el documento en word
-                //string fileNameGenerado = generadorWord.GenerarDocumento(praSuspension, null, $"{Global.PATH_PLANTILLA_DESIGNACION}\\Salidas");
-                string fileNameGenerado = generadorWord.GenerarDocumento(praReporte, null, $"{Global.PATH_PLANTILLA_DESIGNACION}\\Salidas");
-                response.Message = fileNameGenerado;
+                response.Object = new GlobalDataReport { data = praReporte, HeadersTables = null };
+
             }
             catch (Exception ex)
             {
@@ -680,19 +604,12 @@ namespace Business.Main.Modules.ElaboracionAuditoria
             }
             return response;
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="IdCiclo"></param>
-        /// <param name="pathPlantilla"></param>
-        /// <returns></returns>
-        public Response TCPREPListaAsistencia(int IdCiclo, string pathPlantilla)
+        public ResponseObject<GlobalDataReport> TCPREPListaAsistencia(RequestDataReport requestDataReport)
         {
-            Response response = new Response { Message = "", State = ResponseType.Success };
+            ResponseObject<GlobalDataReport> response = new ResponseObject<GlobalDataReport> { Message = "", State = ResponseType.Success };
             try
             {
-
+                int IdCiclo = requestDataReport.IdCiclo;
                 ///Obtenemos la informacion del ciclo y del programa
                 Praciclosprogauditorium praciclocronograma = repositoryMySql.SimpleSelect<Praciclosprogauditorium>(x => x.IdPrAcicloProgAuditoria == IdCiclo).ToList().FirstOrDefault();
                 Praprogramasdeauditorium praprogramasdeauditorium = repositoryMySql.SimpleSelect<Praprogramasdeauditorium>(x => x.IdPrAprogramaAuditoria == praciclocronograma.IdPrAprogramaAuditoria).ToList().FirstOrDefault();
@@ -745,14 +662,8 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     TipoAuditoria = praciclocronograma.Referencia,
 
                 };
-                //string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
-                //string filePlantilla = pathPlantilla;
-                string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
-                WordHelper generadorWord = new WordHelper(filePlantilla);
-                //generamos el documento en word
-                //string fileNameGenerado = generadorWord.GenerarDocumento(praSuspension, null, $"{Global.PATH_PLANTILLA_DESIGNACION}\\Salidas");
-                string fileNameGenerado = generadorWord.GenerarDocumento(praReporte, null, $"{Global.PATH_PLANTILLA_DESIGNACION}\\Salidas");
-                response.Message = fileNameGenerado;
+                response.Object = new GlobalDataReport { data = praReporte, HeadersTables = null };
+
             }
             catch (Exception ex)
             {
@@ -760,19 +671,12 @@ namespace Business.Main.Modules.ElaboracionAuditoria
             }
             return response;
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="IdCiclo"></param>
-        /// <param name="pathPlantilla"></param>
-        /// <returns></returns>
-        public Response TCPREPActaMuestreo(int IdCiclo, string pathPlantilla)
+        public ResponseObject<GlobalDataReport> TCPREPActaMuestreo(RequestDataReport requestDataReport)
         {
-            Response response = new Response { Message = "", State = ResponseType.Success };
+            ResponseObject<GlobalDataReport> response = new ResponseObject<GlobalDataReport> { Message = "", State = ResponseType.Success };
             try
             {
-
+                int IdCiclo = requestDataReport.IdCiclo;
                 ///Obtenemos la informacion del ciclo y del programa
                 Praciclosprogauditorium praciclocronograma = repositoryMySql.SimpleSelect<Praciclosprogauditorium>(x => x.IdPrAcicloProgAuditoria == IdCiclo).ToList().FirstOrDefault();
                 Praprogramasdeauditorium praprogramasdeauditorium = repositoryMySql.SimpleSelect<Praprogramasdeauditorium>(x => x.IdPrAprogramaAuditoria == praciclocronograma.IdPrAprogramaAuditoria).ToList().FirstOrDefault();
@@ -825,14 +729,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     TipoAuditoria = praciclocronograma.Referencia,
 
                 };
-                //string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
-                //string filePlantilla = pathPlantilla;
-                string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
-                WordHelper generadorWord = new WordHelper(filePlantilla);
-                //generamos el documento en word
-                //string fileNameGenerado = generadorWord.GenerarDocumento(praSuspension, null, $"{Global.PATH_PLANTILLA_DESIGNACION}\\Salidas");
-                string fileNameGenerado = generadorWord.GenerarDocumento(praReporte, null, $"{Global.PATH_PLANTILLA_DESIGNACION}\\Salidas");
-                response.Message = fileNameGenerado;
+                response.Object = new GlobalDataReport { data = praReporte, HeadersTables = null };
             }
             catch (Exception ex)
             {
@@ -840,19 +737,12 @@ namespace Business.Main.Modules.ElaboracionAuditoria
             }
             return response;
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="IdCiclo"></param>
-        /// <param name="pathPlantilla"></param>
-        /// <returns></returns>
-        public Response TCPREPListaVerificacionAuditor(int IdCiclo, string pathPlantilla)
+        public ResponseObject<GlobalDataReport> TCPREPListaVerificacionAuditor(RequestDataReport requestDataReport)
         {
-            Response response = new Response { Message = "", State = ResponseType.Success };
+            ResponseObject<GlobalDataReport> response = new ResponseObject<GlobalDataReport> { Message = "", State = ResponseType.Success };
             try
             {
-
+                int IdCiclo = requestDataReport.IdCiclo;
                 ///Obtenemos la informacion del ciclo y del programa
                 Praciclosprogauditorium praciclocronograma = repositoryMySql.SimpleSelect<Praciclosprogauditorium>(x => x.IdPrAcicloProgAuditoria == IdCiclo).ToList().FirstOrDefault();
                 Praprogramasdeauditorium praprogramasdeauditorium = repositoryMySql.SimpleSelect<Praprogramasdeauditorium>(x => x.IdPrAprogramaAuditoria == praciclocronograma.IdPrAprogramaAuditoria).ToList().FirstOrDefault();
@@ -905,14 +795,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     TipoAuditoria = praciclocronograma.Referencia,
 
                 };
-                //string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
-                //string filePlantilla = pathPlantilla;
-                string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
-                WordHelper generadorWord = new WordHelper(filePlantilla);
-                //generamos el documento en word
-                //string fileNameGenerado = generadorWord.GenerarDocumento(praSuspension, null, $"{Global.PATH_PLANTILLA_DESIGNACION}\\Salidas");
-                string fileNameGenerado = generadorWord.GenerarDocumento(praReporte, null, $"{Global.PATH_PLANTILLA_DESIGNACION}\\Salidas");
-                response.Message = fileNameGenerado;
+                response.Object = new GlobalDataReport { data = praReporte, HeadersTables = null };
             }
             catch (Exception ex)
             {
@@ -920,19 +803,12 @@ namespace Business.Main.Modules.ElaboracionAuditoria
             }
             return response;
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="IdCiclo"></param>
-        /// <param name="pathPlantilla"></param>
-        /// <returns></returns>
-        public Response TCPREPInformePreliminar(int IdCiclo, string pathPlantilla)
+        public ResponseObject<GlobalDataReport> TCPREPInformePreliminar(RequestDataReport requestDataReport)
         {
-            Response response = new Response { Message = "", State = ResponseType.Success };
+            ResponseObject<GlobalDataReport> response = new ResponseObject<GlobalDataReport> { Message = "", State = ResponseType.Success };
             try
             {
-
+                int IdCiclo = requestDataReport.IdCiclo;
                 ///Obtenemos la informacion del ciclo y del programa
                 Praciclosprogauditorium praciclocronograma = repositoryMySql.SimpleSelect<Praciclosprogauditorium>(x => x.IdPrAcicloProgAuditoria == IdCiclo).ToList().FirstOrDefault();
                 Praprogramasdeauditorium praprogramasdeauditorium = repositoryMySql.SimpleSelect<Praprogramasdeauditorium>(x => x.IdPrAprogramaAuditoria == praciclocronograma.IdPrAprogramaAuditoria).ToList().FirstOrDefault();
@@ -1100,11 +976,6 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     }).ToList(),
 
                 };
-                //string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
-                //string filePlantilla = pathPlantilla;
-                string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
-                WordHelper generadorWord = new WordHelper(filePlantilla);
-
                 Dictionary<string, CellTitles[]> pTitles = new Dictionary<string, CellTitles[]>();
                 CellTitles[] cellTitlesTitulo = new CellTitles[4];
                 cellTitlesTitulo[0] = new CellTitles { Title = "Fortaleza", Visible = true, Width = "50" };
@@ -1125,11 +996,8 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 cellTitlesTitulo[0] = new CellTitles { Title = "Producto", Visible = true, Width = "50" };
                 cellTitlesTitulo[1] = new CellTitles { Title = "Norma", Visible = true, Width = "120" };
                 pTitles.Add("ListProductos", cellTitlesTitulo);
+                response.Object = new GlobalDataReport { data = praReporte, HeadersTables = null };
 
-                //generamos el documento en word
-                //string fileNameGenerado = generadorWord.GenerarDocumento(praSuspension, null, $"{Global.PATH_PLANTILLA_DESIGNACION}\\Salidas");
-                string fileNameGenerado = generadorWord.GenerarDocumento(praReporte, pTitles, $"{Global.PATH_PLANTILLA_DESIGNACION}\\Salidas");
-                response.Message = fileNameGenerado;
             }
             catch (Exception ex)
             {
@@ -1137,5 +1005,6 @@ namespace Business.Main.Modules.ElaboracionAuditoria
             }
             return response;
         }
+        #endregion
     }
 }

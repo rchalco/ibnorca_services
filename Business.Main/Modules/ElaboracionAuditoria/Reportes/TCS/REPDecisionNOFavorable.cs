@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Business.Main.Base;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCS
     /// <summary>
     /// PLAN_REG-PRO-TCS-06-03_00_DecisionNoFavorable (Ver 1.0)
     /// </summary>
-    public class REPDecisionNOFavorable
+    public class REPDecisionNOFavorable : IObjectReport
     {
         public string FechaIbnorca { get; set; }
         public string ReferenciaIbnorca { get; set; }

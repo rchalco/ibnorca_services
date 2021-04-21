@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Business.Main.Base;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCS
     /// <summary>
     /// REG-PRO-TCS-05-07.11 Informe de auditoria V.1.0
     /// </summary>
-    public class REPInformeAuditoria
+    public class REPInformeAuditoria : IObjectReport
     {
         public string NombreEmpresa { get; set; }
         public string Direccion { get; set; }

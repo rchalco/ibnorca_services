@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Business.Main.Base;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCP
 {
-    public class TCPREPActaMuestreo
+    public class TCPREPActaMuestreo : IObjectReport
     {
-
         public string NombreEmpresa { get; set; }
         public string CodigoServicio { get; set; }
         public string TipoAuditoria { get; set; }
@@ -16,7 +16,6 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCP
         public string Interno { get; set; }
         public string Externo { get; set; }
         public string DescripcionExterno { get; set; }
-
 
     }
 }

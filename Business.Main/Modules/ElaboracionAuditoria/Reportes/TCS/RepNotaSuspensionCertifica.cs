@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Business.Main.Base;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCS
     /// <summary>
     /// REG-PRO-TCS-07-01.00 Nota de suspensión de certificacion V.1.0
     /// </summary>
-    public class RepNotaSuspensionCertifica
+    public class RepNotaSuspensionCertifica : IObjectReport
     {
         public string FechaCabecera { get; set; }
         public string CorrelativoCabecera { get; set; }

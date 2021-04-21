@@ -173,7 +173,19 @@ namespace PlumbingProps.Document {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to NO.
+        ///   Looks up a localized string similar to &lt;w:p wsp:rsidR=&quot;006956CA&quot; wsp:rsidRDefault=&quot;00D52529&quot; wsp:rsidP=&quot;00D52529&quot;&gt;
+        ///    &lt;w:pPr&gt;&lt;w:pStyle w:val=&quot;Prrafodelista&quot;/&gt;
+        ///    &lt;w:listPr&gt;
+        ///      &lt;w:ilvl w:val=&quot;0&quot;/&gt;
+        ///      &lt;w:ilfo w:val=&quot;6&quot;/&gt;&lt;wx:t wx:val=&quot;¨&quot;/&gt;
+        ///      &lt;wx:font wx:val=&quot;Wingdings&quot;/&gt;
+        ///    &lt;/w:listPr&gt;
+        ///      &lt;w:ind w:left=&quot;426&quot; w:hanging=&quot;284&quot;/&gt;
+        ///      &lt;w:rPr&gt;&lt;w:rFonts w:cs=&quot;Calibri&quot;/&gt;
+        ///        &lt;w:lang w:val=&quot;EN-US&quot;/&gt;&lt;/w:rPr&gt;&lt;/w:pPr&gt;&lt;w:r&gt;&lt;w:rPr&gt;&lt;w:rFonts w:cs=&quot;Calibri&quot;/&gt;
+        ///          &lt;w:lang w:val=&quot;EN-US&quot;/&gt;
+        ///        &lt;/w:rPr&gt;
+        ///          &lt;w:t&gt;  &lt;/w: [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string tagNO {
             get {
@@ -182,7 +194,21 @@ namespace PlumbingProps.Document {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SI.
+        ///   Looks up a localized string similar to &lt;w:p wsp:rsidR=&quot;006956CA&quot; wsp:rsidRDefault=&quot;006956CA&quot; wsp:rsidP=&quot;00AF04BF&quot;&gt;
+        ///          &lt;w:pPr&gt;
+        ///            &lt;w:pStyle w:val=&quot;Prrafodelista&quot;/&gt;
+        ///            &lt;w:listPr&gt;
+        ///              &lt;w:ilvl w:val=&quot;0&quot;/&gt;
+        ///              &lt;w:ilfo w:val=&quot;4&quot;/&gt;
+        ///              &lt;wx:t wx:val=&quot;ý&quot;/&gt;
+        ///              &lt;wx:font wx:val=&quot;Wingdings&quot;/&gt;
+        ///            &lt;/w:listPr&gt;
+        ///            &lt;w:rPr&gt;
+        ///              &lt;w:rFonts w:cs=&quot;Calibri&quot;/&gt;
+        ///              &lt;w:lang w:val=&quot;EN-US&quot;/&gt;
+        ///            &lt;/w:rPr&gt;
+        ///          &lt;/w:pPr&gt;
+        ///          &lt;w:proofErr w:typ [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string tagOK {
             get {

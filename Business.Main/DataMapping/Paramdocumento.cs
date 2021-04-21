@@ -14,5 +14,6 @@ namespace Business.Main.DataMapping
         public string Area { get; set; }
         public int? Habilitado { get; set; }
         public string Proceso { get; set; }
+        public string Method { get; set; }
     }
 }

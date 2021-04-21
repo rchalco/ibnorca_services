@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Business.Main.Base;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,7 +8,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Resportes.TCS
     /// <summary>
     /// REG-PRO-TCS-05-01.07 Plan de auditoria V.1.0
     /// </summary>
-    public class REPPlanAuditoria
+    public class REPPlanAuditoria : IObjectReport
     {
         public string NombreEmpresa { get; set; }
         public string CodigoServicio { get; set; }

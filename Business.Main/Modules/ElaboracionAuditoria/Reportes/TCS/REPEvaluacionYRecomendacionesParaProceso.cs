@@ -1,4 +1,5 @@
-﻿using Business.Main.DataMapping.DTOs;
+﻿using Business.Main.Base;
+using Business.Main.DataMapping.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCS
     /// <summary>
     /// PLAN_REG-PRO-TCS-06-01_00 EvaluacionYRecomendacionParaUnProcesoDeCertificacion(Ver 1.0)
     /// </summary>
-    public class REPEvaluacionYRecomendacionesParaProceso
+    public class REPEvaluacionYRecomendacionesParaProceso : IObjectReport
     {
         public string Orgaizacion { get; set; }
         public string CodigoDeServicio { get; set; }

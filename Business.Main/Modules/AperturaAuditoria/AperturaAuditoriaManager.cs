@@ -593,7 +593,9 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                         return repDesginacionParticipante;
                     }).ToList()
                 };
-                string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
+
+
+                /*string filePlantilla = Global.PATH_PLANTILLA_DESIGNACION + pathPlantilla;
                 WordHelper generadorWord = new WordHelper(filePlantilla);
                 praDocDesignacion.SitiosAAuditar = string.Empty;
                 praciclocronograma.Pradireccionespasistemas?.ToList().ForEach(direccion =>
@@ -632,7 +634,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                 //    process.WaitForExit();     // (optional) wait up to 10 seconds                    
                 //}
                 //response.Message = fileNameGenerado.Replace(".doc", ".pdf");
-                response.Message = fileNameGenerado;
+                response.Message = fileNameGenerado;*/
             }
             catch (Exception ex)
             {

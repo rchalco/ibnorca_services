@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Business.Main.Base;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Resportes.ReportDTO
 {
-    class TCPREPListaAsistenciaCONCER
+    class TCPREPListaAsistenciaCONCER : IObjectReport
     {
         public string Fecha { get; set; }
         public string TipoReunion { get; set; }

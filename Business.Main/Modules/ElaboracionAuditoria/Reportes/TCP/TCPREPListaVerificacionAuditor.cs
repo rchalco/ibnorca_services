@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Business.Main.Base;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCP
 {
-    public class TCPREPListaVerificacionAuditor
+    public class TCPREPListaVerificacionAuditor : IObjectReport
     {
         public string NombreEmpresa { get; set; }
         public string Sitios { get; set; }

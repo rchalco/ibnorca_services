@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Business.Main.Base;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Resportes.ReportDTO
 {
-    class REPInformePreliminar
+    class REPInformePreliminar : IObjectReport
     {
 
         public string NombreEmpresa { get; set; }

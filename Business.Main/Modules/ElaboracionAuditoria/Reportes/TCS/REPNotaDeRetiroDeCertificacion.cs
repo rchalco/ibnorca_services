@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Business.Main.Base;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCS
     /// <summary>
     /// PLAN_REG-PRO-TCS-07-02.00 Nota de retiro de certificacion
     /// </summary>
-    public class REPNotaDeRetiroDeCertificacion
+    public class REPNotaDeRetiroDeCertificacion : IObjectReport
     {
         public string FechaIbnorca { get; set; }
         

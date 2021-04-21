@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Business.Main.Base;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Resportes.ReportDTO
 {
-    class TCPREPInforme
+    class TCPREPInforme : IObjectReport
     {
         public string IDCliente { get; set; }
         public string TipoAuditoria { get; set; }

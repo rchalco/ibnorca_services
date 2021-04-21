@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Business.Main.Base;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Resportes.ReportDTO
 {
-    class TCPREPActaReunion
+    public class TCPREPActaReunion : IObjectReport
     {
 
         public string Acta { get; set; }

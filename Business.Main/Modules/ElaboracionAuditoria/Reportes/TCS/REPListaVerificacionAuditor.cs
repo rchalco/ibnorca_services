@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Business.Main.Base;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,7 +8,7 @@ namespace Resportes.ReportDTO
     /// <summary>
     /// REG-PRO-TCS-05-05.00 Lista de verificación auditor V.1.0
     /// </summary>
-    public class REPListaVerificacionAuditor
+    public class REPListaVerificacionAuditor : IObjectReport
     {
         public string NombreEmpresa { get; set; }
         public string Sitios { get; set; }

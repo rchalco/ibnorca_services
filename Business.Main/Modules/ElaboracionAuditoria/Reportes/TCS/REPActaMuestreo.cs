@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Business.Main.Base;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Resportes.ReportDTO
 {
-    public class REPActaMuestreo
+    public class REPActaMuestreo : IObjectReport
     {
 
         public string NombreEmpresa { get; set; }

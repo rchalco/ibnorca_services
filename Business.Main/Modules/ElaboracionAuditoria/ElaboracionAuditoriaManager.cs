@@ -12,6 +12,7 @@ using PlumbingProps.Services;
 using Business.Main.Cross;
 using CoreAccesLayer.Wraper;
 using System.IO;
+using PlumbingProps.Document;
 
 namespace Business.Main.Modules.ElaboracionAuditoria
 {
@@ -259,18 +260,37 @@ namespace Business.Main.Modules.ElaboracionAuditoria
             }
             return response;
         }
-        public Response GenerarDocumento(string NombrePlantilla, string area, int IdCicloAuditoria)
+        public Response GenerarDocumento(string NombrePlantilla, int IdCicloAuditoria)
         {
             Response resul = new Response();
             try
             {
-                //string pathPlantilla = Path.Combine(Global.PATH_PLANTILLAS, area);
-                ElaboracionAuditoriaManager elaboracionAuditoriaManager = new ElaboracionAuditoriaManager();
-                if (NombrePlantilla.Equals("REG-PRO-TCS-05-01.07") && area.Equals("TCS")) //Plan de auditoria
+                ElaboracionAuditoriaManager elaboracionAuditoriaManager = new ElaboracionAuditoriaManager();                
+                var resulBDDocumento = repositoryMySql.SimpleSelect<Paramdocumento>(x => x.NombrePlantilla == NombrePlantilla);
+                if (resulBDDocumento.Count == 0 || string.IsNullOrEmpty(resulBDDocumento.First().Method))
                 {
-                    //elaboracionAuditoriaManager.GenerarPlanAuditoria(IdCicloAuditoria,)
+                    resul.State = ResponseType.Warning;
+                    resul.Message = "Plantilla  no implmentada";
+                    return resul;
                 }
 
+                string pathPlantilla = Path.Combine(Global.PATH_PLANTILLAS, resulBDDocumento.First().Area, resulBDDocumento.First().Path);
+                string pathOutPlantilla = Path.Combine(Global.PATH_PLANTILLAS, resulBDDocumento.First().Area, "salida");
+                string methodPlantilla = resulBDDocumento.First().Method;
+                RequestDataReport requestDataReport = new RequestDataReport { IdCiclo = IdCicloAuditoria };
+                //llamamos el metodo para recuperar data
+                var myMethod = elaboracionAuditoriaManager.GetType().GetMethod(methodPlantilla);
+                object[] parameters = new object[] { requestDataReport };
+                ResponseObject<GlobalDataReport> resulMethod = myMethod.Invoke(elaboracionAuditoriaManager, parameters) as ResponseObject<GlobalDataReport>;
+                if (resulMethod.State != ResponseType.Success)
+                {
+                    return resulMethod;
+                }
+
+                WordHelper generadorWord = new WordHelper(pathPlantilla);
+                //generamos el documento en word
+                string fileNameGenerado = generadorWord.GenerarDocumento(resulMethod.Object.data, resulMethod.Object.HeadersTables, pathOutPlantilla);
+                resul.Message = fileNameGenerado;
             }
             catch (Exception ex)
             {

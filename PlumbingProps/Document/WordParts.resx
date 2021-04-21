@@ -186,10 +186,54 @@
     <value>&lt;/w:tr&gt;</value>
   </data>
   <data name="tagNO" xml:space="preserve">
-    <value>NO</value>
+    <value>&lt;w:p wsp:rsidR="006956CA" wsp:rsidRDefault="00D52529" wsp:rsidP="00D52529"&gt;
+    &lt;w:pPr&gt;&lt;w:pStyle w:val="Prrafodelista"/&gt;
+    &lt;w:listPr&gt;
+      &lt;w:ilvl w:val="0"/&gt;
+      &lt;w:ilfo w:val="6"/&gt;&lt;wx:t wx:val="¨"/&gt;
+      &lt;wx:font wx:val="Wingdings"/&gt;
+    &lt;/w:listPr&gt;
+      &lt;w:ind w:left="426" w:hanging="284"/&gt;
+      &lt;w:rPr&gt;&lt;w:rFonts w:cs="Calibri"/&gt;
+        &lt;w:lang w:val="EN-US"/&gt;&lt;/w:rPr&gt;&lt;/w:pPr&gt;&lt;w:r&gt;&lt;w:rPr&gt;&lt;w:rFonts w:cs="Calibri"/&gt;
+          &lt;w:lang w:val="EN-US"/&gt;
+        &lt;/w:rPr&gt;
+          &lt;w:t&gt;  &lt;/w:t&gt;
+        &lt;/w:r&gt;
+    &lt;w:r wsp:rsidR="00D12DA1"&gt;
+      &lt;w:rPr&gt;
+        &lt;w:rFonts w:cs="Calibri"/&gt;
+        &lt;w:lang w:val="EN-US"/&gt;
+      &lt;/w:rPr&gt;
+      &lt;w:t&gt;{0}&lt;/w:t&gt;
+    &lt;/w:r&gt;
+  &lt;/w:p&gt;</value>
   </data>
   <data name="tagOK" xml:space="preserve">
-    <value>SI</value>
+    <value>&lt;w:p wsp:rsidR="006956CA" wsp:rsidRDefault="006956CA" wsp:rsidP="00AF04BF"&gt;
+          &lt;w:pPr&gt;
+            &lt;w:pStyle w:val="Prrafodelista"/&gt;
+            &lt;w:listPr&gt;
+              &lt;w:ilvl w:val="0"/&gt;
+              &lt;w:ilfo w:val="4"/&gt;
+              &lt;wx:t wx:val="ý"/&gt;
+              &lt;wx:font wx:val="Wingdings"/&gt;
+            &lt;/w:listPr&gt;
+            &lt;w:rPr&gt;
+              &lt;w:rFonts w:cs="Calibri"/&gt;
+              &lt;w:lang w:val="EN-US"/&gt;
+            &lt;/w:rPr&gt;
+          &lt;/w:pPr&gt;
+          &lt;w:proofErr w:type="spellStart"/&gt;
+          &lt;w:r wsp:rsidRPr="006956CA"&gt;
+            &lt;w:rPr&gt;
+              &lt;w:rFonts w:cs="Calibri"/&gt;
+              &lt;w:lang w:val="EN-US"/&gt;
+            &lt;/w:rPr&gt;
+            &lt;w:t&gt;{0}&lt;/w:t&gt;
+          &lt;/w:r&gt;
+          &lt;w:proofErr w:type="spellEnd"/&gt;
+        &lt;/w:p&gt;</value>
   </data>
   <data name="tagStyle" xml:space="preserve">
     <value>&lt;w:tblPr&gt;

@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Business.Main.Base;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Resportes.ReportDTO
 {
-    class TCPREPPlanAccion
+    class TCPREPPlanAccion : IObjectReport
     {
         public string NombreEmpresa { get; set; }
         public string TipoAuditoria { get; set; }
