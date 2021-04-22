@@ -48,6 +48,7 @@ namespace Business.Main.DataMapping
         public virtual DbSet<Pradireccionespaproducto> Pradireccionespaproductos { get; set; }
         public virtual DbSet<Pradireccionespasistema> Pradireccionespasistemas { get; set; }
         public virtual DbSet<Praprogramasdeauditorium> Praprogramasdeauditoria { get; set; }
+        public virtual DbSet<Tmddocumentacionauditorium> Tmddocumentacionauditoria { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -1132,6 +1133,38 @@ namespace Business.Main.DataMapping
                     .HasColumnType("varchar(50)")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
+            });
+
+            modelBuilder.Entity<Tmddocumentacionauditorium>(entity =>
+            {
+                entity.HasKey(e => e.IdTmdDocumentacionAuditoria)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("tmddocumentacionauditoria");
+
+                entity.Property(e => e.IdTmdDocumentacionAuditoria).HasColumnName("idTmdDocumentacionAuditoria");
+
+                entity.Property(e => e.CiteDocumento)
+                    .HasColumnType("varchar(200)")
+                    .HasColumnName("citeDocumento")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.Property(e => e.CorrelativoDocumento).HasColumnName("correlativoDocumento");
+
+                entity.Property(e => e.FechaDeRegistro)
+                    .HasColumnType("datetime")
+                    .HasColumnName("fechaDeRegistro");
+
+                entity.Property(e => e.IdElaAuditoria).HasColumnName("idElaAuditoria");
+
+                entity.Property(e => e.IdparamDocumentos).HasColumnName("idparamDocumentos");
+
+                entity.Property(e => e.TmdDocumentoAuditoria)
+                    .HasColumnType("varchar(3200)")
+                    .HasColumnName("tmdDocumentoAuditoria")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
             });
 
             OnModelCreatingPartial(modelBuilder);
