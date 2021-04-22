@@ -1,10 +1,18 @@
 ﻿using Business.Main.Modules.ElaboracionAuditoria;
+using Business.Main.Modules.TomaDecision;
 using NUnit.Framework;
 
 namespace NUnitBusinessMain.TesReportes
 {
     public class ReportIvo
     {
+        [Test]
+        public void DevuelveCorrelativoDocAuditoria()
+        {
+            TomaDecisionManager elaboracionAuditoriaManager = new TomaDecisionManager();
+            var response = elaboracionAuditoriaManager.DevuelveCorrelativoDocAuditoria(1,2021,3);
+        }
+
         ////TCP
         ////GenerarTCPREPNotaRetiroCertificacion
         ////bien
