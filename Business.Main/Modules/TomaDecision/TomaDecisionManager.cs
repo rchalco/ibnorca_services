@@ -1,6 +1,8 @@
 ﻿using Business.Main.Base;
+using Business.Main.DataMapping;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.ListarAuditoresxCargoCalificadoDTO;
 using Business.Main.Modules.TomaDecision.DTO;
+using CoreAccesLayer.Wraper;
 using Domain.Main.Wraper;
 using MySqlConnector;
 using System;
@@ -33,59 +35,39 @@ namespace Business.Main.Modules.TomaDecision
             }
             return response;
             
-            /*
-            string connStr = "server=192.168.0.106;user=usrIbnorca;database=ibnorca;port=3306;password=admin.123";
-            MySqlConnection conn = new MySqlConnection(connStr);
+         
+        }
+        public ResponseObject<Tmddocumentacionauditorium> RegistrarTmddocumentacionauditorium(Tmddocumentacionauditorium tmdDocumentacionAudit)
+        {
+            ResponseObject<Tmddocumentacionauditorium> response = new ResponseObject<Tmddocumentacionauditorium>
+            {
+                Message = "Se registro correctamente el plan de auditoria",
+                State = ResponseType.Success,
+                Object = tmdDocumentacionAudit
+            };
             try
             {
-                Console.WriteLine("Connecting to MySQL...");
-                conn.Open();
-
-                string sql = "select fTmdConsecutivoDocAudi(1,2021,2);";
-                MySqlCommand cmd = new MySqlCommand(sql, conn);
-                MySqlDataReader rdr = cmd.ExecuteReader();
-
-                while (rdr.Read())
+                ///TODO: verfificamos que exista la auditoria
+                if (tmdDocumentacionAudit == null)
                 {
-                    Console.WriteLine(rdr[0] + " -- " + rdr[1]);
+                    response.Message = "el objeto elaauditoria llego nulo, imposible ralizar el registro";
+                    response.State = ResponseType.Warning;
+                    return response;
                 }
-                rdr.Close();
+
+                ///TODO: se registra la auditoria
+                ///asignamos las llaves correctas
+                
+                ///guardamos la auditoria
+                Entity<Tmddocumentacionauditorium> entity = new Entity<Tmddocumentacionauditorium> { EntityDB = tmdDocumentacionAudit, stateEntity = StateEntity.modify };
+                repositoryMySql.SaveObject<Tmddocumentacionauditorium>(entity);
+                response.Object = entity.EntityDB;
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                ProcessError(ex, response);
             }
-
-            conn.Close();
-            Console.WriteLine("Done.");
-            return 1;
-            /*
-            oCn = da.GetConnection();
-
-                int res;
-
-                if (oCn == null)
-                {
-                    oCn.Open();
-                }
-
-                sInsProcName = "fLogin_Check";
-                insertcommand = new MySqlCommand(sInsProcName, oCn);
-                insertcommand.CommandType = CommandType.StoredProcedure;
-                insertcommand.Parameters.Add(new MySqlParameter("mRes", MySqlDbType.Int32, 0));
-                insertcommand.Parameters["mRes"].Direction = ParameterDirection.ReturnValue;
-                insertcommand.Parameters.Add("mUserName", MySqlDbType.VarChar, 50, mUserName);
-                insertcommand.Parameters.Add("mUserPass", MySqlDbType.VarChar, 40, mPass);
-                insertcommand.Parameters.Add("mUserKey", MySqlDbType.VarChar, 40);
-                insertcommand.Parameters["mUserKey"].Value = mKey;
-
-                res = insertcommand.ExecuteNonQuery();
-                //res = int.Parse(insertcommand.Parameters["mRes"].Value.ToString());
-
-                return (res);
-
-                oCn.Close();*/
-            
+            return response;
         }
     }
 }
