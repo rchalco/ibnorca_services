@@ -29,6 +29,8 @@ namespace Business.Main.Cross
 
         ///Seccion de plantillas        
         public static string PATH_PLANTILLAS= ConfigManager.GetConfiguration().GetSection("PLANTILLAS__PATH").Value; 
+        //para cadena de conexion  
+        //optionsBuilder.UseMySql(ConfigManager.GetConfiguration().GetSection("conexionString").Value, Microsoft.EntityFrameworkCore.ServerVersion.FromString("8.0.22-mysql")); 
 
     }
 }
