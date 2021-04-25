@@ -954,6 +954,12 @@ namespace Business.Main.DataMapping
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
 
+                entity.Property(e => e.EstadoConcer)
+                    .HasColumnType("varchar(100)")
+                    .HasColumnName("EstadoCONCER")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
                 entity.Property(e => e.FechaDesde).HasColumnType("datetime");
 
                 entity.Property(e => e.FechaEmisionPrimerCertificado).HasColumnType("datetime");
@@ -988,6 +994,12 @@ namespace Business.Main.DataMapping
 
                 entity.Property(e => e.Pais)
                     .HasColumnType("varchar(45)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.Property(e => e.ReivsionConcer)
+                    .HasColumnType("varchar(600)")
+                    .HasColumnName("ReivsionCONCER")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
 
@@ -1142,7 +1154,11 @@ namespace Business.Main.DataMapping
 
                 entity.ToTable("tmddocumentacionauditoria");
 
-                entity.Property(e => e.IdTmdDocumentacionAuditoria).HasColumnName("idTmdDocumentacionAuditoria");
+                entity.HasIndex(e => e.IdElaAuditoria, "fk_documento_auditoria_idx");
+
+                entity.Property(e => e.IdTmdDocumentacionAuditoria)
+                    .ValueGeneratedNever()
+                    .HasColumnName("idTmdDocumentacionAuditoria");
 
                 entity.Property(e => e.CiteDocumento)
                     .HasColumnType("varchar(200)")
@@ -1165,6 +1181,17 @@ namespace Business.Main.DataMapping
                     .HasColumnName("tmdDocumentoAuditoria")
                     .HasCharSet("utf8")
                     .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Usuario)
+                    .HasColumnType("varchar(100)")
+                    .HasColumnName("usuario")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.HasOne(d => d.IdElaAuditoriaNavigation)
+                    .WithMany(p => p.Tmddocumentacionauditoria)
+                    .HasForeignKey(d => d.IdElaAuditoria)
+                    .HasConstraintName("fk_documento_auditoria");
             });
 
             OnModelCreatingPartial(modelBuilder);

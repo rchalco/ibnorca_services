@@ -13,6 +13,7 @@ namespace Business.Main.DataMapping
             Elacontenidoauditoria = new HashSet<Elacontenidoauditorium>();
             Elacronogamas = new HashSet<Elacronogama>();
             Elahallazgos = new HashSet<Elahallazgo>();
+            Tmddocumentacionauditoria = new HashSet<Tmddocumentacionauditorium>();
         }
 
         public int IdelaAuditoria { get; set; }
@@ -25,5 +26,6 @@ namespace Business.Main.DataMapping
         public virtual ICollection<Elacontenidoauditorium> Elacontenidoauditoria { get; set; }
         public virtual ICollection<Elacronogama> Elacronogamas { get; set; }
         public virtual ICollection<Elahallazgo> Elahallazgos { get; set; }
+        public virtual ICollection<Tmddocumentacionauditorium> Tmddocumentacionauditoria { get; set; }
     }
 }

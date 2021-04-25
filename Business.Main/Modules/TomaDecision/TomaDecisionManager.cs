@@ -19,7 +19,6 @@ namespace Business.Main.Modules.TomaDecision
 
         public ResponseObject<int> DevuelveCorrelativoDocAuditoria(long idElaAuditoria, int gestion, int idTipoDocumento)
         {
-
             ResponseObject<int> response = new ResponseObject<int> { Message = "Cargos obtenidos obtenido correctamente.", State = ResponseType.Success };
             try
             {
@@ -34,8 +33,6 @@ namespace Business.Main.Modules.TomaDecision
                 ProcessError(ex, response);
             }
             return response;
-            
-         
         }
         public ResponseObject<Tmddocumentacionauditorium> RegistrarTmddocumentacionauditorium(Tmddocumentacionauditorium tmdDocumentacionAudit)
         {
@@ -54,10 +51,6 @@ namespace Business.Main.Modules.TomaDecision
                     response.State = ResponseType.Warning;
                     return response;
                 }
-
-                ///TODO: se registra la auditoria
-                ///asignamos las llaves correctas
-                
                 ///guardamos la auditoria
                 Entity<Tmddocumentacionauditorium> entity = new Entity<Tmddocumentacionauditorium> { EntityDB = tmdDocumentacionAudit, stateEntity = StateEntity.modify };
                 repositoryMySql.SaveObject<Tmddocumentacionauditorium>(entity);
