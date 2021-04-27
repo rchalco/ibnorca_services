@@ -21,13 +21,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCP
         public string CriterioAuditoria { get; set; }
         public string SiNODescripcion1 { get; set; }
         public string SiNoDescripcion2 { get; set; }
-        
-
-        public string Si2 { get; set; }
-        public string No2 { get; set; }
-        public string NA2 { get; set; }
-        public string Descripcion2 { get; set; }
-
+        public string SiNoDescripcion3 { get; set; }
         public string PlanMuestreo { get; set; }
 
         public List<TCPListaHallazgos> ListHallazgos { get; set; }
@@ -37,9 +31,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCP
         public string ConformidadMayores { get; set; }
         public string ComentariosIBNORCA { get; set; }
 
-        public string Si3 { get; set; }
-        public string No3 { get; set; }
-        public string Descripcion3 { get; set; }
+       
         public List<TCPListCorrecciones> ListCorrecciones { get; set; }
         public string CoordinadorAuditoria { get; set; }
         public List<TCPListProductos> ListProductos { get; set; }

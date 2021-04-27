@@ -90,14 +90,14 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     NombreNota = nombre,
                     Cargo = cargo,
                     ReferenciaNota = normas,
-                    NroCertificado = "XXXX", // TODO:Pendiente 
+                    NroCertificado = "XXXX", //TODO: Completar
                     NombreEmpresaTexto = cliente.NombreRazon,
                     DescripcionOtrogado = alcance,
                     Sitios = sitios,
-                    FechaLiteral1 = "XXXXX", // TODO:Pendiente 
+                    FechaLiteral1 = "XXXXX", //TODO: Completar
                     Seguimiento = praciclocronograma.Referencia,
                     FechaLiteral2 = fechaLiteral,
-                    DirectorEjecutivo = "XXXXXX" /// TODO:Pendiente
+                    DirectorEjecutivo = "XXXXXX" //TODO: Completar
 
                 };
                 response.Object = new GlobalDataReport { data = praSuspension, HeadersTables = null };
@@ -292,10 +292,53 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     sitios += x.Direccion + WordHelper.GetCodeKey(WordHelper.keys.enter);
                 });
 
+                string contactos = "";
+                string telefono = "";
+                string correoElectronico = "";
+
+                resulServices.lstContactos.ToList().ForEach(x =>
+                {
+                    contactos += x.NombreContacto;
+                    telefono += x.FonoContacto;
+                    correoElectronico += x.CorreoContacto;
+                });
+
                 ///llenamos el reporte con la informacion de este ciclo
                 TCPREPDesignacionAuditoria praReporte = new TCPREPDesignacionAuditoria
                 {
                     TipoAuditoria = praciclocronograma.Referencia,
+                    NombreEmpresa = cliente.NombreRazon,
+                    ModalidadAuditoria = "", //TODO: Completar
+                    FechaInicio = "", //TODO: Completar
+                    FechaFin = "", //TODO: Completar
+                    FechaInicioEnsayos = "", //TODO: Completar
+                    DiasAuditor = "", //TODO: Completar
+                    AuditorLider = "", //TODO: Completar
+                    CorreoAuditorLider = "", //TODO: Completar
+                    Auditor = "", //TODO: Completar
+                    CorreoAuditor = "", //TODO: Completar
+                    Experto = "", //TODO: Completar
+                    CorreoExperto = "", //TODO: Completar
+                    AuditorEnsayos = "", //TODO: Completar
+                    CorreoEnsayos = "", //TODO: Completar
+                    OrganismoCertificador = "", //TODO: Completar
+                    CodigoServicio = "", //TODO: Completar
+                    IDServicio = "", //TODO: Completar
+                    AltaDireccion = "", //TODO: Completar
+                    Cargo = "", //TODO: Completar
+                    Contacto = contactos, 
+                    CargoContacto = "", //TODO: Completar
+                    TelefonoContacto = telefono, //TODO: Completar
+                    CorreoElectronicoContacto = correoElectronico, //TODO: Completar
+                    CodigoIAF = "", //TODO: Completar
+                    Alcance = "", //TODO: Completar
+                    Sitios = sitios, //TODO: Completar
+                    HorarioTrabajo = "", //TODO: Completar
+                    FechaProxima = "", //TODO: Completar
+                    Adjunto = "", //TODO: Completar
+                    Usuario = "", //TODO: Completar
+                    Logistica = "", //TODO: Completar
+
 
                 };
                 response.Object = new GlobalDataReport { data = praReporte, HeadersTables = null };
@@ -520,13 +563,20 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     sitios += x.Direccion + WordHelper.GetCodeKey(WordHelper.keys.enter);
                 });
 
+                string fechaAuditoria = "";
+                fechaAuditoria = "Desde " + praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy") +
+                    " Hasta " + praciclocronograma.Praciclocronogramas.First().FechaDeFinDeEjecucionAuditoria?.ToString("dd/MM/yyyy");
+
+
                 //EquipoAuditoNombreCargo = null,
                 ///llenamos el reporte con la informacion de este ciclo
                 TCPREPListaVerificacionReunionApertura praReporte = new TCPREPListaVerificacionReunionApertura
                 {
                     NombreEmpresa = cliente.NombreRazon,
                     TipoAuditoria = praciclocronograma.Referencia,
-
+                    CodigoServicio = praprogramasdeauditorium.CodigoIafws,
+                    FechaAuditoria = fechaAuditoria,
+                    AuditorLider = "", //TODO: Completar
                 };
                 response.Object = new GlobalDataReport { data = praReporte, HeadersTables = null };
 
@@ -593,7 +643,10 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 {
                     NombreEmpresa = cliente.NombreRazon,
                     TipoAuditoria = praciclocronograma.Referencia,
-
+                    CodigoServicio = praprogramasdeauditorium.CodigoIafws,
+                    FechaInicio = "Desde " + praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
+                    FechaFin = " Hasta " + praciclocronograma.Praciclocronogramas.First().FechaDeFinDeEjecucionAuditoria?.ToString("dd/MM/yyyy"),
+                    AuditorLider = "", //TODO: Completar
                 };
                 response.Object = new GlobalDataReport { data = praReporte, HeadersTables = null };
 
@@ -660,7 +713,9 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 {
                     NombreEmpresa = cliente.NombreRazon,
                     TipoAuditoria = praciclocronograma.Referencia,
-
+                    CodigoServicio = praprogramasdeauditorium.CodigoIafws,
+                    FechaInicio = "Desde " + praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
+                    FechaFin = " Hasta " + praciclocronograma.Praciclocronogramas.First().FechaDeFinDeEjecucionAuditoria?.ToString("dd/MM/yyyy"),
                 };
                 response.Object = new GlobalDataReport { data = praReporte, HeadersTables = null };
 
@@ -721,13 +776,32 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     sitios += x.Direccion + WordHelper.GetCodeKey(WordHelper.keys.enter);
                 });
 
+                string fechaAuditoria = "";
+                fechaAuditoria = "Desde " + praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy") +
+                    " Hasta " + praciclocronograma.Praciclocronogramas.First().FechaDeFinDeEjecucionAuditoria?.ToString("dd/MM/yyyy");
+                string planMuestreo = "";
+                Elaauditorium elaauditorium = repositoryMySql.SimpleSelect<Elaauditorium>(x => x.IdPrAcicloProgAuditoria == IdCiclo).First();
+                var contenidos = repositoryMySql.SimpleSelect<Elacontenidoauditorium>(x => x.IdelaAuditoria == elaauditorium.IdelaAuditoria);
+
+
+                contenidos.Where(x => x.Nemotico == "ACTAMUESTREO_PLAN").ToList().ForEach(x =>
+                {
+                    planMuestreo = x.Contenido;
+                });
+
                 //EquipoAuditoNombreCargo = null,
                 ///llenamos el reporte con la informacion de este ciclo
                 TCPREPActaMuestreo praReporte = new TCPREPActaMuestreo
                 {
                     NombreEmpresa = cliente.NombreRazon,
                     TipoAuditoria = praciclocronograma.Referencia,
-
+                    CodigoServicio = praprogramasdeauditorium.CodigoIafws,
+                    Norma = normas,
+                    Fecha = fechaAuditoria,
+                    PlanMuestreo = planMuestreo, 
+                    Interno = "", //TODO: Completar
+                    Externo = "", //TODO: Completar
+                    DescripcionExterno = "", //TODO: Completar
                 };
                 response.Object = new GlobalDataReport { data = praReporte, HeadersTables = null };
             }
@@ -787,13 +861,27 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     sitios += x.Direccion + WordHelper.GetCodeKey(WordHelper.keys.enter);
                 });
 
+                string fechaAuditoria = "";
+                fechaAuditoria = "Desde " + praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy") +
+                    " Hasta " + praciclocronograma.Praciclocronogramas.First().FechaDeFinDeEjecucionAuditoria?.ToString("dd/MM/yyyy");
+
+               
+
                 //EquipoAuditoNombreCargo = null,
                 ///llenamos el reporte con la informacion de este ciclo
                 TCPREPListaVerificacionAuditor praReporte = new TCPREPListaVerificacionAuditor
                 {
                     NombreEmpresa = cliente.NombreRazon,
                     TipoAuditoria = praciclocronograma.Referencia,
-
+                    Sitios = sitios,
+                    Norma = normas,
+                    Fecha = fechaAuditoria,
+                    Usuario = "", //TODO: Completar
+                    Cargo = "", //TODO: Completar
+                    ProcesoAuditado = "", //TODO: Completar
+                    NombreAuditado = "", //TODO: Completar
+                    Sitio = "", //TODO: Completar
+                    Hallazgos = "", //TODO: Completar
                 };
                 response.Object = new GlobalDataReport { data = praReporte, HeadersTables = null };
             }
@@ -943,7 +1031,13 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     SiNODescripcion1 = cadenaSINO,
                     SiNoDescripcion2 = cadenaSINO1,
                     PlanMuestreo = planMuestreo,
-
+                    RedaccionFortalezas = "", //TODO: Completar
+                    RedaccionOportunidades = "", //TODO: Completar
+                    ConformidadesMenores = "", //TODO: Completar
+                    ConformidadMayores = "", //TODO: Completar
+                    ComentariosIBNORCA = "", //TODO: Completar
+                    SiNoDescripcion3 = "", //TODO: Completar
+                    CoordinadorAuditoria = "", //TODO: Completar
                     ListHallazgos = elahallazgos.Select(x =>
                     {
                         TCPListaHallazgos repRep = new TCPListaHallazgos();

@@ -689,6 +689,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 {
                     IDCliente = cliente.NombreRazon,
                     TipoAuditoria = praciclocronograma.Referencia,
+                    
                     ListProductos = praciclocronograma.Pracicloparticipantes.Select(x =>
                     {
                         TCPListProductosInforme repRep = new TCPListProductosInforme();
@@ -699,10 +700,17 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     }).ToList(),
 
                     Norma = normas,
-                    FechaInicio = fechaInicio
+                    FechaInicio = "Desde " + fechaInicio,
+                    FechaFin = " Hasta " + praciclocronograma.Praciclocronogramas.First().FechaDeFinDeEjecucionAuditoria?.ToString("dd/MM/yyyy"),
 
-                };
-                response.Object = new GlobalDataReport { data = praTCPREPInforme, HeadersTables = null };
+            };
+                Dictionary<string, CellTitles[]> pTitles = new Dictionary<string, CellTitles[]>();
+                CellTitles[] cellTitlesTitulo = new CellTitles[2];
+                cellTitlesTitulo[0] = new CellTitles { Title = "Producto", Visible = true, Width = "150" };
+                cellTitlesTitulo[1] = new CellTitles { Title = "Normas", Visible = true, Width = "150" };
+                pTitles.Add("ListProductos", cellTitlesTitulo);
+
+                response.Object = new GlobalDataReport { data = praTCPREPInforme, HeadersTables = pTitles };
             }
             catch (Exception ex)
             {

@@ -14,6 +14,7 @@ namespace Resportes.ReportDTO
 
         public string Norma { get; set; }
         public string FechaInicio { get; set; }
+        public string FechaFin { get; set; }
 
         public class TCPListProductosInforme
         {

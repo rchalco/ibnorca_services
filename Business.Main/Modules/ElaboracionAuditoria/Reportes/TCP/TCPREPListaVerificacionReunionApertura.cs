@@ -9,8 +9,8 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCP
     {
         public string NombreEmpresa{ get; set; }
         public string CodigoServicio { get; set; }
-        public string FechaInicio { get; set; }
-        public string FechaFin { get; set; }
+        public string FechaAuditoria { get; set; }
+        //public string FechaFin { get; set; }
         public string TipoAuditoria { get; set; }
         public string AuditorLider { get; set; }
     }
