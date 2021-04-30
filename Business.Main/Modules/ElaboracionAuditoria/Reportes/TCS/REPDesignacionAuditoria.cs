@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Resportes.ReportDTO
+namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCS
 {
     public class REPDesignacionAuditoria : IObjectReport
     {

@@ -38,7 +38,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 if (praciclocronograma == null)
                 {
                     response.State = ResponseType.Warning;
-                    response.Message = "No se cuenta con informacion de este cilo en la BD";
+                    response.Message = "No se cuenta con informacion de este ciclo en la BD";
                     return response;
                 }
 
@@ -122,7 +122,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 if (praciclocronograma == null)
                 {
                     response.State = ResponseType.Warning;
-                    response.Message = "No se cuenta con informacion de este cilo en la BD";
+                    response.Message = "No se cuenta con informacion de este ciclo en la BD";
                     return response;
                 }
 
@@ -239,6 +239,113 @@ namespace Business.Main.Modules.ElaboracionAuditoria
             }
             return response;
         }
+
+        public ResponseObject<GlobalDataReport> TCSDesignacionAuditoria(RequestDataReport requestDataReport)
+        {
+            ResponseObject<GlobalDataReport> response = new ResponseObject<GlobalDataReport> { Message = "", State = ResponseType.Success };
+            try
+            {
+                int IdCiclo = requestDataReport.IdCiclo;
+                ///Obtenemos la informacion del ciclo y del programa
+                Praciclosprogauditorium praciclocronograma = repositoryMySql.SimpleSelect<Praciclosprogauditorium>(x => x.IdPrAcicloProgAuditoria == IdCiclo).ToList().FirstOrDefault();
+                Praprogramasdeauditorium praprogramasdeauditorium = repositoryMySql.SimpleSelect<Praprogramasdeauditorium>(x => x.IdPrAprogramaAuditoria == praciclocronograma.IdPrAprogramaAuditoria).ToList().FirstOrDefault();
+                if (praciclocronograma == null)
+                {
+                    response.State = ResponseType.Warning;
+                    response.Message = "No se cuenta con informacion de este ciclo en la BD";
+                    return response;
+                }
+
+                praciclocronograma.Praciclocronogramas = repositoryMySql.SimpleSelect<Praciclocronograma>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Praciclonormassistemas = repositoryMySql.SimpleSelect<Praciclonormassistema>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Pracicloparticipantes = repositoryMySql.SimpleSelect<Pracicloparticipante>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Pradireccionespaproductos = repositoryMySql.SimpleSelect<Pradireccionespaproducto>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Pradireccionespasistemas = repositoryMySql.SimpleSelect<Pradireccionespasistema>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+
+                Cliente cliente = JsonConvert.DeserializeObject<Cliente>(praprogramasdeauditorium.OrganizacionContentWs);
+
+                ///obtenemos los contactos del cliente
+                ClientHelper clientHelper = new ClientHelper();
+                ///TDO: obtenemos los datos del servicio
+                RequestListarContactosEmpresa requestDato = new RequestListarContactosEmpresa { accion = "ListarContactosEmpresa", sIdentificador = Global.IDENTIFICADOR, sKey = Global.KEY_SERVICES, IdCliente = cliente.IdCliente };
+                ResponseListarContactosEmpresa resulServices = clientHelper.Consume<ResponseListarContactosEmpresa>(Global.URIGLOBAL_SERVICES + Global.URI_CLIENTE_CONTACTO, requestDato).Result;
+                if (!resulServices.estado)
+                {
+                    response.State = ResponseType.Warning;
+                    response.Message = $"Existe problemas al consumir el servicio de ibnorca (estados): {resulServices.mensaje}";
+                    return response;
+                }
+                ContactoEmpresa contactoEmpresa = resulServices.lstContactos?.Count > 0 ? resulServices.lstContactos[0] : null;
+
+                string normas = "";
+
+                praciclocronograma.Praciclonormassistemas.ToList().ForEach(x =>
+                {
+                    normas += x.Norma;
+                });
+
+                string sitios = "";
+                praciclocronograma.Pradireccionespasistemas.ToList().ForEach(x =>
+                {
+                    sitios += x.Direccion + WordHelper.GetCodeKey(WordHelper.keys.enter);
+                });
+
+                string contactos = "";
+                string telefono = "";
+                string correoElectronico = "";
+
+                resulServices.lstContactos.ToList().ForEach(x =>
+                {
+                    contactos += x.NombreContacto;
+                    telefono += x.FonoContacto;
+                    correoElectronico += x.CorreoContacto;
+                });
+
+                ///llenamos el reporte con la informacion de este ciclo
+                REPDesignacionAuditoria praReporte = new REPDesignacionAuditoria
+                {
+                    TipoAuditoria = praciclocronograma.Referencia,
+                    NombreEmpresa = cliente.NombreRazon,
+                    ModalidadAuditoria = "", //TODO: Completar
+                    FechaInicio = "", //TODO: Completar
+                    FechaFin = "", //TODO: Completar
+                    DiasAuditor = "", //TODO: Completar
+                    AuditorLider = "", //TODO: Completar
+                    CorreoAuditorLider = "", //TODO: Completar
+                    Auditor = "", //TODO: Completar
+                    CorreoAuditor = "", //TODO: Completar
+                    Experto = "", //TODO: Completar
+                    CorreoExperto = "", //TODO: Completar
+                    AuditorEnsayos = "", //TODO: Completar
+                    CorreoEnsayos = "", //TODO: Completar
+                    OrganismoCertificador = "", //TODO: Completar
+                    CodigoServicio = "", //TODO: Completar
+                    IDServicio = "", //TODO: Completar
+                    AltaDireccion = "", //TODO: Completar
+                    Cargo = "", //TODO: Completar
+                    Contacto = contactos,
+                    CargoContacto = "", //TODO: Completar
+                    CorreoElectronicoContacto = correoElectronico, //TODO: Completar
+                    CodigoIAF = "", //TODO: Completar
+                    Alcance = "", //TODO: Completar
+                    Sitios = sitios, //TODO: Completar
+                    HorarioTrabajo = "", //TODO: Completar
+                    FechaProxima = "", //TODO: Completar
+                    Adjunto = "", //TODO: Completar
+                    Usuario = "", //TODO: Completar
+                    Logistica = "", //TODO: Completar
+
+
+                };
+                response.Object = new GlobalDataReport { data = praReporte, HeadersTables = null };
+
+            }
+            catch (Exception ex)
+            {
+                ProcessError(ex, response);
+            }
+            return response;
+        }
         #endregion
 
         #region TCP
@@ -254,7 +361,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 if (praciclocronograma == null)
                 {
                     response.State = ResponseType.Warning;
-                    response.Message = "No se cuenta con informacion de este cilo en la BD";
+                    response.Message = "No se cuenta con informacion de este ciclo en la BD";
                     return response;
                 }
 
@@ -362,7 +469,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 if (praciclocronograma == null)
                 {
                     response.State = ResponseType.Warning;
-                    response.Message = "No se cuenta con informacion de este cilo en la BD";
+                    response.Message = "No se cuenta con informacion de este ciclo en la BD";
                     return response;
                 }
 
@@ -525,7 +632,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 if (praciclocronograma == null)
                 {
                     response.State = ResponseType.Warning;
-                    response.Message = "No se cuenta con informacion de este cilo en la BD";
+                    response.Message = "No se cuenta con informacion de este ciclo en la BD";
                     return response;
                 }
 
@@ -599,7 +706,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 if (praciclocronograma == null)
                 {
                     response.State = ResponseType.Warning;
-                    response.Message = "No se cuenta con informacion de este cilo en la BD";
+                    response.Message = "No se cuenta con informacion de este ciclo en la BD";
                     return response;
                 }
 
@@ -669,7 +776,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 if (praciclocronograma == null)
                 {
                     response.State = ResponseType.Warning;
-                    response.Message = "No se cuenta con informacion de este cilo en la BD";
+                    response.Message = "No se cuenta con informacion de este ciclo en la BD";
                     return response;
                 }
 
@@ -738,7 +845,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 if (praciclocronograma == null)
                 {
                     response.State = ResponseType.Warning;
-                    response.Message = "No se cuenta con informacion de este cilo en la BD";
+                    response.Message = "No se cuenta con informacion de este ciclo en la BD";
                     return response;
                 }
 
@@ -823,7 +930,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 if (praciclocronograma == null)
                 {
                     response.State = ResponseType.Warning;
-                    response.Message = "No se cuenta con informacion de este cilo en la BD";
+                    response.Message = "No se cuenta con informacion de este ciclo en la BD";
                     return response;
                 }
 
@@ -903,7 +1010,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 if (praciclocronograma == null)
                 {
                     response.State = ResponseType.Warning;
-                    response.Message = "No se cuenta con informacion de este cilo en la BD";
+                    response.Message = "No se cuenta con informacion de este ciclo en la BD";
                     return response;
                 }
 

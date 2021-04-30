@@ -809,7 +809,12 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 Elaauditorium elaauditorium = repositoryMySql.SimpleSelect<Elaauditorium>(x => x.IdPrAcicloProgAuditoria == IdCiclo).First();
                 var contenidos = repositoryMySql.SimpleSelect<Elacontenidoauditorium>(x => x.IdelaAuditoria == elaauditorium.IdelaAuditoria);
                 Elacontenidoauditorium elaContenido = new Elacontenidoauditorium();
-                elaContenido = contenidos.Where(x => x.Nemotico == "PLAN_CRITERIO").First();
+
+                if (contenidos.Where(x => x.Nemotico == "PLAN_CRITERIO").Count()>0 )
+                    elaContenido = contenidos.Where(x => x.Nemotico == "PLAN_CRITERIO").FirstOrDefault();
+
+
+                //elaContenido = contenidos.Where(x => x.Nemotico == "PLAN_CRITERIO").First();
                 string cadenaSINO = "";
                 contenidos.Where(x => x.Nemotico == "INFPRE_DESVIACION").ToList().ForEach(x =>
                 {
@@ -851,8 +856,10 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 var resulDBAuditoria = repositoryMySql.SimpleSelect<Elaauditorium>(x => x.IdPrAcicloProgAuditoria == IdCiclo);
                 var resulDBContenidoAuditoria = repositoryMySql.SimpleSelect<Elacontenidoauditorium>(x => x.IdelaAuditoria == resulDBAuditoria.First().IdelaAuditoria);
 
-                var resulConclusiones = resulDBContenidoAuditoria.Where(x => x.Nemotico == "INFPROD_CONCLUSION");
-
+                //var resulConclusiones = resulDBContenidoAuditoria.Where(x => x.Nemotico == "INFPROD_CONCLUSION");
+                //string conlusionesAuditor = "";
+                //if (resulConclusiones.Count() > 0)
+                //    conlusionesAuditor = resulConclusiones.ToString();
                 //EquipoAuditoNombreCargo = null,
                 ///llenamos el reporte con la informacion de este ciclo
                 REPInformeAuditoria praReporte = new REPInformeAuditoria
@@ -908,6 +915,26 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     NombreAuditor = "nombreAuditor",
                     NombreRepresentante = cliente.NombreRazon
                 };
+                Dictionary<string, CellTitles[]> pTitles = new Dictionary<string, CellTitles[]>();
+                CellTitles[] cellTitlesTitulo = new CellTitles[4];
+                cellTitlesTitulo[0] = new CellTitles { Title = "Fortaleza", Visible = true, Width = "50" };
+                cellTitlesTitulo[1] = new CellTitles { Title = "Oportunidad Mejora", Visible = true, Width = "120" };
+                cellTitlesTitulo[2] = new CellTitles { Title = "Conformidad Mayor", Visible = true, Width = "50" };
+                cellTitlesTitulo[3] = new CellTitles { Title = "Conformidad Menor", Visible = true, Width = "50" };
+                pTitles.Add("ListResumenHallazgos", cellTitlesTitulo);
+
+                cellTitlesTitulo = new CellTitles[3];
+                cellTitlesTitulo[0] = new CellTitles { Title = "Nombre", Visible = true, Width = "150" };
+                cellTitlesTitulo[1] = new CellTitles { Title = "Total Dias InSitu", Visible = true, Width = "80" };
+                cellTitlesTitulo[2] = new CellTitles { Title = "Total Dias Remoto", Visible = true, Width = "80" };
+                pTitles.Add("ListCronograma", cellTitlesTitulo);
+
+                cellTitlesTitulo = new CellTitles[2];
+                cellTitlesTitulo[0] = new CellTitles { Title = "Direccion", Visible = true, Width = "150" };
+                cellTitlesTitulo[1] = new CellTitles { Title = "Auditado", Visible = true, Width = "120" };
+                pTitles.Add("ListAlcanceCert", cellTitlesTitulo);
+                response.Object = new GlobalDataReport { data = praReporte, HeadersTables = pTitles };
+
             }
             catch (Exception ex)
             {
@@ -1002,7 +1029,8 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 Elaauditorium elaauditorium = repositoryMySql.SimpleSelect<Elaauditorium>(x => x.IdPrAcicloProgAuditoria == IdCiclo).First();
                 var contenidos = repositoryMySql.SimpleSelect<Elacontenidoauditorium>(x => x.IdelaAuditoria == elaauditorium.IdelaAuditoria);
                 Elacontenidoauditorium elaContenido = new Elacontenidoauditorium();
-                elaContenido = contenidos.Where(x => x.Nemotico == "PLAN_CRITERIO").First();
+                if (contenidos.Where(x => x.Nemotico == "PLAN_CRITERIO")!=null)
+                    elaContenido = contenidos.Where(x => x.Nemotico == "PLAN_CRITERIO").FirstOrDefault();
                 string cadenaSINO = "";
                 contenidos.Where(x => x.Nemotico == "INFPRE_DESVIACION").ToList().ForEach(x =>
                 {
@@ -1040,6 +1068,12 @@ namespace Business.Main.Modules.ElaboracionAuditoria
 
                 var resulConclusiones = resulDBContenidoAuditoria.Where(x => x.Nemotico == "INFPROD_CONCLUSION");
 
+                string conlusionesAuditor = "";
+                if (resulConclusiones.Count() > 0)
+                    conlusionesAuditor = resulConclusiones.ToString();
+                string criterioSistema= "";
+                if (contenidos.Where(x => x.Nemotico == "PLAN_CRITERIO").Count() > 0)
+                    criterioSistema = contenidos.Where(x => x.Nemotico == "PLAN_CRITERIO").FirstOrDefault().ToString();
                 //EquipoAuditoNombreCargo = null,
                 ///llenamos el reporte con la informacion de este ciclo
                 RepInformeAuditoriaEtapaI praReporte = new RepInformeAuditoriaEtapaI
@@ -1056,18 +1090,22 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     FechaAuditoria = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
                     FechaInforme = DateTime.Now.ToString("dd/MM/yyyy"),
                     EquipoAuditor = equipoAuditor,
-                    CriteriosSistema = contenidos.Where(x => x.Nemotico == "PLAN_CRITERIO").First().ToString(),
-                    ComentarioRealcionado = "ComentarioRealcionado",// comentario
-                    Etapa1 = "Etapa1", //resultados de etapa I
-                    AreasPreocupacion = "AreasPreocupacion",
-                    ConclusionAuditor = resulConclusiones.ToString(),
+                    CriteriosSistema = criterioSistema,
+                    ComentarioRealcionado = "ComentarioRealcionado",//TODO: Completar
+                    Etapa1 = "Etapa1", //TODO: Completar
+                    AreasPreocupacion = "AreasPreocupacion",//TODO: Completar
+                    ConclusionAuditor = conlusionesAuditor,
                     AuditorLider = auditor.cargoPuesto,
                     NombreAuditorLider = auditor.nombreCompleto,
                     Fecha = DateTime.Now.ToString("dd/MM/yyyy"),
-                    RepresentanteOrganizacion = "RepresentanteOrganizacion",
-                    NombreCoordinadorAud = "NombreCoordinadorAud",
-                    CorreoElectronicoCoodinador = "CorreoElectronicoCoodinador"
+                    RepresentanteOrganizacion = "RepresentanteOrganizacion",//TODO: Completar
+                    NombreCoordinadorAud = "NombreCoordinadorAud",//TODO: Completar
+                    ElectronicoCoordinador = "CorreoElectronicoCoodinador",//TODO: Completar
+                    FechaAuditoriaEtapaII = "",//TODO: Completar
+                    FechaSolicitarEdificarAudiII = ""//TODO: Completar
+
                 };
+                response.Object = new GlobalDataReport { data = praReporte, HeadersTables = null };
             }
             catch (Exception ex)
             {
@@ -1371,8 +1409,8 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     FechaAuditoria = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
                     Usuario = usuario,
                     Cargo = cargo,
-                    ProcesoAuditado = procesoAuditado,
-                    NombreAuditado = nombreAuditado,
+                    ProcesoAuditado = procesoAuditado, //TODO: Completar
+                    NombreAuditado = nombreAuditado, //TODO: Completar
                     Fecha = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
                     SitiosAuditado = sitios
 
@@ -1452,7 +1490,11 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     TipoAuditoria = praciclocronograma.Referencia,
                     FechasDeAuditoria = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
                     NombreYApellidos = nombreYApellidos,
-                    ResponsabilidadORol = responsabilidadORol
+                    ResponsabilidadORol = responsabilidadORol,
+                    ProcesoAuditado = "", //TODO: Completar
+                    NombreAuditado = "", //TODO: Completar
+                    Fecha = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
+                    SitiosAuditado = sitios
                 };
                 response.Object = new GlobalDataReport { data = praLIstaVerificacionBPM, HeadersTables = null };
             }

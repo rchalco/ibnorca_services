@@ -22,5 +22,9 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCS
         public string NombreYApellidos { get; set; }
         public string ResponsabilidadORol { get; set; }
 
+        public string ProcesoAuditado { get; set; }
+        public string NombreAuditado { get; set; }
+        public string Fecha { get; set; }
+        public string SitiosAuditado { get; set; }
     }
 }
