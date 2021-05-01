@@ -433,7 +433,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     IDServicio = "", //TODO: Completar
                     AltaDireccion = "", //TODO: Completar
                     Cargo = "", //TODO: Completar
-                    Contacto = contactos, 
+                    Contacto = contactos,
                     CargoContacto = "", //TODO: Completar
                     TelefonoContacto = telefono, //TODO: Completar
                     CorreoElectronicoContacto = correoElectronico, //TODO: Completar
@@ -673,7 +673,13 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 string fechaAuditoria = "";
                 fechaAuditoria = "Desde " + praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy") +
                     " Hasta " + praciclocronograma.Praciclocronogramas.First().FechaDeFinDeEjecucionAuditoria?.ToString("dd/MM/yyyy");
-
+                ParticipanteDetalleWS auditor = new Domain.Main.CrossEntities.ParticipanteDetalleWS();
+                string equipoAuditor = "";
+                praciclocronograma.Pracicloparticipantes.ToList().ForEach(x =>
+                {
+                    auditor = JsonConvert.DeserializeObject<ParticipanteDetalleWS>(x.ParticipanteDetalleWs);
+                    equipoAuditor = auditor.cargoPuesto + ":" + auditor.nombreCompleto + WordHelper.GetCodeKey(WordHelper.keys.enter);
+                });
 
                 //EquipoAuditoNombreCargo = null,
                 ///llenamos el reporte con la informacion de este ciclo
@@ -681,9 +687,9 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 {
                     NombreEmpresa = cliente.NombreRazon,
                     TipoAuditoria = praciclocronograma.Referencia,
-                    CodigoServicio = praprogramasdeauditorium.CodigoIafws,
+                    CodigoServicio = praprogramasdeauditorium.CodigoServicioWs,
                     FechaAuditoria = fechaAuditoria,
-                    AuditorLider = "", //TODO: Completar
+                    AuditorLider = auditor.nombreCompleto //TODO: Completar
                 };
                 response.Object = new GlobalDataReport { data = praReporte, HeadersTables = null };
 
@@ -743,6 +749,13 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 {
                     sitios += x.Direccion + WordHelper.GetCodeKey(WordHelper.keys.enter);
                 });
+                ParticipanteDetalleWS auditor = new Domain.Main.CrossEntities.ParticipanteDetalleWS();
+                string equipoAuditor = "";
+                praciclocronograma.Pracicloparticipantes.ToList().ForEach(x =>
+                {
+                    auditor = JsonConvert.DeserializeObject<ParticipanteDetalleWS>(x.ParticipanteDetalleWs);
+                    equipoAuditor = auditor.cargoPuesto + ":" + auditor.nombreCompleto + WordHelper.GetCodeKey(WordHelper.keys.enter);
+                });
 
                 //EquipoAuditoNombreCargo = null,
                 ///llenamos el reporte con la informacion de este ciclo
@@ -750,10 +763,10 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 {
                     NombreEmpresa = cliente.NombreRazon,
                     TipoAuditoria = praciclocronograma.Referencia,
-                    CodigoServicio = praprogramasdeauditorium.CodigoIafws,
+                    CodigoServicio = praprogramasdeauditorium.CodigoServicioWs,
                     FechaInicio = "Desde " + praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
                     FechaFin = " Hasta " + praciclocronograma.Praciclocronogramas.First().FechaDeFinDeEjecucionAuditoria?.ToString("dd/MM/yyyy"),
-                    AuditorLider = "", //TODO: Completar
+                    AuditorLider = auditor.nombreCompleto //TODO: Completar
                 };
                 response.Object = new GlobalDataReport { data = praReporte, HeadersTables = null };
 
@@ -820,7 +833,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 {
                     NombreEmpresa = cliente.NombreRazon,
                     TipoAuditoria = praciclocronograma.Referencia,
-                    CodigoServicio = praprogramasdeauditorium.CodigoIafws,
+                    CodigoServicio = praprogramasdeauditorium.CodigoServicioWs,
                     FechaInicio = "Desde " + praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
                     FechaFin = " Hasta " + praciclocronograma.Praciclocronogramas.First().FechaDeFinDeEjecucionAuditoria?.ToString("dd/MM/yyyy"),
                 };
@@ -872,7 +885,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
 
                 string normas = "";
 
-                praciclocronograma.Praciclonormassistemas.ToList().ForEach(x =>
+                praciclocronograma.Pradireccionespaproductos.ToList().ForEach(x =>
                 {
                     normas += x.Norma;
                 });
@@ -889,25 +902,33 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 string planMuestreo = "";
                 Elaauditorium elaauditorium = repositoryMySql.SimpleSelect<Elaauditorium>(x => x.IdPrAcicloProgAuditoria == IdCiclo).First();
                 var contenidos = repositoryMySql.SimpleSelect<Elacontenidoauditorium>(x => x.IdelaAuditoria == elaauditorium.IdelaAuditoria);
-
-
                 contenidos.Where(x => x.Nemotico == "ACTAMUESTREO_PLAN").ToList().ForEach(x =>
                 {
                     planMuestreo = x.Contenido;
                 });
+                string labExterno = string.Empty;
+                string labInterno = string.Empty;
+                contenidos.Where(x => x.Nemotico == "ACT_LAB_ENSAYO").Where(x => x.Label == "Interno").ToList().ForEach(x =>
+                {
+                    labInterno = x.Contenido;
+                });
 
+                contenidos.Where(x => x.Nemotico == "ACT_LAB_ENSAYO").Where(x => x.Label == "Externo").ToList().ForEach(x =>
+                {
+                    labExterno = x.Contenido;
+                });
                 //EquipoAuditoNombreCargo = null,
                 ///llenamos el reporte con la informacion de este ciclo
                 TCPREPActaMuestreo praReporte = new TCPREPActaMuestreo
                 {
                     NombreEmpresa = cliente.NombreRazon,
                     TipoAuditoria = praciclocronograma.Referencia,
-                    CodigoServicio = praprogramasdeauditorium.CodigoIafws,
+                    CodigoServicio = praprogramasdeauditorium.CodigoServicioWs,
                     Norma = normas,
                     Fecha = fechaAuditoria,
-                    PlanMuestreo = planMuestreo, 
-                    Interno = "", //TODO: Completar
-                    Externo = "", //TODO: Completar
+                    PlanMuestreo = planMuestreo,
+                    Interno = labInterno,
+                    Externo = labExterno,
                     DescripcionExterno = "", //TODO: Completar
                 };
                 response.Object = new GlobalDataReport { data = praReporte, HeadersTables = null };
@@ -957,13 +978,13 @@ namespace Business.Main.Modules.ElaboracionAuditoria
 
                 string normas = "";
 
-                praciclocronograma.Praciclonormassistemas.ToList().ForEach(x =>
+                praciclocronograma.Pradireccionespaproductos.ToList().ForEach(x =>
                 {
                     normas += x.Norma;
                 });
 
                 string sitios = "";
-                praciclocronograma.Pradireccionespasistemas.ToList().ForEach(x =>
+                praciclocronograma.Pradireccionespaproductos.ToList().ForEach(x =>
                 {
                     sitios += x.Direccion + WordHelper.GetCodeKey(WordHelper.keys.enter);
                 });
@@ -972,7 +993,18 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 fechaAuditoria = "Desde " + praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy") +
                     " Hasta " + praciclocronograma.Praciclocronogramas.First().FechaDeFinDeEjecucionAuditoria?.ToString("dd/MM/yyyy");
 
-               
+                Elaauditorium elaauditorium = repositoryMySql.SimpleSelect<Elaauditorium>(x => x.IdPrAcicloProgAuditoria == IdCiclo).First();
+                var elahallazgos = repositoryMySql.SimpleSelect<Elahallazgo>(x => x.IdelaAuditoria == elaauditorium.IdelaAuditoria);
+                string sHallazgos = string.Empty;
+                elahallazgos.ToList().ForEach(x =>
+                {
+                    sHallazgos += $"Tipo:  {x.Tipo} {WordHelper.GetCodeKey(WordHelper.keys.enter)}";
+                    sHallazgos += $"Proceso:  {x.Proceso} {WordHelper.GetCodeKey(WordHelper.keys.enter)}";
+                    sHallazgos += $"Hallazgo:  {x.Hallazgo} {WordHelper.GetCodeKey(WordHelper.keys.enter)}";
+                    sHallazgos += $"Sitio:  {x.Sitio} {WordHelper.GetCodeKey(WordHelper.keys.enter)}";
+                    sHallazgos += $"Fecha:  {x.Fecha} {WordHelper.GetCodeKey(WordHelper.keys.enter)}";
+                    sHallazgos += $"Auditor:  {x.Usuario} {WordHelper.GetCodeKey(WordHelper.keys.enter)} +{ WordHelper.GetCodeKey(WordHelper.keys.enter)}";
+                });
 
                 //EquipoAuditoNombreCargo = null,
                 ///llenamos el reporte con la informacion de este ciclo
@@ -987,8 +1019,8 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     Cargo = "", //TODO: Completar
                     ProcesoAuditado = "", //TODO: Completar
                     NombreAuditado = "", //TODO: Completar
-                    Sitio = "", //TODO: Completar
-                    Hallazgos = "", //TODO: Completar
+                    Sitio = sitios, //TODO: Completar
+                    Hallazgos = sHallazgos 
                 };
                 response.Object = new GlobalDataReport { data = praReporte, HeadersTables = null };
             }

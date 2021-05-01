@@ -1168,17 +1168,26 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 {
                     sitios += x.Direccion + WordHelper.GetCodeKey(WordHelper.keys.enter);
                 });
-
+                ParticipanteDetalleWS auditor = new Domain.Main.CrossEntities.ParticipanteDetalleWS();
+                string equipoAuditor = "";
+                praciclocronograma.Pracicloparticipantes.ToList().ForEach(x =>
+                {
+                    //if (x.ParticipanteDetalleWs.Contains("AUDITOR LIDER"))
+                    //{
+                    auditor = JsonConvert.DeserializeObject<ParticipanteDetalleWS>(x.ParticipanteDetalleWs);
+                    equipoAuditor = auditor.cargoPuesto + ":" + auditor.nombreCompleto + WordHelper.GetCodeKey(WordHelper.keys.enter);
+                    //}
+                });
                 ///llenamos el reporte con la informacion de este ciclo
                 REPListaVerificacionReunionApertura praListaVerificacionReunionApertura = new REPListaVerificacionReunionApertura
                 {
                     NombreEmpresa = cliente.NombreRazon,
                     CodigoServicio = praprogramasdeauditorium.CodigoIafws,
-                    FechaInicio = fechaInicio,
-                    FechaFin = fechaFin,
+                    FechaInicio = praciclocronograma.FechaDesde.ToString(),
+                    FechaFin = praciclocronograma.FechaHasta.ToString(),
                     TipoAuditoria = praciclocronograma.Referencia,
                     Norma = normas,
-                    AuditorLider = nombreYFirmaDeAuditorLider
+                    AuditorLider = auditor.nombreCompleto //nombreYFirmaDeAuditorLider
 
 
                 };
@@ -1245,6 +1254,13 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 {
                     sitios += x.Direccion + WordHelper.GetCodeKey(WordHelper.keys.enter);
                 });
+                ParticipanteDetalleWS auditor = new Domain.Main.CrossEntities.ParticipanteDetalleWS();
+                string equipoAuditor = "";
+                praciclocronograma.Pracicloparticipantes.ToList().ForEach(x =>
+                {
+                    auditor = JsonConvert.DeserializeObject<ParticipanteDetalleWS>(x.ParticipanteDetalleWs);
+                    equipoAuditor = auditor.cargoPuesto + ":" + auditor.nombreCompleto + WordHelper.GetCodeKey(WordHelper.keys.enter);
+                });
 
                 ///llenamos el reporte con la informacion de este ciclo
                 REPListaVerificacionReunionCierre praListaVerificacionReunionCierre = new REPListaVerificacionReunionCierre
@@ -1255,7 +1271,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     FechaDeAuditoria = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
                     TipoDeAuditoria = praciclocronograma.Referencia,
                     NormasAuditadas = normas,
-                    NombreYFirmaDeAuditorLider = nombreYFirmaDeAuditorLider
+                    NombreYFirmaDeAuditorLider = auditor.nombreCompleto
 
                 };
                 response.Object = new GlobalDataReport { data = praListaVerificacionReunionCierre, HeadersTables = null };
