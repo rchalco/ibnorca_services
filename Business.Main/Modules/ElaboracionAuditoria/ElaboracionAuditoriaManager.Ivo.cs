@@ -687,6 +687,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 ///llenamos el reporte con la informacion de este ciclo
                 TCPREPInforme praTCPREPInforme = new TCPREPInforme
                 {
+
                     IDCliente = cliente.NombreRazon,
                     TipoAuditoria = praciclocronograma.Referencia,
                     

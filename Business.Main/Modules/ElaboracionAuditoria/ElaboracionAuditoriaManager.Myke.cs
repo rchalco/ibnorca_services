@@ -1139,8 +1139,38 @@ namespace Business.Main.Modules.ElaboracionAuditoria
 
                 var elahallazgos = repositoryMySql.SimpleSelect<Elahallazgo>(x => x.IdelaAuditoria == elaauditorium.IdelaAuditoria);
                 int nroFortaleza = 0;
-                nroFortaleza = elahallazgos.Count(x => x.TipoNemotico == "F");
+                
+                string sHallazgosNCM = string.Empty;
+                elahallazgos.Where(x => x.Tipo == "No-Conformidades Mayor").ToList().ForEach(x =>
+                {
+                    sHallazgosNCM += $"No-Conformidades Mayor:  {x.Proceso} {WordHelper.GetCodeKey(WordHelper.keys.enter)}";
 
+                });
+                string sHallazgosOM = string.Empty;
+                elahallazgos.Where(x => x.Tipo == "Oportunidad de mejora").ToList().ForEach(x =>
+                {
+                    sHallazgosOM += $"Oportunidad de mejora:  {x.Proceso} {WordHelper.GetCodeKey(WordHelper.keys.enter)}";
+
+                });
+                string sHallazgosNCMe = string.Empty;
+                elahallazgos.Where(x => x.Tipo == "No-Conformidades Menores").ToList().ForEach(x =>
+                {
+                    sHallazgosNCMe += $"No-Conformidades Menores:  {x.Proceso} {WordHelper.GetCodeKey(WordHelper.keys.enter)}";
+
+                });
+                string sHallazgosF = string.Empty;
+                elahallazgos.Where(x => x.Tipo == "Fortaleza").ToList().ForEach(x =>
+                {
+                    sHallazgosF += $"Fortaleza:  {x.Proceso} {WordHelper.GetCodeKey(WordHelper.keys.enter)}";
+
+                });
+                string sHallazgosC = string.Empty;
+                elahallazgos.Where(x => x.Tipo == "Conformidades").ToList().ForEach(x =>
+                {
+                    sHallazgosC += $"Conformidades:  {x.Proceso} {WordHelper.GetCodeKey(WordHelper.keys.enter)}";
+
+                });
+                                
                 int oportunidad = 0;
                 oportunidad = elahallazgos.Count(x => x.TipoNemotico == "OM");
 
@@ -1161,19 +1191,19 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     Contacto = contactos,
                     TelefonoCelular = telefono,
                     CorreoElectronico = correoElectronico,
-                    CodigoServicio = praprogramasdeauditorium.CodigoIafws,
+                    CodigoServicio = praprogramasdeauditorium.CodigoServicioWs,
                     FechaInicio = fechaInicio,
                     Fecha = DateTime.Now.ToString("dd/MM/yyyy"),
                     //AuditorLider = auditor.nombreCompleto, //No se tiene
                     EquipoAuditor = equipoAuditor,
                     CriterioAuditoria = elaContenido.Contenido,
-                    SiNODescripcion1 = cadenaSINO,
-                    SiNoDescripcion2 = cadenaSINO1,
+                    Cont7ConModificaciones = cadenaSINO,
+                    Cont7SinModificaciones = cadenaSINO1,
                     PlanMuestreo = planMuestreo,
-                    RedaccionFortalezas = "", //TODO: Completar
+                    RedaccionFortalezas = sHallazgosF, 
                     RedaccionOportunidades = "", //TODO: Completar
-                    ConformidadesMenores = "", //TODO: Completar
-                    ConformidadMayores = "", //TODO: Completar
+                    ConformidadesMenores = sHallazgosNCMe, 
+                    ConformidadMayores = sHallazgosOM, 
                     ComentariosIBNORCA = "", //TODO: Completar
                     SiNoDescripcion3 = "", //TODO: Completar
                     CoordinadorAuditoria = "", //TODO: Completar
@@ -1184,7 +1214,6 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                         repRep.OportunidadMejora = oportunidad.ToString();
                         repRep.ConformidadMayor = noConformidadMayor.ToString();
                         repRep.ConformidadMenor = noConformidadMenor.ToString();
-
 
                         return repRep;
                     }).ToList(),
