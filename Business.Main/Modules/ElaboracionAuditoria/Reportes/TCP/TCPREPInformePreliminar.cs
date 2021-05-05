@@ -19,8 +19,8 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCP
         public string Fecha { get; set; }
         public string EquipoAuditor { get; set; }
         public string CriterioAuditoria { get; set; }
-        public string SiNODescripcion1 { get; set; }
-        public string SiNoDescripcion2 { get; set; }
+        public string Cont7ConModificaciones { get; set; }
+        public string Cont7SinModificaciones { get; set; }
         public string SiNoDescripcion3 { get; set; }
         public string PlanMuestreo { get; set; }
 
