@@ -41,7 +41,7 @@ namespace CoreAccesLayer.Implement.MySQL
 
         public bool Rollback()
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         public List<T> SimpleSelect<T>(Expression<Func<T, bool>> predicate) where T : class, new()

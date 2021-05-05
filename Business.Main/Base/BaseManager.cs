@@ -29,6 +29,7 @@ namespace Business.Main.Base
             ManagerException managerException = new ManagerException();
             response.State = ResponseType.Error;
             response.Message = managerException.ProcessException(ex);
+            repositoryMySql.Rollback();
             return managerException.ProcessException(ex);
         }
     }

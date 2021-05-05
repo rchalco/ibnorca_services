@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using PlumbingProps.Config;
 
 #nullable disable
 
@@ -24,6 +23,7 @@ namespace Business.Main.DataMapping
         public virtual DbSet<Elacronogama> Elacronogamas { get; set; }
         public virtual DbSet<Elahallazgo> Elahallazgos { get; set; }
         public virtual DbSet<Elalistaspredefinida> Elalistaspredefinidas { get; set; }
+        public virtual DbSet<Importacionsolicitud> Importacionsolicituds { get; set; }
         public virtual DbSet<Paramarea> Paramareas { get; set; }
         public virtual DbSet<Paramcargosparticipante> Paramcargosparticipantes { get; set; }
         public virtual DbSet<Paramdepartamento> Paramdepartamentos { get; set; }
@@ -54,7 +54,8 @@ namespace Business.Main.DataMapping
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseMySql(ConfigManager.GetConfiguration().GetSection("conexionString").Value, Microsoft.EntityFrameworkCore.ServerVersion.FromString("8.0.22-mysql"));
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseMySql("server=localhost;database=ibnorca_mok;user=root;password=admin.123;treattinyasboolean=true", Microsoft.EntityFrameworkCore.ServerVersion.FromString("8.0.22-mysql"));
             }
         }
 
@@ -373,6 +374,36 @@ namespace Business.Main.DataMapping
                     .HasColumnName("titulo")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
+            });
+
+            modelBuilder.Entity<Importacionsolicitud>(entity =>
+            {
+                entity.HasKey(e => e.IdimportacionSolicitud)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("importacionsolicitud");
+
+                entity.Property(e => e.IdimportacionSolicitud).HasColumnName("idimportacionSolicitud");
+
+                entity.Property(e => e.Cliente)
+                    .HasColumnType("varchar(500)")
+                    .HasColumnName("cliente")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
+
+                entity.Property(e => e.Detalle)
+                    .HasColumnType("json")
+                    .HasColumnName("detalle");
+
+                entity.Property(e => e.FechaRegistro)
+                    .HasColumnType("datetime")
+                    .HasColumnName("fecha_registro");
+
+                entity.Property(e => e.Nit)
+                    .HasColumnType("varchar(100)")
+                    .HasColumnName("nit")
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
             });
 
             modelBuilder.Entity<Paramarea>(entity =>

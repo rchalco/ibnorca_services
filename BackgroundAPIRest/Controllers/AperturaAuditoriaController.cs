@@ -18,7 +18,9 @@ using Newtonsoft.Json;
 using PlumbingProps.Logger;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace BackgroundAPIRest.Controllers
@@ -139,6 +141,51 @@ namespace BackgroundAPIRest.Controllers
             AperturaAuditoriaManager objAperturaManager = new AperturaAuditoriaManager();
             RequestBuscarClasificador req = new RequestBuscarClasificador { padre = 638 };
             return objAperturaManager.BuscarOrganismosCertificadores(req);
+        }
+
+
+        [HttpPost("CargarSolcitud"), DisableRequestSizeLimit]
+        [EnableCors("MyPolicy")]
+        public Response CargarSolcitud()
+        {
+            Response resul = new Response();
+            AperturaAuditoriaManager aperturaAuditoriaManager = new AperturaAuditoriaManager();
+            try
+            {
+                var file = Request.Form.Files[0];
+                var folderName = Path.Combine("Solcitudes", DateTime.Now.ToString("yyyyMMdd"));
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                if (!Directory.Exists(pathToSave))
+                {
+                    Directory.CreateDirectory(pathToSave);
+
+                }
+                if (file.Length > 0)
+                {
+                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"').Replace(".xlsx", "").Replace(".xls", "") + DateTime.Now.ToString("yyyyMMdd") + ".xls";
+                    var fullPath = Path.Combine(pathToSave, fileName);
+                    if (System.IO.File.Exists(fullPath))
+                    {
+                        System.IO.File.Delete(fullPath);
+                    }
+                    var dbPath = Path.Combine(folderName, fileName);
+
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+                    resul = aperturaAuditoriaManager.CargarSolicitudExcel(fullPath);
+                }
+                else
+                {
+                    resul = new Response { State = ResponseType.Warning, Message = "Error el archivo pesa 0 bytes!!!!" };
+                }
+            }
+            catch (Exception ex)
+            {
+                aperturaAuditoriaManager.ProcessError(ex, resul);
+            }
+            return resul;
         }
     }
 }

@@ -3,6 +3,7 @@ using Business.Main.Cross;
 using Business.Main.DataMapping;
 using Business.Main.DataMapping.DTOs;
 using Business.Main.Modules.ApeeturaAuditoria.Domain;
+using Business.Main.Modules.AperturaAuditoria.Domain;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.BuscarClasificadorDTO;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.BuscarNormaIntxCodigoDTO;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.BuscarNormaxCodigoDTO;
@@ -18,12 +19,16 @@ using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.ListarContacto
 using CoreAccesLayer.Wraper;
 using Domain.Main.AperturaAuditoria;
 using Domain.Main.Wraper;
+using ExcelDataReader;
 using Newtonsoft.Json;
 using PlumbingProps.Document;
 using PlumbingProps.Services;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,7 +40,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
     {
         public ResponseObject<Praprogramasdeauditorium> RegisterProgramaAuditoria(Praprogramasdeauditorium req)
         {
-            ResponseObject<Praprogramasdeauditorium> response = new ResponseObject<Praprogramasdeauditorium> { State = ResponseType.Success }; 
+            ResponseObject<Praprogramasdeauditorium> response = new ResponseObject<Praprogramasdeauditorium> { State = ResponseType.Success };
             try
             {
                 //Logica del negocio
@@ -665,7 +670,6 @@ namespace Business.Main.Modules.ApeeturaAuditoria
             }
             return response;
         }
-
         private DateTime CalcularMesProgramado(string area, int año)
         {
             DateTime resul = DateTime.Now;
@@ -677,5 +681,82 @@ namespace Business.Main.Modules.ApeeturaAuditoria
             return resul;
         }
 
+        public Response CargarSolicitudExcel(string pathExcel)
+        {
+            Response response = new Response() { Message = "Solicitud registrada correctamente", State = ResponseType.Success };
+            try
+            {
+                System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+                using (var stream = File.Open(pathExcel, FileMode.Open, FileAccess.Read))
+                {
+                    SolicitudCliente solicitudCliente = new SolicitudCliente();
+                    using (var reader = ExcelReaderFactory.CreateReader(stream))
+                    {
+                        DataSet dataset = reader.AsDataSet();
+                        solicitudCliente.GetType().GetProperties().ToList().ForEach(x =>
+                        {
+                            if (x.PropertyType.GetInterface("IList") != null)
+                            {
+                                Rango rango = x.GetCustomAttributes(true).ToList().FirstOrDefault(y => y.GetType() == typeof(Rango)) as Rango;
+                                Type innerType = null;
+                                IList listReference = null;
+                                if (x.PropertyType == typeof(List<Laboratorio>))
+                                {
+                                    listReference = new List<Laboratorio>();
+                                    x.SetValue(solicitudCliente, listReference);
+                                    innerType = typeof(Laboratorio);
+                                }
+                                else if (x.PropertyType == typeof(List<SolicitudProducto>))
+                                {
+                                    listReference = new List<SolicitudProducto>();
+                                    x.SetValue(solicitudCliente, listReference);
+                                    innerType = typeof(SolicitudProducto);
+                                }
+                                else if (x.PropertyType == typeof(List<ListSimple>))
+                                {
+                                    listReference = new List<ListSimple>();
+                                    x.SetValue(solicitudCliente, listReference);
+                                    innerType = typeof(ListSimple);
+                                }
+
+                                for (int i = rango.rowA; i <= rango.rowB; i++)
+                                {
+                                    object newInstance = Activator.CreateInstance(innerType);
+                                    newInstance.GetType().GetProperties().ToList().ForEach(zz =>
+                                    {
+                                        Coordenada coordenada = zz.GetCustomAttributes(true).ToList().FirstOrDefault(y => y.GetType() == typeof(Coordenada)) as Coordenada;
+                                        string valor = coordenada != null ? Convert.ToString(dataset.Tables[0].Rows[i][coordenada.column]) : "";
+                                        zz.SetValue(newInstance, valor);
+                                    });
+                                    listReference.Add(newInstance);
+                                }
+                                x.SetValue(solicitudCliente, listReference);
+                            }
+                            else
+                            {
+                                Coordenada coordenada = x.GetCustomAttributes(true).ToList().FirstOrDefault(y => y.GetType() == typeof(Coordenada)) as Coordenada;
+                                string valor = coordenada != null ? Convert.ToString(dataset.Tables[0].Rows[coordenada.row][coordenada.column]) : "";
+                                x.SetValue(solicitudCliente, valor);
+                            }
+
+                        });
+
+                    }
+                    ///Guardamos el objeto en BD
+                    Entity<Importacionsolicitud> entity = new Entity<Importacionsolicitud>() { EntityDB = new Importacionsolicitud(), stateEntity = StateEntity.add };
+                    entity.EntityDB.Nit = solicitudCliente.nit;
+                    entity.EntityDB.Cliente = solicitudCliente.razonSocial;
+                    entity.EntityDB.Detalle = JsonConvert.SerializeObject(solicitudCliente);
+                    entity.EntityDB.FechaRegistro = DateTime.Now;
+                    repositoryMySql.SaveObject<Importacionsolicitud>(entity);
+                    repositoryMySql.Commit();
+                }
+            }
+            catch (Exception ex)
+            {
+                ProcessError(ex, response);
+            }
+            return response;
+        }
     }
 }
