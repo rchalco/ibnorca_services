@@ -1,4 +1,5 @@
 ﻿using Business.Main.Base;
+using Business.Main.DataMapping.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,7 +8,10 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCS
 {
     public class REPDesignacionAuditoria : IObjectReport
     {
-
+        public REPDesignacionAuditoria()
+        {
+            ListRepDesginacionParticipante = new List<RepDesginacionParticipante>();
+        }
         public string TipoAuditoria { get; set; }
         public string ModalidadAuditoria { get; set; }
         public string FechaInicio { get; set; }
@@ -40,10 +44,9 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCS
         public string Adjunto { get; set; }
         public string Usuario { get; set; }
         public string Logistica { get; set; }
-
-
-
-
+        public List<RepDesginacionParticipante> ListRepDesginacionParticipante { get; set; }
 
     }
+
+
 }
