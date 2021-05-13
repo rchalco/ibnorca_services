@@ -323,18 +323,18 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     CorreoExperto = "", //TODO: Completar
                     AuditorEnsayos = "", //TODO: Completar
                     CorreoEnsayos = "", //TODO: Completar
-                    OrganismoCertificador = praprogramasdeauditorium.OrganismoCertificador, 
-                    CodigoServicio = praprogramasdeauditorium.CodigoServicioWs, 
-                    IDServicio = praprogramasdeauditorium.IdOrganizacionWs, 
+                    OrganismoCertificador = praprogramasdeauditorium.OrganismoCertificador,
+                    CodigoServicio = praprogramasdeauditorium.CodigoServicioWs,
+                    IDServicio = praprogramasdeauditorium.IdOrganizacionWs,
                     AltaDireccion = "", //TODO: Completar
                     Cargo = "", //TODO: Completar
                     Contacto = contactos,
                     CargoContacto = "", //TODO: Completar
                     CorreoElectronicoContacto = correoElectronico, //TODO: Completar
-                    CodigoIAF = praprogramasdeauditorium.CodigoIafws, 
+                    CodigoIAF = praprogramasdeauditorium.CodigoIafws,
                     Alcance = "", //TODO: Completar
                     Sitios = sitios, //TODO: Completar
-                    HorarioTrabajo = praciclocronograma.Praciclocronogramas.First().HorarioTrabajo, 
+                    HorarioTrabajo = praciclocronograma.Praciclocronogramas.First().HorarioTrabajo,
                     FechaProxima = "", //TODO: Completar
                     Adjunto = "", //TODO: Completar
                     Usuario = "", //TODO: Completar
@@ -388,6 +388,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 ///Obtenemos la informacion del ciclo y del programa
                 Praciclosprogauditorium praciclocronograma = repositoryMySql.SimpleSelect<Praciclosprogauditorium>(x => x.IdPrAcicloProgAuditoria == IdCiclo).ToList().FirstOrDefault();
                 Praprogramasdeauditorium praprogramasdeauditorium = repositoryMySql.SimpleSelect<Praprogramasdeauditorium>(x => x.IdPrAprogramaAuditoria == praciclocronograma.IdPrAprogramaAuditoria).ToList().FirstOrDefault();
+
                 if (praciclocronograma == null)
                 {
                     response.State = ResponseType.Warning;
@@ -400,6 +401,17 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 praciclocronograma.Pracicloparticipantes = repositoryMySql.SimpleSelect<Pracicloparticipante>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
                 praciclocronograma.Pradireccionespaproductos = repositoryMySql.SimpleSelect<Pradireccionespaproducto>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
                 praciclocronograma.Pradireccionespasistemas = repositoryMySql.SimpleSelect<Pradireccionespasistema>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+
+                praprogramasdeauditorium.Praciclosprogauditoria = repositoryMySql.SimpleSelect<Praciclosprogauditorium>(y => y.IdPrAprogramaAuditoria == praprogramasdeauditorium.IdPrAprogramaAuditoria);
+
+                DateTime? fechaProxima = null;
+
+                if (praprogramasdeauditorium.Praciclosprogauditoria.Any(x => x.Anio == praciclocronograma.Anio + 1))
+                {
+                    var cicloProximo = praprogramasdeauditorium.Praciclosprogauditoria.First(x => x.Anio == praciclocronograma.Anio + 1);
+                    cicloProximo.Praciclocronogramas = repositoryMySql.SimpleSelect<Praciclocronograma>(y => y.IdPrAcicloProgAuditoria == cicloProximo.IdPrAcicloProgAuditoria);
+                    fechaProxima = praprogramasdeauditorium.Praciclosprogauditoria.First(x => x.Anio == praciclocronograma.Anio + 1).Praciclocronogramas.First().MesProgramado;
+                }
 
                 Cliente cliente = JsonConvert.DeserializeObject<Cliente>(praprogramasdeauditorium.OrganizacionContentWs);
 
@@ -429,10 +441,10 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     sitios += x.Direccion + WordHelper.GetCodeKey(WordHelper.keys.enter);
                 });
 
-                string productos = "";
+                List<TCPREPDesignacionAuditoria.Producto> productos = new List<TCPREPDesignacionAuditoria.Producto>();
                 praciclocronograma.Pradireccionespaproductos.ToList().ForEach(x =>
                 {
-                    productos += x.Nombre + WordHelper.GetCodeKey(WordHelper.keys.enter);
+                    productos.Add(new TCPREPDesignacionAuditoria.Producto { marca = x.Marca, nombre = x.Nombre });
                 });
 
                 string contactos = "";
@@ -452,8 +464,8 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     TipoAuditoria = praciclocronograma.Referencia,
                     NombreEmpresa = cliente.NombreRazon,
                     ModalidadAuditoria = praciclocronograma.Praciclocronogramas.Any(x => x.DiasRemoto > 0) ? "Remoto" : "In Situ",
-                    FechaInicio = praciclocronograma.FechaDesde?.ToString("dd/MM/yyyy"),
-                    FechaFin = praciclocronograma.FechaHasta?.ToString("dd/MM/yyyy"),
+                    FechaInicio = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
+                    FechaFin = praciclocronograma.Praciclocronogramas.First().FechaDeFinDeEjecucionAuditoria?.ToString("dd/MM/yyyy"),
                     DiasAuditor = praciclocronograma.Praciclocronogramas.Sum(x => x.DiasRemoto + x.DiasInsitu).ToString(),
                     FechaInicioEnsayos = "", //TODO: Completar                    
                     AuditorLider = "", //TODO: Completar
@@ -477,11 +489,12 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     Alcance = "", //TODO: Completar
                     Sitios = sitios, //TODO: Completar
                     HorarioTrabajo = praciclocronograma.Praciclocronogramas.First().HorarioTrabajo,
-                    FechaProxima = "", //TODO: Completar
+                    FechaProxima = fechaProxima?.ToString("dd/MM/yyyy"), //TODO: Completar
                     Adjunto = "", //TODO: Completar
                     Usuario = "", //TODO: Completar
                     Logistica = "", //TODO: Completar
-                    Productos = productos,
+                    Productos = "",
+                    ListProductos = productos,
                     ListRepDesginacionParticipante = praciclocronograma.Pracicloparticipantes.Select(x =>
                     {
                         RepDesginacionParticipante repDesginacionParticipante = new RepDesginacionParticipante();
@@ -509,6 +522,12 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 cellTitlesTitulo[0] = new CellTitles { Title = "Calificación", Visible = true, Width = "50" };
                 cellTitlesTitulo[1] = new CellTitles { Title = "Auditor", Visible = true, Width = "50" };
                 pTitles.Add("ListRepDesginacionParticipante", cellTitlesTitulo);
+
+
+                CellTitles[] cellTitlesTituloProducto = new CellTitles[2];
+                cellTitlesTituloProducto[0] = new CellTitles { Title = "Producto", Visible = true, Width = "50" };
+                cellTitlesTituloProducto[1] = new CellTitles { Title = "Marca", Visible = true, Width = "50" };
+                pTitles.Add("ListProductos", cellTitlesTituloProducto);
 
 
                 response.Object = new GlobalDataReport { data = praReporte, HeadersTables = pTitles };

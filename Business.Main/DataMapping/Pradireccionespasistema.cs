@@ -14,7 +14,7 @@ namespace Business.Main.DataMapping
         public string Pais { get; set; }
         public string Departamento { get; set; }
         public string Ciudad { get; set; }
-        public int? Dias { get; set; }
+        public decimal? Dias { get; set; }
         public string UsuarioRegistro { get; set; }
         public DateTime? FechaDesde { get; set; }
         public DateTime? FechaHasta { get; set; }

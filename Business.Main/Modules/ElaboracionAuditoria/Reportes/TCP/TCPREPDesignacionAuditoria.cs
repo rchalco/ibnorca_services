@@ -8,6 +8,12 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCP
 {
     public class TCPREPDesignacionAuditoria : IObjectReport
     {
+
+        public class Producto
+        {
+            public string nombre { get; set; }
+            public string marca { get; set; }
+        }
         public TCPREPDesignacionAuditoria()
         {
             ListRepDesginacionParticipante = new List<RepDesginacionParticipante>();
@@ -48,7 +54,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCP
         public string Productos { get; set; }
 
 
-
+        public List<Producto> ListProductos { get; set; }
         public List<RepDesginacionParticipante> ListRepDesginacionParticipante { get; set; }
 
 

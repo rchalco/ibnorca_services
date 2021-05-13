@@ -13,6 +13,7 @@ using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.CiudadesDTO;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.DatosPropuestaDTO;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.DatosServicioDTO;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.EstadosDTO;
+using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.ListaCertificadosxClienteyTipoDTO;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.ListarAuditoresxCargoCalificadoDTO;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.ListarCargosCalificadosDTO;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.ListarContactosEmpresaDTO;
@@ -153,7 +154,42 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                         resul.Message = $"Existe problemas al consumir el servicio de ibnorca (DatosPropuesta): {responseDatosPropuestaDTO.mensaje}";
                         return resul;
                     }
+
+                    ///TDO obtenemos de los certificados del cliente
+                    RequestListaCertificadosxClienteyTipo requestListaCertificadosxClienteyTipoDTO = new RequestListaCertificadosxClienteyTipo { accion = "ListaCertificadosxClienteyTipo", sIdentificador = Global.IDENTIFICADOR, sKey = Global.KEY_SERVICES, IdCliente = requestBusquedaCliente.IdCliente, Tipo = resulServices.DatosServicio.area };
+                    ResponseListaCertificadosxClienteyTipo responseListaCertificadosxClienteyTipoDTO = clientHelper.Consume<ResponseListaCertificadosxClienteyTipo>(Global.URIGLOBAL_SERVICES + Global.URI_CERTIFICADO, requestListaCertificadosxClienteyTipoDTO).Result;
+                    if (!responseListaCertificadosxClienteyTipoDTO.estado)
+                    {
+                        resul.State = ResponseType.Warning;
+                        resul.Message = $"Existe problemas al consumir el servicio de ibnorca (ListaCertificadosxClienteyTipoDTO ): {responseListaCertificadosxClienteyTipoDTO.mensaje}";
+                        return resul;
+                    }
+
                     #endregion
+
+                    ///TDO verificamos que exista certificados vigentes 
+                    ///TCS
+                    bool? existeCertificadosVigentes = responseListaCertificadosxClienteyTipoDTO.ListaCertifcados?.Any(x => x.idEstado == "474");
+                    string alcance = string.Empty;
+                    DateTime? fechaVencimientoCertificado = null;
+                    List<string> direcciones = new List<string>();
+                    if (existeCertificadosVigentes == true && resulServices.DatosServicio.area == "TCS")
+                    {
+                        alcance = responseListaCertificadosxClienteyTipoDTO.ListaCertifcados.First(x => x.idEstado == "474").Alcance;
+                        direcciones = responseListaCertificadosxClienteyTipoDTO.ListaCertifcados.First(x => x.idEstado == "474").ProductoServicio.Split('|').ToList();
+                        fechaVencimientoCertificado = Convert.ToDateTime(responseListaCertificadosxClienteyTipoDTO.ListaCertifcados.First(x => x.idEstado == "474").FechaValido);
+                    }
+                    ///TCP
+                    if (existeCertificadosVigentes == true && resulServices.DatosServicio.area == "TCP")
+                    {
+                        alcance = string.Empty;
+                        direcciones = responseListaCertificadosxClienteyTipoDTO.ListaCertifcados.Where(x => x.idEstado == "474").Select(x => x.ProductoServicio
+                        .Replace("Al Producto:", "")
+                        .Replace("Marca Comercial:", "")
+                        .Replace("Lugar de Fabricación:", "")
+                        ).ToList();
+                        fechaVencimientoCertificado = Convert.ToDateTime(responseListaCertificadosxClienteyTipoDTO.ListaCertifcados.First(x => x.idEstado == "474").FechaValido);
+                    }
 
                     Praprogramasdeauditorium objPrograma = new Praprogramasdeauditorium
                     {
@@ -174,6 +210,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                         FechaHasta = null
                     };
                     string mode = objPrograma.IdparamArea == 38 ? "TCS" : "TCP";
+                    int cont = 0;
                     responseDatosPropuestaDTO.ListaServicios.ForEach(x =>
                     {
                         if (!objPrograma.Praciclosprogauditoria.Any(yy => yy.Anio == (short)Convert.ToInt32(x.cod_anio)))
@@ -198,9 +235,9 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                                 {
                                     Pradireccionespaproducto objDirProd = new Pradireccionespaproducto
                                     {
-                                        Nombre = dir.nombre,
-                                        Direccion = dir.direccion,
-                                        Marca = dir.marca,
+                                        Nombre = existeCertificadosVigentes == true && cont < direcciones.Count ? direcciones[cont].Split('|')[0] : dir.nombre,
+                                        Direccion = existeCertificadosVigentes == true && cont < direcciones.Count ? direcciones[cont].Split('|')[2] : dir.direccion,
+                                        Marca = existeCertificadosVigentes == true && cont < direcciones.Count ? direcciones[cont].Split('|')[1] : dir.marca,
                                         Sello = dir.nro_sello,
                                         Ciudad = dir.ciudad,
                                         Estado = dir.estado,
@@ -236,8 +273,8 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                                     {
                                         Ciudad = dir.ciudad,
                                         Departamento = dir.estado,
-                                        Dias = 0,
-                                        Direccion = dir.direccion,
+                                        Dias = 0.00M,
+                                        Direccion = existeCertificadosVigentes == true && cont < direcciones.Count ? direcciones[cont] : dir.direccion,
                                         FechaDesde = DateTime.Now,
                                         FechaHasta = null,
                                         Pais = dir.pais,
@@ -251,7 +288,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                                 ciclosprogauditorium.Praciclonormassistemas = new List<Praciclonormassistema>();
                                 ciclosprogauditorium.Praciclonormassistemas.Add(new Praciclonormassistema
                                 {
-                                    Alcance = resulServices.DatosServicio.alcance_propuesta,
+                                    Alcance = existeCertificadosVigentes == true ? alcance : resulServices.DatosServicio.alcance_propuesta,
                                     IdparamNorma = null,
                                     Norma = "S/A",
                                     FechaDesde = DateTime.Now,
@@ -266,13 +303,14 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                             ///TDO: Cronograma 
                             Praciclocronograma cronograma = new Praciclocronograma
                             {
-                                DiasInsitu = (decimal)Convert.ToDecimal(x.cantidad),
-                                DiasRemoto = 0,
+                                DiasPresupuesto = (decimal)Convert.ToDecimal(x.cantidad),
+                                DiasInsitu = 0.00M,
+                                DiasRemoto = 0.00M,
                                 FechaDeFinDeEjecucionAuditoria = null,
                                 FechaDesde = DateTime.Now,
                                 FechaHasta = null,
                                 FechaInicioDeEjecucionDeAuditoria = null,
-                                MesProgramado = CalcularMesProgramado(mode, Convert.ToInt32(x.cod_anio)),
+                                MesProgramado = CalcularMesProgramado(mode, Convert.ToInt32(x.cod_anio), fechaVencimientoCertificado),
                                 MesReprogramado = null,
                                 UsuarioRegistro = pUsuario
                             };
@@ -300,7 +338,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                             });
                             objPrograma.Praciclosprogauditoria.Add(ciclosprogauditorium);
                         }
-
+                        cont++;
                     });
 
                     ///insertamos el ciclo final como año 4 renovacion
@@ -311,6 +349,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                         var serializeSettings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
                         var cicloClonado = JsonConvert.DeserializeObject<Praciclosprogauditorium>(JsonConvert.SerializeObject(cicloClonar, serializeSettings), deserializeSettings);
                         cicloClonado.Anio = 4;
+                        cicloClonado.Praciclocronogramas.First().MesProgramado = cicloClonado.Praciclocronogramas.First().MesProgramado?.AddYears(1);
                         cicloClonado.Referencia = "Renovacion";
                         objPrograma.Praciclosprogauditoria.Add(cicloClonado);
                     }
@@ -670,13 +709,29 @@ namespace Business.Main.Modules.ApeeturaAuditoria
             }
             return response;
         }
-        private DateTime CalcularMesProgramado(string area, int año)
+        private DateTime? CalcularMesProgramado(string area, int año, DateTime? fechaVencimiento)
         {
-            DateTime resul = DateTime.Now;
-            resul = resul.AddMonths(12 * año + 3);
-            if (area.Equals("TCS"))
+            DateTime? resul = null;
+            if (fechaVencimiento == null)
             {
-                resul = resul.AddMonths(-1);
+                return resul;
+            }
+
+            switch (año)
+            {
+                case 0: break;
+                case 1: break;
+                case 2:
+                    resul = area == "TCS" ? fechaVencimiento?.AddMonths(-26) : fechaVencimiento?.AddMonths(-27);
+                    break;
+                case 3:
+                    resul = area == "TCS" ? fechaVencimiento?.AddMonths(-14) : fechaVencimiento?.AddMonths(-15);
+                    break;
+                case 4:
+                    resul = fechaVencimiento?.AddMonths(-3);
+                    break;
+                default:
+                    break;
             }
             return resul;
         }
