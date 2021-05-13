@@ -262,6 +262,17 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 praciclocronograma.Pradireccionespaproductos = repositoryMySql.SimpleSelect<Pradireccionespaproducto>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
                 praciclocronograma.Pradireccionespasistemas = repositoryMySql.SimpleSelect<Pradireccionespasistema>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
 
+                praprogramasdeauditorium.Praciclosprogauditoria = repositoryMySql.SimpleSelect<Praciclosprogauditorium>(y => y.IdPrAprogramaAuditoria == praprogramasdeauditorium.IdPrAprogramaAuditoria);
+
+                DateTime? fechaProxima = null;
+
+                if (praprogramasdeauditorium.Praciclosprogauditoria.Any(x => x.Anio == praciclocronograma.Anio + 1))
+                {
+                    var cicloProximo = praprogramasdeauditorium.Praciclosprogauditoria.First(x => x.Anio == praciclocronograma.Anio + 1);
+                    cicloProximo.Praciclocronogramas = repositoryMySql.SimpleSelect<Praciclocronograma>(y => y.IdPrAcicloProgAuditoria == cicloProximo.IdPrAcicloProgAuditoria);
+                    fechaProxima = praprogramasdeauditorium.Praciclosprogauditoria.First(x => x.Anio == praciclocronograma.Anio + 1).Praciclocronogramas.First().MesProgramado;
+                }
+
                 Cliente cliente = JsonConvert.DeserializeObject<Cliente>(praprogramasdeauditorium.OrganizacionContentWs);
 
                 ///obtenemos los contactos del cliente
@@ -290,6 +301,12 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     sitios += x.Direccion + WordHelper.GetCodeKey(WordHelper.keys.enter);
                 });
 
+                string sitiosAuditar = "";
+                praciclocronograma.Pradireccionespasistemas.Where(x => x.Dias > 0).ToList().ForEach(x =>
+                {
+                    sitiosAuditar += x.Direccion + WordHelper.GetCodeKey(WordHelper.keys.enter);
+                });
+
                 string contactos = "";
                 string telefono = "";
                 string correoElectronico = "";
@@ -312,8 +329,8 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     TipoAuditoria = praciclocronograma.Referencia,
                     NombreEmpresa = cliente.NombreRazon,
                     ModalidadAuditoria = praciclocronograma.Praciclocronogramas.Any(x => x.DiasRemoto > 0) ? "Remoto" : "In Situ",
-                    FechaInicio = praciclocronograma.FechaDesde?.ToString("dd/MM/yyyy"),
-                    FechaFin = praciclocronograma.FechaHasta?.ToString("dd/MM/yyyy"),
+                    FechaInicio = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
+                    FechaFin = praciclocronograma.Praciclocronogramas.First().FechaDeFinDeEjecucionAuditoria?.ToString("dd/MM/yyyy"),
                     DiasAuditor = praciclocronograma.Praciclocronogramas.Sum(x => x.DiasRemoto + x.DiasInsitu).ToString(),
                     AuditorLider = auditoriLider.NombreCompleto,
                     CorreoAuditorLider = auditoriLider.Correo,
@@ -333,9 +350,10 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     CorreoElectronicoContacto = correoElectronico, //TODO: Completar
                     CodigoIAF = praprogramasdeauditorium.CodigoIafws,
                     Alcance = "", //TODO: Completar
-                    Sitios = sitios, //TODO: Completar
+                    SitiosAAuditar = sitios, 
+                    SitiosDentroDeAlcance = sitiosAuditar, //TODO: Completar                    
                     HorarioTrabajo = praciclocronograma.Praciclocronogramas.First().HorarioTrabajo,
-                    FechaProxima = "", //TODO: Completar
+                    FechaProxima = fechaProxima?.ToString("dd/MM/yyyy"), //TODO: Completar
                     Adjunto = "", //TODO: Completar
                     Usuario = "", //TODO: Completar
                     Logistica = "", //TODO: Completar
