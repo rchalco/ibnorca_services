@@ -16,6 +16,8 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCS
         public string ReferenciaIbnorca { get; set; }
         public string NombreApellidos { get; set; }
         public string Cargo { get; set; }
+        public string Alcance { get; set; }
+        public string Sitios { get; set; }
         public string Organizacion { get; set; }
         public string OtorgarRenovarMantener  { get; set; }
         public string NbIso { get; set; }

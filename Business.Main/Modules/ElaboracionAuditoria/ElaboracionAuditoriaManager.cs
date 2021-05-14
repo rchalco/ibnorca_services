@@ -250,7 +250,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
             ResponseQuery<Paramdocumento> response = new ResponseQuery<Paramdocumento>();
             try
             {
-                response.ListEntities = repositoryMySql.SimpleSelect<Paramdocumento>(x => x.Area == area && x.Proceso == proceso);
+                response.ListEntities = repositoryMySql.SimpleSelect<Paramdocumento>(x => x.Area == area && x.Proceso == proceso && x.Habilitado == 1);
                 response.State = ResponseType.Success;
                 response.Message = "Lista obtenida correctamente";
             }

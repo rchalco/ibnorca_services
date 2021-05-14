@@ -20,6 +20,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCP
         public string FechaInicio { get; set; }
         public string Productos { get; set; }
         public string Ensayos { get; set; }
+        public string Criterios { get; set; }
         public string FechaElaboracionPlan { get; set; }
         public string CambiosAlcances { get; set; }
         

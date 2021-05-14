@@ -5,13 +5,19 @@ using System.Text;
 
 namespace Resportes.ReportDTO
 {
-    class TCPREPDecisionCertificacion : IObjectReport
+    public class TCPREPDecisionCertificacion : IObjectReport
     {
+        public class ProductoDecision
+        {
+            public int Nro { get; set; }
+            public string Producto { get; set; }
+            public string Norma { get; set; }
+        }
 
         public string Fecha { get; set; }
         public string TipoAuditoria { get; set; }
         public string NumeroCertificado { get; set; }
         public string NombreEmpresa { get; set; }
-       
+        public List<ProductoDecision> ListProductos { get; set; }
     }
 }

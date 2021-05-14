@@ -15,8 +15,8 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCP
         public string CorreoElectronico { get; set; }
         public string CodigoServicio { get; set; }
         public string TipoAuditoria { get; set; }
-        public string FechaInicio { get; set; }
-        public string Fecha { get; set; }
+        public string FechaInforme { get; set; }
+        public string FechaAuditoria { get; set; }
         public string EquipoAuditor { get; set; }
         public string CriterioAuditoria { get; set; }
         public string Cont7ConModificaciones { get; set; }
@@ -31,22 +31,22 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCP
         public string ConformidadMayores { get; set; }
         public string ComentariosIBNORCA { get; set; }
 
-       
+
         public List<TCPListCorrecciones> ListCorrecciones { get; set; }
         public string CoordinadorAuditoria { get; set; }
         public List<TCPListProductos> ListProductos { get; set; }
-        
+        public List<RepEquipoTCP> ListEquipoAuditor { get; set; }
 
         //public string CorreoElectronico { get; set; }
 
     }
 
-        public class TCPListProductos
-        {
-            public string Producto { get; set; }
-            public string Normas { get; set; }
-        }
-    public class TCPListaHallazgos 
+    public class TCPListProductos
+    {
+        public string Producto { get; set; }
+        public string Normas { get; set; }
+    }
+    public class TCPListaHallazgos
     {
         public string Fortaleza { get; set; }
         public string OportunidadMejora { get; set; }

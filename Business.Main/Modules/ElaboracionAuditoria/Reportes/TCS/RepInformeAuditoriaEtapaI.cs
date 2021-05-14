@@ -1,4 +1,5 @@
 ﻿using Business.Main.Base;
+using Business.Main.Modules.ElaboracionAuditoria.Reportes.TCP;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +38,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCS
         public string ElectronicoCoordinador { get; set; }
         public string FechaAuditoriaEtapaII { get; set; }
         public string FechaSolicitarEdificarAudiII { get; set; }
-
+        public List<RepEquipoTCP> ListEquipoAuditor { get; set; }
 
     }
 }

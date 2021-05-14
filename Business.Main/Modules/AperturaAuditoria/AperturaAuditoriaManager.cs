@@ -280,6 +280,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                                 cont = 0;
                                 ///TDO: direcciones
                                 ciclosprogauditorium.Pradireccionespasistemas = new List<Pradireccionespasistema>();
+                                string norma = string.Empty;
                                 resulServices.DatosServicio.ListaDireccion.ForEach(dir =>
                                 {
                                     Pradireccionespasistema objDirSis = new Pradireccionespasistema
@@ -294,6 +295,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                                         UsuarioRegistro = pUsuario,
                                         Nombre = dir.nombre
                                     };
+                                    norma = dir.norma;
                                     ciclosprogauditorium.Pradireccionespasistemas.Add(objDirSis);
                                     cont++;
                                 });
@@ -304,7 +306,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                                 {
                                     Alcance = existeCertificadosVigentes == true ? alcance : resulServices.DatosServicio.alcance_propuesta,
                                     IdparamNorma = null,
-                                    Norma = "S/A",
+                                    Norma = norma,
                                     FechaDesde = DateTime.Now,
                                     FechaEmisionPrimerCertificado = fechaEmisionCertificado,
                                     FechaHasta = null,
