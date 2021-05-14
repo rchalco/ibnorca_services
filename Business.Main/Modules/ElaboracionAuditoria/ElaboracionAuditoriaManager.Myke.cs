@@ -295,6 +295,14 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     normas += x.Norma;
                 });
 
+                string alcance = "";
+
+                praciclocronograma.Praciclonormassistemas.ToList().ForEach(x =>
+                {
+                    alcance += x.Alcance + WordHelper.GetCodeKey(WordHelper.keys.enter);
+                });
+
+
                 string sitios = "";
                 praciclocronograma.Pradireccionespasistemas.ToList().ForEach(x =>
                 {
@@ -304,7 +312,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 string sitiosAuditar = "";
                 praciclocronograma.Pradireccionespasistemas.Where(x => x.Dias > 0).ToList().ForEach(x =>
                 {
-                    sitiosAuditar += x.Direccion + WordHelper.GetCodeKey(WordHelper.keys.enter);
+                    sitiosAuditar += "Días: " + x.Dias + WordHelper.GetCodeKey(WordHelper.keys.enter) + x.Direccion + WordHelper.GetCodeKey(WordHelper.keys.enter);
                 });
 
                 string contactos = "";
@@ -349,9 +357,9 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     CargoContacto = "", //TODO: Completar
                     CorreoElectronicoContacto = correoElectronico, //TODO: Completar
                     CodigoIAF = praprogramasdeauditorium.CodigoIafws,
-                    Alcance = "", //TODO: Completar
-                    SitiosAAuditar = sitios, 
-                    SitiosDentroDeAlcance = sitiosAuditar, //TODO: Completar                    
+                    Alcance = alcance, //TODO: Completar
+                    SitiosAAuditar = sitiosAuditar,
+                    SitiosDentroDeAlcance = sitios, //TODO: Completar                    
                     HorarioTrabajo = praciclocronograma.Praciclocronogramas.First().HorarioTrabajo,
                     FechaProxima = fechaProxima?.ToString("dd/MM/yyyy"), //TODO: Completar
                     Adjunto = "", //TODO: Completar

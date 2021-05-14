@@ -172,12 +172,20 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                     bool? existeCertificadosVigentes = responseListaCertificadosxClienteyTipoDTO.ListaCertifcados?.Any(x => x.idEstado == "474");
                     string alcance = string.Empty;
                     DateTime? fechaVencimientoCertificado = null;
+                    DateTime? fechaEmisionCertificado = null;
+                    string nroCertificado = string.Empty;
+                    string nomreClienteCertificado = string.Empty;
+                    List<ListaCertifcado> certificadosValidos = new List<ListaCertifcado>();
+
                     List<string> direcciones = new List<string>();
                     if (existeCertificadosVigentes == true && resulServices.DatosServicio.area == "TCS")
                     {
                         alcance = responseListaCertificadosxClienteyTipoDTO.ListaCertifcados.First(x => x.idEstado == "474").Alcance;
                         direcciones = responseListaCertificadosxClienteyTipoDTO.ListaCertifcados.First(x => x.idEstado == "474").ProductoServicio.Split('|').ToList();
                         fechaVencimientoCertificado = Convert.ToDateTime(responseListaCertificadosxClienteyTipoDTO.ListaCertifcados.First(x => x.idEstado == "474").FechaValido);
+                        fechaEmisionCertificado = Convert.ToDateTime(responseListaCertificadosxClienteyTipoDTO.ListaCertifcados.First(x => x.idEstado == "474").FechaEmision);
+                        nroCertificado = responseListaCertificadosxClienteyTipoDTO.ListaCertifcados.First(x => x.idEstado == "474").IdCertificadoServicios;
+                        nomreClienteCertificado = responseListaCertificadosxClienteyTipoDTO.ListaCertifcados.First(x => x.idEstado == "474").cliente.ToUpper();
                     }
                     ///TCP
                     if (existeCertificadosVigentes == true && resulServices.DatosServicio.area == "TCP")
@@ -189,6 +197,10 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                         .Replace("Lugar de Fabricación:", "")
                         ).ToList();
                         fechaVencimientoCertificado = Convert.ToDateTime(responseListaCertificadosxClienteyTipoDTO.ListaCertifcados.First(x => x.idEstado == "474").FechaValido);
+                        fechaEmisionCertificado = Convert.ToDateTime(responseListaCertificadosxClienteyTipoDTO.ListaCertifcados.First(x => x.idEstado == "474").FechaEmision);
+                        nroCertificado = responseListaCertificadosxClienteyTipoDTO.ListaCertifcados.First(x => x.idEstado == "474").IdCertificadoServicios;
+                        nomreClienteCertificado = responseListaCertificadosxClienteyTipoDTO.ListaCertifcados.First(x => x.idEstado == "474").cliente.ToUpper();
+                        certificadosValidos = responseListaCertificadosxClienteyTipoDTO.ListaCertifcados.Where(x => x.idEstado == "474").ToList();
                     }
 
                     Praprogramasdeauditorium objPrograma = new Praprogramasdeauditorium
@@ -223,7 +235,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                                 Anio = (short)Convert.ToInt32(x.cod_anio),
                                 Referencia = x.descripcion,
                                 IdparamTipoAuditoria = 1,
-                                NombreOrganizacionCertificado = responseBusquedaCliente.resultados[0].NombreRazon,
+                                NombreOrganizacionCertificado = existeCertificadosVigentes == true ? nomreClienteCertificado : responseBusquedaCliente.resultados[0].NombreRazon,
                                 EstadoDescripcion = "SIN FECHA DE AUDITORIA"
                             };
 
@@ -231,6 +243,8 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                             if (mode.Equals("TCP"))
                             {
                                 ciclosprogauditorium.Pradireccionespaproductos = new List<Pradireccionespaproducto>();
+                                cont = 0;
+
                                 resulServices.DatosServicio.ListaProducto.ForEach(dir =>
                                 {
                                     Pradireccionespaproducto objDirProd = new Pradireccionespaproducto
@@ -243,28 +257,27 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                                         Estado = dir.estado,
                                         Pais = dir.pais,
                                         Norma = dir.norma,
-                                        FechaEmisionPrimerCertificado = null,//////////////////////////////
-                                        FechaVencimientoUltimoCertificado = null,
-                                        FechaVencimientoCertificado = null,
+                                        FechaEmisionPrimerCertificado = cont < certificadosValidos.Count ? fechaEmisionCertificado : null,//////////////////////////////
+                                        FechaVencimientoUltimoCertificado = cont < certificadosValidos.Count ? fechaVencimientoCertificado : null,
+                                        FechaVencimientoCertificado = cont < certificadosValidos.Count ? fechaVencimientoCertificado : null,
                                         UsuarioRegistro = pUsuario,
                                         FechaDesde = DateTime.Now,
-                                        FechaHasta = null
+                                        FechaHasta = null,
+                                        NumeroDeCertificacion = existeCertificadosVigentes == true
+                                        && cont < certificadosValidos.Count ?
+                                        certificadosValidos[cont].IdCertificadoServicios : "",
                                     };
-                                    if (resulServices.DatosServicio.ListaProductoCertificado != null
-                                    && resulServices.DatosServicio.ListaProductoCertificado.Any(x => x.nombre.ToLower().Equals(objDirProd.Nombre.ToLower())))
-                                    {
-                                        var dataCertificado = resulServices.DatosServicio.ListaProductoCertificado.First(x => x.nombre.ToLower().Equals(objDirProd.Nombre.ToLower()));
-                                        objDirProd.FechaVencimientoCertificado = Convert.ToDateTime(dataCertificado.FechaValido);
-                                        objDirProd.NumeroDeCertificacion = dataCertificado.IdCertificadoServicios;
-                                    }
-                                    ciclosprogauditorium.Pradireccionespaproductos.Add(objDirProd);
-                                });
-                            }
 
+                                    ciclosprogauditorium.Pradireccionespaproductos.Add(objDirProd);
+                                    cont++;
+                                });
+
+                            }
 
                             ///TDO: TCS - Cert.Sistemas de Gestion
                             if (mode.Equals("TCS"))
                             {
+                                cont = 0;
                                 ///TDO: direcciones
                                 ciclosprogauditorium.Pradireccionespasistemas = new List<Pradireccionespasistema>();
                                 resulServices.DatosServicio.ListaDireccion.ForEach(dir =>
@@ -282,6 +295,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                                         Nombre = dir.nombre
                                     };
                                     ciclosprogauditorium.Pradireccionespasistemas.Add(objDirSis);
+                                    cont++;
                                 });
 
                                 ///TDO: normas
@@ -292,10 +306,10 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                                     IdparamNorma = null,
                                     Norma = "S/A",
                                     FechaDesde = DateTime.Now,
-                                    FechaEmisionPrimerCertificado = null,
+                                    FechaEmisionPrimerCertificado = fechaEmisionCertificado,
                                     FechaHasta = null,
-                                    FechaVencimientoUltimoCertificado = null,
-                                    NumeroDeCertificacion = "",
+                                    FechaVencimientoUltimoCertificado = fechaVencimientoCertificado,
+                                    NumeroDeCertificacion = nroCertificado,
                                     UsuarioRegistro = pUsuario
                                 });
                             }
@@ -338,7 +352,6 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                             });
                             objPrograma.Praciclosprogauditoria.Add(ciclosprogauditorium);
                         }
-                        cont++;
                     });
 
                     ///insertamos el ciclo final como año 4 renovacion
@@ -728,7 +741,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                     resul = area == "TCS" ? fechaVencimiento?.AddMonths(-14) : fechaVencimiento?.AddMonths(-15);
                     break;
                 case 4:
-                    resul = fechaVencimiento?.AddMonths(-3);
+                    resul = area == "TCS" ? fechaVencimiento?.AddMonths(-4) : fechaVencimiento?.AddMonths(-3);
                     break;
                 default:
                     break;

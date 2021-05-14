@@ -21,6 +21,7 @@ namespace Business.Main.DataMapping
         public string ProcesoArea { get; set; }
         public string Auditor { get; set; }
         public string Cargo { get; set; }
+        public string Direccion { get; set; }
 
         public virtual Elaauditorium IdelaauditoriaNavigation { get; set; }
     }
