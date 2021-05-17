@@ -132,6 +132,9 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 praciclocronograma.Pradireccionespaproductos = repositoryMySql.SimpleSelect<Pradireccionespaproducto>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
                 praciclocronograma.Pradireccionespasistemas = repositoryMySql.SimpleSelect<Pradireccionespasistema>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
 
+                Elaauditorium elaauditorium = repositoryMySql.SimpleSelect<Elaauditorium>(y => y.IdPrAcicloProgAuditoria == IdCiclo).First();
+                List<Elacronogama> elacronogama = repositoryMySql.SimpleSelect<Elacronogama>(y => y.Idelaauditoria == elaauditorium.IdelaAuditoria);
+
                 Cliente cliente = JsonConvert.DeserializeObject<Cliente>(praprogramasdeauditorium.OrganizacionContentWs);
 
                 ///obtenemos los contactos del cliente
@@ -148,16 +151,27 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 ContactoEmpresa contactoEmpresa = resulServices.lstContactos?.Count > 0 ? resulServices.lstContactos[0] : null;
 
                 string normas = "";
-
+                string alcance = string.Empty;
                 praciclocronograma.Praciclonormassistemas.ToList().ForEach(x =>
                 {
-                    normas += x.Norma;
+                    normas += x.Norma + WordHelper.GetCodeKey(WordHelper.keys.enter);
+                    alcance += x.Alcance + WordHelper.GetCodeKey(WordHelper.keys.enter);
                 });
 
                 string sitios = "";
+
                 praciclocronograma.Pradireccionespasistemas.ToList().ForEach(x =>
                 {
                     sitios += x.Direccion + WordHelper.GetCodeKey(WordHelper.keys.enter);
+                });
+
+                string fechaInicioAuditoria = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy");
+                string fechaFinAuditoria = praciclocronograma.Praciclocronogramas.First().FechaDeFinDeEjecucionAuditoria?.ToString("dd/MM/yyyy");
+                
+                var contenidos = repositoryMySql.SimpleSelect<Elacontenidoauditorium>(x => x.IdelaAuditoria == elaauditorium.IdelaAuditoria);
+                contenidos.Where(x => x.Nemotico == "PLAN_OBJETIVOS").ToList().ForEach(x =>
+                {
+                    objetivosAuditoria = x.Contenido.Replace("\n", WordHelper.GetCodeKey(WordHelper.keys.enter));
                 });
 
                 //EquipoAuditoNombreCargo = null,
@@ -165,11 +179,12 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 REPPlanAuditoria praPlanAuditoria = new REPPlanAuditoria
                 {
                     NombreEmpresa = cliente.NombreRazon,
-                    CodigoServicio = praprogramasdeauditorium.CodigoIafws,
+                    CodigoServicio = praprogramasdeauditorium.CodigoServicioWs,
                     TipoAuditoria = praciclocronograma.Referencia,
                     ModalidadAuditoria = $"Días insitu: {praciclocronograma.Praciclocronogramas.First().DiasInsitu}, días remoto: {praciclocronograma.Praciclocronogramas.First().DiasRemoto}",
                     NormaAuditadas = normas,
-                    FechaAuditoria = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
+                    FechaAuditoria = $"Desde {fechaInicioAuditoria} hata {fechaFinAuditoria}",
+                    Alcance = alcance,
                     ObjetivosAuditoria = objetivosAuditoria,
                     CambiosAlcance = cambiosAlcance,
                     Certificacion = certificacion,
@@ -197,15 +212,15 @@ namespace Business.Main.Modules.ElaboracionAuditoria
 
                         return repRepEquipo;
                     }).ToList(),
-                    ListCronograma = praciclocronograma.Pracicloparticipantes.Select(x =>
+                    ListCronograma = elacronogama.Select(x =>
                     {
                         RepCronogramaEquipo repRepCronograma = new RepCronogramaEquipo();
-                        repRepCronograma.Fecha = string.Empty;
-                        repRepCronograma.Hora = string.Empty;
-                        repRepCronograma.RequisitoEsquema = string.Empty;
-                        repRepCronograma.ResponsableOrganiza = string.Empty;
-                        repRepCronograma.SitioAuditado = string.Empty;
-                        repRepCronograma.EquipoAuditado = string.Empty;
+                        repRepCronograma.Fecha = x.FechaInicio;
+                        repRepCronograma.Hora = x.Horario;
+                        repRepCronograma.RequisitoEsquema = x.RequisitosEsquema;
+                        repRepCronograma.ResponsableOrganiza = x.PersonaEntrevistadaCargo;
+                        repRepCronograma.SitioAuditado = x.Direccion;
+                        repRepCronograma.EquipoAuditado = x.Auditor;
 
                         return repRepCronograma;
                     }).ToList(),
@@ -666,7 +681,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     Contacto = contactos,
                     TelefonoCelular = telefono,
                     CorreoElectronico = correoElectronico,
-                    CodigoServicio = praprogramasdeauditorium.CodigoIafws,
+                    CodigoServicio = praprogramasdeauditorium.CodigoServicioWs,
                     TipoAuditoria = praciclocronograma.Referencia,
                     FechaInicio = fechaInicio,
                     ListEquipoAuditor = praciclocronograma.Pracicloparticipantes.Select(x =>
@@ -1258,19 +1273,19 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 string sHallazgosNCM = string.Empty;
                 elahallazgos.Where(x => x.TipoNemotico == "NCM").ToList().ForEach(x =>
                 {
-                    sHallazgosNCM += $"No-Conformidades Mayor:  {x.Hallazgo} {WordHelper.GetCodeKey(WordHelper.keys.enter)}";
+                    sHallazgosNCM += $"{x.Proceso} {WordHelper.GetCodeKey(WordHelper.keys.enter)}  {x.Hallazgo.Replace("\n", WordHelper.GetCodeKey(WordHelper.keys.enter))} {WordHelper.GetCodeKey(WordHelper.keys.enter)}";
 
                 });
                 string sHallazgosOM = string.Empty;
                 elahallazgos.Where(x => x.TipoNemotico == "OM").ToList().ForEach(x =>
                 {
-                    sHallazgosOM += $"{x.Hallazgo} {WordHelper.GetCodeKey(WordHelper.keys.enter)}";
+                    sHallazgosOM += $"{x.Proceso} {WordHelper.GetCodeKey(WordHelper.keys.enter)}  {x.Hallazgo.Replace("\n", WordHelper.GetCodeKey(WordHelper.keys.enter))} {WordHelper.GetCodeKey(WordHelper.keys.enter)}";
 
                 });
                 string sHallazgosNCMe = string.Empty;
                 elahallazgos.Where(x => x.TipoNemotico == "NCm").ToList().ForEach(x =>
                 {
-                    sHallazgosNCMe += $"{x.Hallazgo} {WordHelper.GetCodeKey(WordHelper.keys.enter)}";
+                    sHallazgosNCMe += $"{x.Proceso} {WordHelper.GetCodeKey(WordHelper.keys.enter)}  {x.Hallazgo.Replace("\n", WordHelper.GetCodeKey(WordHelper.keys.enter))} {WordHelper.GetCodeKey(WordHelper.keys.enter)}";
 
                 });
                 string sHallazgosF = string.Empty;

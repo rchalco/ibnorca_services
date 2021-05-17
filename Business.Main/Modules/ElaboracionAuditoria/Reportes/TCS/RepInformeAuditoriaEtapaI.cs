@@ -34,6 +34,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCS
         public string NombreAuditorLider { get; set; }
         public string Fecha { get; set; }
         public string RepresentanteOrganizacion { get; set; }
+        public string CorreoElectronicoCoodinador { get; set; }        
         public string NombreCoordinadorAud { get; set; }
         public string ElectronicoCoordinador { get; set; }
         public string FechaAuditoriaEtapaII { get; set; }

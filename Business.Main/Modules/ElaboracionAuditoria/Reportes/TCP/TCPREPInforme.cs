@@ -18,11 +18,13 @@ namespace Resportes.ReportDTO
         public string Productos { get; set; }
         public string Normas { get; set; }
         public string Criterios { get; set; }
+        public string NoConformidadMenor { get; set; }
+        public string NoConformidadMayor { get; set; }
+        
 
         public class TCPListProductosInforme
         {
             public string Producto { get; set; }
-            public string Normas { get; set; }
         }
 
     }

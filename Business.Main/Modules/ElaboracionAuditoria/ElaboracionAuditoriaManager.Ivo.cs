@@ -339,7 +339,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 CellTitles[] cellTitlesTituloEquipoAuditor = new CellTitles[3];
                 cellTitlesTituloEquipoAuditor[0] = new CellTitles { Title = "Nro", Visible = true, Width = "50" };
                 cellTitlesTituloEquipoAuditor[1] = new CellTitles { Title = "Producto", Visible = true, Width = "120" };
-                cellTitlesTituloEquipoAuditor[2] = new CellTitles { Title = "Norma", Visible = true, Width = "50" };                
+                cellTitlesTituloEquipoAuditor[2] = new CellTitles { Title = "Norma", Visible = true, Width = "50" };
                 pTitles.Add("ListProductos", cellTitlesTituloEquipoAuditor);
 
                 response.Object = new GlobalDataReport { data = praTCPREPDecisionCertificacion, HeadersTables = pTitles };
@@ -630,6 +630,9 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     sitios += x.Direccion + WordHelper.GetCodeKey(WordHelper.keys.enter);
                 });
 
+                Elaauditorium elaauditorium = repositoryMySql.SimpleSelect<Elaauditorium>(x => x.IdPrAcicloProgAuditoria == IdCiclo).First();
+                var elahallazgos = repositoryMySql.SimpleSelect<Elahallazgo>(x => x.IdelaAuditoria == elaauditorium.IdelaAuditoria);
+                int cont = 1;
                 ///llenamos el reporte con la informacion de este ciclo
                 TCPREPPlanAccion praTCPREPPlanAccion = new TCPREPPlanAccion
                 {
@@ -638,11 +641,154 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     TipoAuditoria = praciclocronograma.Referencia,
                     Norma = normas,
                     Fecha = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
-                    AuditorLider = auditorLider
-
-
+                    AuditorLider = auditorLider,
+                    ListHallazgosPAC = elahallazgos.Where(x => x.TipoNemotico == "NCM" || x.TipoNemotico == "NCm").Select(yy =>
+                    {
+                        HallazgosPAC objHallazgoPAC = new HallazgosPAC
+                        {
+                            nro = cont,
+                            TipoHallazgo = yy.Tipo,
+                            Descripcion = $"{yy.Proceso} {yy.Hallazgo}",
+                            PresentaEvidencia = "SI/NO",
+                            Verificacion = "SI/NO",
+                            AccionesCorrectivas = "SI/NO"
+                        };
+                        cont++;
+                        return objHallazgoPAC;
+                    }
+                    ).ToList()
                 };
-                response.Object = new GlobalDataReport { data = praTCPREPPlanAccion, HeadersTables = null };
+
+                Dictionary<string, CellTitles[]> pTitles = new Dictionary<string, CellTitles[]>();
+                CellTitles[] cellTitlesTitulo = new CellTitles[11];
+                cellTitlesTitulo[0] = new CellTitles { Title = "Nro", Visible = true, Width = "20" };
+                cellTitlesTitulo[1] = new CellTitles { Title = "Tipo de Hallazgo", Visible = true, Width = "30" };
+                cellTitlesTitulo[2] = new CellTitles { Title = "Descripción de la No conformidad", Visible = true, Width = "30" };
+                cellTitlesTitulo[3] = new CellTitles { Title = "Corrección", Visible = true, Width = "30" };
+                cellTitlesTitulo[4] = new CellTitles { Title = "Análisis de Causa", Visible = true, Width = "30" };
+                cellTitlesTitulo[5] = new CellTitles { Title = "Acciones correctivas", Visible = true, Width = "30" };
+                cellTitlesTitulo[6] = new CellTitles { Title = "Fecha de cumplimiento de acciones", Visible = true, Width = "30" };
+                cellTitlesTitulo[7] = new CellTitles { Title = "Presenta Evidencia", Visible = true, Width = "30" };
+                cellTitlesTitulo[8] = new CellTitles { Title = "Comentarios del auditor sobre las acciones planteadas (colocar despues del comentario la fecha)", Visible = true, Width = "30" };
+                cellTitlesTitulo[9] = new CellTitles { Title = "Verificación de acciones (NCM)", Visible = true, Width = "30" };
+                cellTitlesTitulo[10] = new CellTitles { Title = "Aprobación de las correcciones y acciones correctivas", Visible = true, Width = "30" };
+
+
+                pTitles.Add("ListHallazgosPAC", cellTitlesTitulo);
+
+                response.Object = new GlobalDataReport { data = praTCPREPPlanAccion, HeadersTables = pTitles };
+            }
+            catch (Exception ex)
+            {
+                ProcessError(ex, response);
+            }
+            return response;
+        }
+        public ResponseObject<GlobalDataReport> TCSGenerarTCSREPPlanAccion(RequestDataReport requestDataReport)
+        {
+            ResponseObject<GlobalDataReport> response = new ResponseObject<GlobalDataReport> { Message = "", State = ResponseType.Success };
+            try
+            {
+                int IdCiclo = requestDataReport.IdCiclo;
+                ///Todo datos no conectados
+                string auditorLider = string.Empty;
+                ///Obtenemos la informacion del ciclo y del programa
+                Praciclosprogauditorium praciclocronograma = repositoryMySql.SimpleSelect<Praciclosprogauditorium>(x => x.IdPrAcicloProgAuditoria == IdCiclo).ToList().FirstOrDefault();
+                Praprogramasdeauditorium praprogramasdeauditorium = repositoryMySql.SimpleSelect<Praprogramasdeauditorium>(x => x.IdPrAprogramaAuditoria == praciclocronograma.IdPrAprogramaAuditoria).ToList().FirstOrDefault();
+                if (praciclocronograma == null)
+                {
+                    response.State = ResponseType.Warning;
+                    response.Message = "No se cuenta con informacion de este cilo en la BD";
+                    return response;
+                }
+
+                praciclocronograma.Praciclocronogramas = repositoryMySql.SimpleSelect<Praciclocronograma>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Praciclonormassistemas = repositoryMySql.SimpleSelect<Praciclonormassistema>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Pracicloparticipantes = repositoryMySql.SimpleSelect<Pracicloparticipante>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Pradireccionespaproductos = repositoryMySql.SimpleSelect<Pradireccionespaproducto>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Pradireccionespasistemas = repositoryMySql.SimpleSelect<Pradireccionespasistema>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+
+                Cliente cliente = JsonConvert.DeserializeObject<Cliente>(praprogramasdeauditorium.OrganizacionContentWs);
+
+                ///obtenemos los contactos del cliente
+                ClientHelper clientHelper = new ClientHelper();
+                ///TDO: obtenemos los datos del servicio
+                RequestListarContactosEmpresa requestDato = new RequestListarContactosEmpresa { accion = "ListarContactosEmpresa", sIdentificador = Global.IDENTIFICADOR, sKey = Global.KEY_SERVICES, IdCliente = cliente.IdCliente };
+                ResponseListarContactosEmpresa resulServices = clientHelper.Consume<ResponseListarContactosEmpresa>(Global.URIGLOBAL_SERVICES + Global.URI_CLIENTE_CONTACTO, requestDato).Result;
+                if (!resulServices.estado)
+                {
+                    response.State = ResponseType.Warning;
+                    response.Message = $"Existe problemas al consumir el servicio de ibnorca (estados): {resulServices.mensaje}";
+                    return response;
+                }
+                ContactoEmpresa contactoEmpresa = resulServices.lstContactos?.Count > 0 ? resulServices.lstContactos[0] : null;
+
+                string normas = "";
+
+                praciclocronograma.Praciclonormassistemas.ToList().ForEach(x =>
+                {
+                    normas += x.Norma;
+                });
+                string alcance = "";
+                praciclocronograma.Praciclonormassistemas.ToList().ForEach(x =>
+                {
+                    alcance += x.Alcance + WordHelper.GetCodeKey(WordHelper.keys.enter);
+                });
+
+                string sitios = "";
+                praciclocronograma.Pradireccionespasistemas.ToList().ForEach(x =>
+                {
+                    sitios += x.Direccion + WordHelper.GetCodeKey(WordHelper.keys.enter);
+                });
+
+                Elaauditorium elaauditorium = repositoryMySql.SimpleSelect<Elaauditorium>(x => x.IdPrAcicloProgAuditoria == IdCiclo).First();
+                var elahallazgos = repositoryMySql.SimpleSelect<Elahallazgo>(x => x.IdelaAuditoria == elaauditorium.IdelaAuditoria);
+                int cont = 1;
+                ///llenamos el reporte con la informacion de este ciclo
+                TCSREPPlanAccion praTCPREPPlanAccion = new TCSREPPlanAccion
+                {
+
+                    NombreEmpresa = cliente.NombreRazon,
+                    TipoAuditoria = praciclocronograma.Referencia,
+                    Norma = normas,
+                    Fecha = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
+                    AuditorLider = auditorLider,
+                    ListHallazgosPAC = elahallazgos.Where(x => x.TipoNemotico == "NCM" || x.TipoNemotico == "NCm").Select(yy =>
+                    {
+                        HallazgosPACTCS objHallazgoPAC = new HallazgosPACTCS
+                        {
+                            nro = cont,
+                            TipoHallazgo = yy.Tipo,
+                            Descripcion = $"{yy.Proceso} {yy.Hallazgo}",
+                            PresentaEvidencia = "SI/NO",
+                            Verificacion = "SI/NO",
+                            AccionesCorrectivas = "SI/NO"
+                        };
+                        cont++;
+                        return objHallazgoPAC;
+                    }
+                    ).ToList()
+                };
+
+                Dictionary<string, CellTitles[]> pTitles = new Dictionary<string, CellTitles[]>();
+                CellTitles[] cellTitlesTitulo = new CellTitles[12];
+                cellTitlesTitulo[0] = new CellTitles { Title = "Nro", Visible = true, Width = "20" };
+                cellTitlesTitulo[1] = new CellTitles { Title = "Tipo de Hallazgo", Visible = true, Width = "30" };
+                cellTitlesTitulo[2] = new CellTitles { Title = "Descripción de la No conformidad", Visible = true, Width = "30" };
+                cellTitlesTitulo[3] = new CellTitles { Title = "Sitio involucrado", Visible = true, Width = "30" };
+                cellTitlesTitulo[4] = new CellTitles { Title = "Corrección", Visible = true, Width = "30" };
+                cellTitlesTitulo[5] = new CellTitles { Title = "Análisis de Causa", Visible = true, Width = "30" };
+                cellTitlesTitulo[6] = new CellTitles { Title = "Acciones correctivas", Visible = true, Width = "30" };
+                cellTitlesTitulo[7] = new CellTitles { Title = "Fecha de cumplimiento de acciones", Visible = true, Width = "30" };
+                cellTitlesTitulo[8] = new CellTitles { Title = "Presenta Evidencia", Visible = true, Width = "30" };
+                cellTitlesTitulo[9] = new CellTitles { Title = "Comentarios del auditor sobre las acciones planteadas (colocar despues del comentario la fecha)", Visible = true, Width = "30" };
+                cellTitlesTitulo[10] = new CellTitles { Title = "Verificación de acciones (NCM)", Visible = true, Width = "30" };
+                cellTitlesTitulo[11] = new CellTitles { Title = "Aprobación de las correcciones y acciones correctivas", Visible = true, Width = "30" };
+
+
+                pTitles.Add("ListHallazgosPAC", cellTitlesTitulo);
+
+                response.Object = new GlobalDataReport { data = praTCPREPPlanAccion, HeadersTables = pTitles };
             }
             catch (Exception ex)
             {
@@ -690,19 +836,15 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 ContactoEmpresa contactoEmpresa = resulServices.lstContactos?.Count > 0 ? resulServices.lstContactos[0] : null;
 
                 string normas = "";
+
+
                 string productos = "";
                 praciclocronograma.Pradireccionespaproductos.ToList().ForEach(x =>
                 {
                     normas += x.Norma + WordHelper.GetCodeKey(WordHelper.keys.enter);
                     productos += x.Nombre + ",";
-
                 });
 
-                string alcance = "";
-                praciclocronograma.Praciclonormassistemas.ToList().ForEach(x =>
-                {
-                    alcance += x.Alcance + WordHelper.GetCodeKey(WordHelper.keys.enter);
-                });
 
                 string sitios = "";
                 praciclocronograma.Pradireccionespasistemas.ToList().ForEach(x =>
@@ -723,6 +865,21 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 {
                     criterios = x.Contenido.Replace("\n", WordHelper.GetCodeKey(WordHelper.keys.enter));
                 });
+                var elahallazgos = repositoryMySql.SimpleSelect<Elahallazgo>(x => x.IdelaAuditoria == elaauditorium.IdelaAuditoria);
+
+                string sHallazgosNCMe = string.Empty;
+                elahallazgos.Where(x => x.TipoNemotico == "NCm").ToList().ForEach(x =>
+                {
+                    sHallazgosNCMe += $"{x.Proceso} {WordHelper.GetCodeKey(WordHelper.keys.enter)}  {x.Hallazgo.Replace("\n", WordHelper.GetCodeKey(WordHelper.keys.enter))} {WordHelper.GetCodeKey(WordHelper.keys.enter)}";
+
+                });
+
+                string sHallazgosNCM = string.Empty;
+                elahallazgos.Where(x => x.TipoNemotico == "NCM").ToList().ForEach(x =>
+                {
+                    sHallazgosNCM += $"{x.Proceso} {WordHelper.GetCodeKey(WordHelper.keys.enter)}  {x.Hallazgo.Replace("\n", WordHelper.GetCodeKey(WordHelper.keys.enter))} {WordHelper.GetCodeKey(WordHelper.keys.enter)}";
+
+                });
 
                 ///llenamos el reporte con la informacion de este ciclo
                 TCPREPInforme praTCPREPInforme = new TCPREPInforme
@@ -734,21 +891,21 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     {
                         TCPListProductosInforme repRep = new TCPListProductosInforme();
                         repRep.Producto = x.Nombre;
-                        repRep.Normas = x.Norma;
                         return repRep;
                     }).ToList(),
                     PlanMuestreo = planMuestreo,
                     Criterios = criterios,
                     Normas = normas,
+                    NoConformidadMayor = sHallazgosNCM,
+                    NoConformidadMenor = sHallazgosNCMe,
                     Productos = productos,
                     FechaInicio = "Desde " + praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
                     FechaFin = praciclocronograma.Praciclocronogramas.First().FechaDeFinDeEjecucionAuditoria?.ToString("dd/MM/yyyy"),
 
                 };
                 Dictionary<string, CellTitles[]> pTitles = new Dictionary<string, CellTitles[]>();
-                CellTitles[] cellTitlesTitulo = new CellTitles[2];
+                CellTitles[] cellTitlesTitulo = new CellTitles[1];
                 cellTitlesTitulo[0] = new CellTitles { Title = "Producto", Visible = true, Width = "150" };
-                cellTitlesTitulo[1] = new CellTitles { Title = "Normas", Visible = true, Width = "150" };
                 pTitles.Add("ListProductos", cellTitlesTitulo);
 
                 response.Object = new GlobalDataReport { data = praTCPREPInforme, HeadersTables = pTitles };
@@ -784,6 +941,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 praciclocronograma.Pracicloparticipantes = repositoryMySql.SimpleSelect<Pracicloparticipante>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
                 praciclocronograma.Pradireccionespaproductos = repositoryMySql.SimpleSelect<Pradireccionespaproducto>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
                 praciclocronograma.Pradireccionespasistemas = repositoryMySql.SimpleSelect<Pradireccionespasistema>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praprogramasdeauditorium.Praciclosprogauditoria = repositoryMySql.SimpleSelect<Praciclosprogauditorium>(y => y.IdPrAprogramaAuditoria == praprogramasdeauditorium.IdPrAprogramaAuditoria);
 
                 Cliente cliente = JsonConvert.DeserializeObject<Cliente>(praprogramasdeauditorium.OrganizacionContentWs);
 
@@ -880,6 +1038,11 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     alcance += x.Alcance + WordHelper.GetCodeKey(WordHelper.keys.enter);
                 });
 
+                contenidos.Where(x => x.Nemotico == "PLAN_OBJETIVOS").ToList().ForEach(x =>
+                {
+                    objetivosAuditoria = x.Contenido.Replace("\n", WordHelper.GetCodeKey(WordHelper.keys.enter));
+                });
+
 
                 var elahallazgos = repositoryMySql.SimpleSelect<Elahallazgo>(x => x.IdelaAuditoria == elaauditorium.IdelaAuditoria);
                 int nroFortaleza = 0;
@@ -897,65 +1060,106 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 var resulDBAuditoria = repositoryMySql.SimpleSelect<Elaauditorium>(x => x.IdPrAcicloProgAuditoria == IdCiclo);
                 var resulDBContenidoAuditoria = repositoryMySql.SimpleSelect<Elacontenidoauditorium>(x => x.IdelaAuditoria == resulDBAuditoria.First().IdelaAuditoria);
 
-                //var resulConclusiones = resulDBContenidoAuditoria.Where(x => x.Nemotico == "INFPROD_CONCLUSION");
-                //string conlusionesAuditor = "";
-                //if (resulConclusiones.Count() > 0)
-                //    conlusionesAuditor = resulConclusiones.ToString();
-                //EquipoAuditoNombreCargo = null,
-                ///llenamos el reporte con la informacion de este ciclo
+                string modalidad = praciclocronograma.Praciclocronogramas.First().DiasRemoto > 0 && praciclocronograma.Praciclocronogramas.First().DiasInsitu > 0 ? "In Situ y Remota" : "";
+                modalidad = string.IsNullOrEmpty(modalidad) && praciclocronograma.Praciclocronogramas.First().DiasRemoto > 0 ? "Remota" : "";
+                modalidad = string.IsNullOrEmpty(modalidad) && praciclocronograma.Praciclocronogramas.First().DiasInsitu > 0 ? "In Situ" : "";
+
+                string fechaAuditoria = $"{praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy")} a {praciclocronograma.Praciclocronogramas.First().FechaDeFinDeEjecucionAuditoria?.ToString("dd/MM/yyyy")}";
+                string tipoAuditoriaProx = string.Empty;
+                string fechaProx = string.Empty;
+                if (praprogramasdeauditorium.Praciclosprogauditoria.Any(x => x.Anio == praciclocronograma.Anio + 1))
+                {
+                    var cicloProx = praprogramasdeauditorium.Praciclosprogauditoria.First(x => x.Anio == praciclocronograma.Anio + 1);
+                    tipoAuditoriaProx = cicloProx.Referencia;
+                    cicloProx.Praciclocronogramas = repositoryMySql.SimpleSelect<Praciclocronograma>(x => x.IdPrAcicloProgAuditoria == cicloProx.IdPrAcicloProgAuditoria);
+                    fechaProx = cicloProx.Praciclocronogramas.First().MesProgramado?.ToString("MM/yyyy"); ;
+                }
+
+
+                string sHallazgosNCM = string.Empty;
+                elahallazgos.Where(x => x.TipoNemotico == "NCM").ToList().ForEach(x =>
+                {
+                    sHallazgosNCM += $"{x.Proceso} {WordHelper.GetCodeKey(WordHelper.keys.enter)}  {x.Hallazgo.Replace("\n", WordHelper.GetCodeKey(WordHelper.keys.enter))} {WordHelper.GetCodeKey(WordHelper.keys.enter)}";
+
+                });
+                string sHallazgosOM = string.Empty;
+                elahallazgos.Where(x => x.TipoNemotico == "OM").ToList().ForEach(x =>
+                {
+                    sHallazgosOM += $"{x.Proceso} {WordHelper.GetCodeKey(WordHelper.keys.enter)}  {x.Hallazgo.Replace("\n", WordHelper.GetCodeKey(WordHelper.keys.enter))} {WordHelper.GetCodeKey(WordHelper.keys.enter)}";
+
+                });
+                string sHallazgosNCMe = string.Empty;
+                elahallazgos.Where(x => x.TipoNemotico == "NCm").ToList().ForEach(x =>
+                {
+                    sHallazgosNCMe += $"{x.Proceso} {WordHelper.GetCodeKey(WordHelper.keys.enter)}  {x.Hallazgo.Replace("\n", WordHelper.GetCodeKey(WordHelper.keys.enter))} {WordHelper.GetCodeKey(WordHelper.keys.enter)}";
+
+                });
+                string sHallazgosF = string.Empty;
+                elahallazgos.Where(x => x.TipoNemotico == "F").ToList().ForEach(x =>
+                {
+                    sHallazgosF += $"{x.Hallazgo} {WordHelper.GetCodeKey(WordHelper.keys.enter)}";
+
+                });
+                string sHallazgosC = string.Empty;
+                elahallazgos.Where(x => x.Tipo == "Conformidades").ToList().ForEach(x =>
+                {
+                    sHallazgosC += $"Conformidades:  {x.Hallazgo} {WordHelper.GetCodeKey(WordHelper.keys.enter)}";
+
+                });
+
                 REPInformeAuditoria praReporte = new REPInformeAuditoria
                 {
                     NombreEmpresa = cliente.NombreRazon,
+                    RedaccionFortalezas = sHallazgosF,
+                    RedaccionNoConformidadesMayor = sHallazgosNCM,
+                    RedaccionNoConformidadesMenor = sHallazgosNCMe,
+                    RedaccionOportunidades = sHallazgosOM,
                     Direccion = cliente.Direccion,
                     PersonaContacto = contactos,
                     Telefono = cliente.Telefono,
                     CorreoElectronico = cliente.Correo,
                     Servicio = praprogramasdeauditorium.CodigoServicioWs,
-                    TipoAuditoria = praprogramasdeauditorium.IdparamTipoServicio.ToString(),//consultar la tabla param
-                    //Modalidad = praprogramasdeauditorium.DetalleServicioWs,
+                    TipoAuditoria = praciclocronograma.Referencia,
+                    Modalidad = modalidad,
                     Norma = normas,
                     CodigoIAF = praprogramasdeauditorium.CodigoIafws,
-                    FechaAuditoria = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
+                    FechaAuditoria = fechaAuditoria,
                     DiasAuditor = $"Días insitu: {praciclocronograma.Praciclocronogramas.First().DiasInsitu}, días remoto: {praciclocronograma.Praciclocronogramas.First().DiasRemoto}",
                     FechaInforme = DateTime.Now.ToString("dd/MM/yyyy"),
-                    TipoFechaProgramada = "tipoFechaProgramada",
+                    TipoFechaProgramada = tipoAuditoriaProx + " " + fechaProx,
                     ListCronograma = praciclocronograma.Pracicloparticipantes.Select(x =>
                     {
                         RepCronograma repRepCronograma = new RepCronograma();
-                        repRepCronograma.NombreCompleto = x.IdParticipanteWs.Value.ToString();
+                        var participante = JsonConvert.DeserializeObject<ParticipanteDetalleWS>(x.ParticipanteDetalleWs);
+                        repRepCronograma.NombreCompleto = participante?.nombreCompleto;
                         repRepCronograma.TotalDiasInSitu = x.DiasInsistu.ToString();
-                        repRepCronograma.TotalDiasRemoto = x.DiasInsistu.ToString();
-
+                        repRepCronograma.TotalDiasRemoto = x.DiasRemoto.ToString();
                         return repRepCronograma;
                     }).ToList(),
                     AlcanceCertificacion = alcance,
-
                     ListAlcanceCert = praciclocronograma.Pradireccionespasistemas.Select(x =>
                     {
                         RepSitiosAlcance repSitiosAlcance = new RepSitiosAlcance();
                         repSitiosAlcance.NombreDireccion = x.Direccion;
-                        repSitiosAlcance.Auditado = WordHelper.GetCodeKey(WordHelper.keys.enter);
-
+                        repSitiosAlcance.Auditado = "SI/NO";
                         return repSitiosAlcance;
                     }).ToList(),
-
                     Confirmacion = "confirmacion",
                     ObjetivoAuditoria = objetivosAuditoria,
                     NormasEstablecidas = normas,
-                    ListResumenHallazgos = elahallazgos.Select(x =>
-                    {
-                        RepHallazgos repRep = new RepHallazgos();
-                        repRep.Fortaleza = nroFortaleza.ToString();
-                        repRep.OportunidadMejora = oportunidad.ToString();
-                        repRep.NoConformidadMayor = noConformidadMayor.ToString();
-                        repRep.NoConformidadMenor = noConformidadMenor.ToString();
-
-                        return repRep;
-                    }).ToList(),
+                    ListResumenHallazgos = new List<RepHallazgos>(),
                     CorreoElectronicoAuditor = "correoElectronicoAuditor",
                     NombreAuditor = "nombreAuditor",
                     NombreRepresentante = cliente.NombreRazon
                 };
+                RepHallazgos repRep = new RepHallazgos();
+                repRep.Fortaleza = elahallazgos.Where(x => x.TipoNemotico == "F").Count().ToString();
+                repRep.OportunidadMejora = elahallazgos.Where(x => x.TipoNemotico == "OM").Count().ToString();
+                repRep.NoConformidadMayor = elahallazgos.Where(x => x.TipoNemotico == "NCM").Count().ToString();
+                repRep.NoConformidadMenor = elahallazgos.Where(x => x.TipoNemotico == "NCm").Count().ToString();
+
+                praReporte.ListResumenHallazgos.Add(repRep);
+
                 Dictionary<string, CellTitles[]> pTitles = new Dictionary<string, CellTitles[]>();
                 CellTitles[] cellTitlesTitulo = new CellTitles[4];
                 cellTitlesTitulo[0] = new CellTitles { Title = "Fortaleza", Visible = true, Width = "50" };
@@ -1115,35 +1319,48 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 string criterioSistema = "";
                 if (contenidos.Where(x => x.Nemotico == "PLAN_CRITERIO").Count() > 0)
                     criterioSistema = contenidos.Where(x => x.Nemotico == "PLAN_CRITERIO").FirstOrDefault().ToString();
+
+                string modalidad = praciclocronograma.Praciclocronogramas.First().DiasRemoto > 0 && praciclocronograma.Praciclocronogramas.First().DiasInsitu > 0 ? "In Situ y Remota" : "";
+                modalidad = string.IsNullOrEmpty(modalidad) && praciclocronograma.Praciclocronogramas.First().DiasRemoto > 0 ? "Remota" : "";
+                modalidad = string.IsNullOrEmpty(modalidad) && praciclocronograma.Praciclocronogramas.First().DiasInsitu > 0 ? "In Situ" : "";
+
+                string arasPreocupacion = "";
+                var elaADP = repositoryMySql.SimpleSelect<Elaadp>(x => x.IdelaAuditoria == resulDBAuditoria.First().IdelaAuditoria);
+                elaADP.ForEach(x =>
+                {
+                    arasPreocupacion += x.Area + WordHelper.GetCodeKey(WordHelper.keys.enter) + x.Descripcion.Replace("\n", WordHelper.GetCodeKey(WordHelper.keys.enter)) + WordHelper.GetCodeKey(WordHelper.keys.enter);
+                });
+
                 //EquipoAuditoNombreCargo = null,
                 ///llenamos el reporte con la informacion de este ciclo
                 RepInformeAuditoriaEtapaI praReporte = new RepInformeAuditoriaEtapaI
                 {
                     NombreEmpresa = cliente.NombreRazon,
                     Direccion = cliente.Direccion,
-                    PersonaContacto = contactos,
+                    PersonaContacto = "",
                     Telefono = telefono,
-                    CorreoElectronico = correoElectronico,
-                    CodigoServivio = praprogramasdeauditorium.CodigoIafws,
+                    CorreoElectronico = "",
+                    CodigoServivio = praprogramasdeauditorium.CodigoServicioWs,
                     TipoAuditoria = praprogramasdeauditorium.IdparamTipoServicio.ToString(),//consultar la tabla param,
-                    //ModalidadAuditoria = praprogramasdeauditorium.DetalleServicioWs,
+                    ModalidadAuditoria = modalidad,
                     Normas = normas,
-                    FechaAuditoria = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
+                    FechaAuditoria = $"{praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy")} a {praciclocronograma.Praciclocronogramas.First().FechaDeFinDeEjecucionAuditoria?.ToString("dd/MM/yyyy")}",
                     FechaInforme = DateTime.Now.ToString("dd/MM/yyyy"),
                     EquipoAuditor = equipoAuditor,
                     CriteriosSistema = criterioSistema,
                     ComentarioRealcionado = "ComentarioRealcionado",//TODO: Completar
                     Etapa1 = "Etapa1", //TODO: Completar
-                    AreasPreocupacion = "AreasPreocupacion",//TODO: Completar
+                    AreasPreocupacion = arasPreocupacion,//TODO: Completar
                     ConclusionAuditor = conlusionesAuditor,
                     AuditorLider = auditor.cargoPuesto,
                     NombreAuditorLider = auditor.nombreCompleto,
                     Fecha = DateTime.Now.ToString("dd/MM/yyyy"),
-                    RepresentanteOrganizacion = "RepresentanteOrganizacion",//TODO: Completar
-                    NombreCoordinadorAud = "NombreCoordinadorAud",//TODO: Completar
-                    ElectronicoCoordinador = "CorreoElectronicoCoodinador",//TODO: Completar
+                    RepresentanteOrganizacion = "",//TODO: Completar
+                    NombreCoordinadorAud = "",//TODO: Completar
+                    ElectronicoCoordinador = "",//TODO: Completar
                     FechaAuditoriaEtapaII = "",//TODO: Completar
-                    FechaSolicitarEdificarAudiII = "",//TODO: Completar
+                    FechaSolicitarEdificarAudiII = "",//TODO: Completar                                        
+                    CorreoElectronicoCoodinador = "",
                     ListEquipoAuditor = praciclocronograma.Pracicloparticipantes.Select(x =>
                     {
                         RepEquipoTCP repRepEquipo = new RepEquipoTCP();
@@ -1240,11 +1457,14 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     sitios += x.Direccion + WordHelper.GetCodeKey(WordHelper.keys.enter);
                 });
 
+                fechaInicio = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy");
+                fechaFin = praciclocronograma.Praciclocronogramas.First().FechaDeFinDeEjecucionAuditoria?.ToString("dd/MM/yyyy");
+
                 ///llenamos el reporte con la informacion de este ciclo
                 REPListaVerificacionReunionApertura praListaVerificacionReunionApertura = new REPListaVerificacionReunionApertura
                 {
                     NombreEmpresa = cliente.NombreRazon,
-                    CodigoServicio = praprogramasdeauditorium.CodigoIafws,
+                    CodigoServicio = praprogramasdeauditorium.CodigoServicioWs,
                     FechaInicio = fechaInicio,
                     FechaFin = fechaFin,
                     TipoAuditoria = praciclocronograma.Referencia,
@@ -1316,14 +1536,19 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 {
                     sitios += x.Direccion + WordHelper.GetCodeKey(WordHelper.keys.enter);
                 });
-
+                ListaCalificado auditoriLider = new ListaCalificado();
+                if (praciclocronograma.Pracicloparticipantes.Any(x => x.ParticipanteDetalleWs.ToLower().Contains("lider")))
+                {
+                    auditoriLider = JsonConvert.DeserializeObject<ListaCalificado>(praciclocronograma.Pracicloparticipantes.First(x => x.ParticipanteDetalleWs.ToLower().Contains("lider")).ParticipanteDetalleWs);
+                    nombreYFirmaDeAuditorLider = auditoriLider?.NombreCompleto;
+                }
                 ///llenamos el reporte con la informacion de este ciclo
                 REPListaVerificacionReunionCierre praListaVerificacionReunionCierre = new REPListaVerificacionReunionCierre
                 {
 
                     NombreOrganizacion = cliente.NombreRazon,
-                    CodigoDeServicio = praprogramasdeauditorium.CodigoIafws,
-                    FechaDeAuditoria = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
+                    CodigoDeServicio = praprogramasdeauditorium.CodigoServicioWs,
+                    FechaDeAuditoria = $"{praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy")} a {praciclocronograma.Praciclocronogramas.First().FechaDeFinDeEjecucionAuditoria?.ToString("dd/MM/yyyy")}",
                     TipoDeAuditoria = praciclocronograma.Referencia,
                     NormasAuditadas = normas,
                     NombreYFirmaDeAuditorLider = nombreYFirmaDeAuditorLider
@@ -1392,19 +1617,17 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 {
                     sitios += x.Direccion + WordHelper.GetCodeKey(WordHelper.keys.enter);
                 });
-
+                fechaInicio = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy");
+                fechaFin = praciclocronograma.Praciclocronogramas.First().FechaDeFinDeEjecucionAuditoria?.ToString("dd/MM/yyyy");
                 ///llenamos el reporte con la informacion de este ciclo
                 REPListaAsistencia praListaAsistencia = new REPListaAsistencia
                 {
-
                     NombreEmpresa = cliente.NombreRazon,
-                    CodigoServicio = praprogramasdeauditorium.CodigoIafws,
+                    CodigoServicio = praprogramasdeauditorium.CodigoServicioWs,
                     FechaInicio = fechaInicio,
                     FechaFin = fechaFin,
                     TipoAuditoria = praciclocronograma.Referencia,
                     Norma = normas
-
-
                 };
                 response.Object = new GlobalDataReport { data = praListaAsistencia, HeadersTables = null };
             }
@@ -1482,10 +1705,9 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     Cargo = cargo,
                     ProcesoAuditado = procesoAuditado, //TODO: Completar
                     NombreAuditado = nombreAuditado, //TODO: Completar
-                    Fecha = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
-                    SitiosAuditado = sitios
-
-
+                    Fecha = $"{praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy")} a {praciclocronograma.Praciclocronogramas.First().FechaDeFinDeEjecucionAuditoria?.ToString("dd/MM/yyyy")}",
+                    SitiosAuditado = sitios,
+                    CodigoServicio = praprogramasdeauditorium.CodigoServicioWs
                 };
                 response.Object = new GlobalDataReport { data = praListaVerificacionAuditor, HeadersTables = null };
 
@@ -1631,10 +1853,12 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     sitios += x.Direccion + WordHelper.GetCodeKey(WordHelper.keys.enter);
                 });
 
+                string fechaAuditoria = $"{praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy")} a " +
+                    $"{praciclocronograma.Praciclocronogramas.First().FechaDeFinDeEjecucionAuditoria?.ToString("dd/MM/yyyy")}";
                 ///llenamos el reporte con la informacion de este ciclo
                 REPDatosDeLaOrganizacion praDatosDeLaOrganizacion = new REPDatosDeLaOrganizacion
                 {
-                    FechaDeAuditoria = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
+                    FechaDeAuditoria = fechaAuditoria,
                     TipoDeAuditoria = praciclocronograma.Referencia,
                     NombreDeLaOrganizacion = cliente.NombreRazon,
                     Norma = normas,

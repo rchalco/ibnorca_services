@@ -1,26 +1,28 @@
 ﻿using Business.Main.Base;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Resportes.ReportDTO
+namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCS
 {
-    class TCPREPPlanAccion : IObjectReport
+    class TCSREPPlanAccion: IObjectReport
     {
         public string NombreEmpresa { get; set; }
         public string TipoAuditoria { get; set; }
         public string Norma { get; set; }
         public string Fecha { get; set; }
         public string AuditorLider { get; set; }
-        public List<HallazgosPAC> ListHallazgosPAC { get; set; }
-
+        public List<HallazgosPACTCS> ListHallazgosPAC { get; set; }
     }
 
-    class HallazgosPAC
+    class HallazgosPACTCS
     {
         public int nro { get; set; }
         public string TipoHallazgo { get; set; }
         public string Descripcion { get; set; }
+        public string Sitio { get; set; }
         public string Correccion { get; set; }
         public string AnalisisCausa { get; set; }
         public string AccionesCorrectivas { get; set; }

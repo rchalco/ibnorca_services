@@ -16,7 +16,7 @@ namespace Resportes.ReportDTO
         public string FechaDeAuditoria { get; set; }
         public string TipoDeAuditoria { get; set; }
         public string NormasAuditadas { get; set; }
-
+        public string AuditorLider { get; set; }
         public string NombreYFirmaDeAuditorLider { get; set; }
     }
 }

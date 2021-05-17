@@ -17,7 +17,7 @@ namespace Resportes.ReportDTO
         public string FechaAuditoria { get; set; }
         public string Usuario { get; set; }
         public string Cargo { get; set; }
-
+        public string CodigoServicio { get; set; }
         public string ProcesoAuditado { get; set; }
         public string NombreAuditado { get; set; }
         public string Fecha { get; set; }
