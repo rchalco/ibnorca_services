@@ -129,7 +129,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 response.Object.Designacion = new Designacion
                 {
                     CodigoServicio = resulBDPrograma.First().CodigoServicioWs,
-                    FechaAuditoria = resulBDCronograma.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
+                    FechaAuditoria = $"{resulBDCronograma.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy")} a {resulBDCronograma.First().FechaDeFinDeEjecucionAuditoria?.ToString("dd/MM/yyyy")}", 
                     TipoAuditroria = resulDBCicloPrograma.First().Referencia
                 };
                 //llenamos los datos del cliente

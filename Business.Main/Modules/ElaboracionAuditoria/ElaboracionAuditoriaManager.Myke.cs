@@ -183,7 +183,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     TipoAuditoria = praciclocronograma.Referencia,
                     ModalidadAuditoria = $"Días insitu: {praciclocronograma.Praciclocronogramas.First().DiasInsitu}, días remoto: {praciclocronograma.Praciclocronogramas.First().DiasRemoto}",
                     NormaAuditadas = normas,
-                    FechaAuditoria = $"Desde {fechaInicioAuditoria} hata {fechaFinAuditoria}",
+                    FechaAuditoria = $"Desde {fechaInicioAuditoria} hasta {fechaFinAuditoria}",
                     Alcance = alcance,
                     ObjetivosAuditoria = objetivosAuditoria,
                     CambiosAlcance = cambiosAlcance,

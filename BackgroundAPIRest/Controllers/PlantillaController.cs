@@ -1,0 +1,35 @@
+﻿using BackgroundAPIRest.Contracts;
+using Business.Main.Modules.TomaDecision;
+using Business.Main.Modules.TomaDecision.DTO;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using PlumbingProps.Logger;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace BackgroundAPIRest.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class PlantillaController : ControllerBase
+    {
+        [HttpPost("GenerarDocumento")]
+        [EnableCors("MyPolicy")]
+        public IActionResult GenerarDocumento(RequestExternalReport requestGenerarDocumento)
+        {
+            Binnacle.ProcessEvent(new Event { category = Event.Category.Information, description = $"Metodo GenerarDocumento llamado" });
+            TomaDecisionManager tomaDecisionManager = new TomaDecisionManager();
+            var resul = tomaDecisionManager.GenerarDocumentoByIdCiclo(requestGenerarDocumento);
+            if (resul.State == Domain.Main.Wraper.ResponseType.Success)
+            {
+                string fileName = resul.Message;
+                fileName = fileName.StartsWith("\\") ? "\\" + fileName : fileName;
+                return new PhysicalFileResult(fileName, System.Net.Mime.MediaTypeNames.Application.Octet);
+            }
+            return Problem(resul.Message);
+        }
+    }
+}
