@@ -15,7 +15,7 @@ namespace Business.Main.Base
         internal IRepository repositoryMySql { get; set; } = null;
         public BaseManager()
         {
-            repositoryMySql = FactoryDataInterfaz.CreateRepository<ibnorca_mokContext>("mysql");
+            repositoryMySql = FactoryDataInterfaz.CreateRepository<sigadContext>("mysql");
         }
 
         public string ProcessError(Exception ex)

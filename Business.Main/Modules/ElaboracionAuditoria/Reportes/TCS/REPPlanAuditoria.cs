@@ -12,6 +12,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Resportes.TCS
     {
         public string NombreEmpresa { get; set; }
         public string CodigoServicio { get; set; }
+        public string Alcance { get; set; }
         public string TipoAuditoria { get; set; }
         public string ModalidadAuditoria { get; set; }
         public string NormaAuditadas { get; set; }

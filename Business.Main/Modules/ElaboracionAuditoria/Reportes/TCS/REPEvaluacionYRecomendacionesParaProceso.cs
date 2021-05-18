@@ -18,12 +18,12 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCS
         public string FechaDeAuditoria { get; set; }
         public string TipoDeAuditoria { get; set; }
         public string NormasAuditadas { get; set; }
-       // public string EquipoAuditoNombreCargo { get; set; }
-
         public List<RepDesginacionParticipante> ListEquipoAuditoNombreCargo { get; set; }
         public string ExpertoCertificacion { get; set; }
         public string FechaAsignacionProceso { get; set; }
         public string RedaccionSugerida { get; set; }
-    
+        public List<RepHallazgos> ListHallazgos { get; set; }
+        public string FechaRecomendacion { get; set; }
+
     }
 }

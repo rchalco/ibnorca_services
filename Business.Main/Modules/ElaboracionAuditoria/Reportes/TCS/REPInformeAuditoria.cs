@@ -43,8 +43,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCS
     }
 
     public class RepCronograma
-    {
-        public string EquipoAuditor { get; set; }
+    {        
         public string NombreCompleto { get; set; }
         public string TotalDiasInSitu { get; set; }
         public string TotalDiasRemoto { get; set; }

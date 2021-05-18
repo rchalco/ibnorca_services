@@ -19,6 +19,7 @@ namespace Business.Main.DataMapping
         public string UsuarioRegistro { get; set; }
         public DateTime? FechaDesde { get; set; }
         public DateTime? FechaHasta { get; set; }
+        public decimal? DiasPresupuesto { get; set; }
 
         public virtual Praciclosprogauditorium IdPrAcicloProgAuditoriaNavigation { get; set; }
     }

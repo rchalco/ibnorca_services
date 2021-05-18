@@ -38,7 +38,8 @@ namespace Business.Main.Modules.ElaboracionAuditoria.Reportes.TCS
         public string CorreoElectronicoContacto { get; set; }
         public string CodigoIAF { get; set; }
         public string Alcance { get; set; }
-        public string Sitios { get; set; }
+        public string SitiosAAuditar { get; set; }
+        public string SitiosDentroDeAlcance { get; set; }
         public string HorarioTrabajo { get; set; }
         public string FechaProxima { get; set; }
         public string Adjunto { get; set; }

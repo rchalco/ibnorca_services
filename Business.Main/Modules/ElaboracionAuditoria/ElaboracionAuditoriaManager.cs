@@ -129,7 +129,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 response.Object.Designacion = new Designacion
                 {
                     CodigoServicio = resulBDPrograma.First().CodigoServicioWs,
-                    FechaAuditoria = resulBDCronograma.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
+                    FechaAuditoria = $"{resulBDCronograma.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy")} a {resulBDCronograma.First().FechaDeFinDeEjecucionAuditoria?.ToString("dd/MM/yyyy")}", 
                     TipoAuditroria = resulDBCicloPrograma.First().Referencia
                 };
                 //llenamos los datos del cliente
@@ -250,7 +250,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
             ResponseQuery<Paramdocumento> response = new ResponseQuery<Paramdocumento>();
             try
             {
-                response.ListEntities = repositoryMySql.SimpleSelect<Paramdocumento>(x => x.Area == area && x.Proceso == proceso);
+                response.ListEntities = repositoryMySql.SimpleSelect<Paramdocumento>(x => x.Area == area && x.Proceso == proceso && x.Habilitado == 1);
                 response.State = ResponseType.Success;
                 response.Message = "Lista obtenida correctamente";
             }
