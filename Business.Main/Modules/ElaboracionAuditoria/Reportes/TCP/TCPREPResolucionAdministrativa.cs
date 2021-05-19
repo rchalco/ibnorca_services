@@ -10,5 +10,15 @@ namespace Resportes.ReportDTO
 
         public string Acta { get; set; }
         public string Fecha { get; set; }
+        public List<ProductosResolucion> ListaProductosResolucion { get; set; }
+
+    }
+    public class ProductosResolucion
+    {
+        public string proceso { get; set; }
+        public string producto { get; set; }
+        public string norma { get; set; }
+        public string empresa { get; set; }
+        public string ubicacion { get; set; }        
     }
 }

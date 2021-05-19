@@ -1,6 +1,8 @@
 ﻿using BackgroundAPIRest.Contracts;
 using Business.Main.Modules.TomaDecision;
 using Business.Main.Modules.TomaDecision.DTO;
+using Business.Main.Modules.TomaDecision.DTOExternal;
+using Domain.Main.Wraper;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -30,6 +32,26 @@ namespace BackgroundAPIRest.Controllers
                 return new PhysicalFileResult(fileName, System.Net.Mime.MediaTypeNames.Application.Octet);
             }
             return Problem(resul.Message);
+        }
+
+        [HttpPost("GetResumePrograma")]
+        [EnableCors("MyPolicy")]
+        public ResponseQuery<DTOspWSGetResumePrograma> GetResumePrograma()
+        {
+            Binnacle.ProcessEvent(new Event { category = Event.Category.Information, description = $"Metodo GetResumePrograma llamado" });
+            TomaDecisionManager tomaDecisionManager = new TomaDecisionManager();
+            var resul = tomaDecisionManager.GetResumePrograma();
+            return resul;
+        }
+
+        [HttpPost("GetResumeProgramaProducto")]
+        [EnableCors("MyPolicy")]
+        public ResponseQuery<DTOspWSGetResumeProgramaProducto> GetResumeProgramaProducto()
+        {
+            Binnacle.ProcessEvent(new Event { category = Event.Category.Information, description = $"Metodo GetResumePrograma llamado" });
+            TomaDecisionManager tomaDecisionManager = new TomaDecisionManager();
+            var resul = tomaDecisionManager.GetResumeProgramaProducto();
+            return resul;
         }
     }
 }

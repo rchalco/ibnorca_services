@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Resportes.ReportDTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,5 +15,12 @@ namespace Business.Main.Modules.TomaDecision.DTO
         public string NombrePlantilla { get; set; }
         public bool SoloGenerar { get; set; }
         public List<ItemReporte> ListItemReporte { get; set; }
+        public ListasAdicionales ListasAdicionales { get; set; }
+    }
+    public class ListasAdicionales
+    {
+        public List<Asistente> ListAsistente { get; set; }
+        public List<TCPTemario> ListaTemario { get; set; }
+        public List<ProductosResolucion> ListaProductosResolucion { get; set; }
     }
 }

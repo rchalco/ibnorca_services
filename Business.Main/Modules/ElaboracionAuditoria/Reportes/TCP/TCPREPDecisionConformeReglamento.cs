@@ -14,5 +14,7 @@ namespace Resportes.ReportDTO
         public string Producto { get; set; }
         public string Arancel { get; set; }
         public string Sitio { get; set; }
+        public string NroCertificado { get; set; }
+        
     }
 }

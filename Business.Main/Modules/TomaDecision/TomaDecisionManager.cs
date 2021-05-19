@@ -188,6 +188,12 @@ namespace Business.Main.Modules.TomaDecision
                     resulMethod.Object.data.GetType().GetProperty(x.Key)?.SetValue(resulMethod.Object.data, x.Value);
                 });
 
+                ///TDO completamos la inforamcion de las listas
+                requestExternalReport.ListasAdicionales?.GetType().GetProperties().ToList().ForEach(x =>
+                {
+                    resulMethod.Object.data.GetType().GetProperty(x.Name)?.SetValue(resulMethod.Object.data, x.GetValue(requestExternalReport.ListasAdicionales));
+                });
+
                 //generamos el documento en word
                 fileNameGenerado = generadorWord.GenerarDocumento(resulMethod.Object.data, resulMethod.Object.HeadersTables, pathOutPlantilla);
                 resul.Message = fileNameGenerado;
@@ -198,12 +204,26 @@ namespace Business.Main.Modules.TomaDecision
             }
             return resul;
         }
-        public ResponseObject<DTOspWSGetResumePrograma> GetResumePrograma()
+        public ResponseQuery<DTOspWSGetResumePrograma> GetResumePrograma()
         {
-            ResponseObject<DTOspWSGetResumePrograma> resul = new ResponseObject<DTOspWSGetResumePrograma>();
+            ResponseQuery<DTOspWSGetResumePrograma> resul = new ResponseQuery<DTOspWSGetResumePrograma> { State = ResponseType.Success, Message = "Programas obtenidos correctamente" };
             try
             {
+                resul.ListEntities = repositoryMySql.GetDataByProcedure<DTOspWSGetResumePrograma>("spWSGetResumePrograma");
+            }
+            catch (Exception ex)
+            {
+                ProcessError(ex, resul);
+            }
+            return resul;
+        }
 
+        public ResponseQuery<DTOspWSGetResumeProgramaProducto> GetResumeProgramaProducto()
+        {
+            ResponseQuery<DTOspWSGetResumeProgramaProducto> resul = new ResponseQuery<DTOspWSGetResumeProgramaProducto> { State = ResponseType.Success, Message = "Programas obtenidos correctamente" };
+            try
+            {
+                resul.ListEntities = repositoryMySql.GetDataByProcedure<DTOspWSGetResumeProgramaProducto>("spWSGetResumeProgramaProducto");
             }
             catch (Exception ex)
             {

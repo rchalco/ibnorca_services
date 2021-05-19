@@ -14,10 +14,18 @@ namespace Resportes.ReportDTO
             public string Norma { get; set; }
         }
 
+        public class Calendario
+        {
+            public string Proceso { get; set; }
+            public string Fecha { get; set; }
+        }
+
         public string Fecha { get; set; }
         public string TipoAuditoria { get; set; }
         public string NumeroCertificado { get; set; }
         public string NombreEmpresa { get; set; }
         public List<ProductoDecision> ListProductos { get; set; }
+        public List<Calendario> ListCalendario { get; set; }
     }
+   
 }

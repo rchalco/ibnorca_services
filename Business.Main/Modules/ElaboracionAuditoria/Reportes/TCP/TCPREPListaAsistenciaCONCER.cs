@@ -12,5 +12,13 @@ namespace Resportes.ReportDTO
         public string Nombre { get; set; }
         public string CargoConcer { get; set; }
         public string Asistencia { get; set; }
+        public List<Asistente> ListAsistente { get; set; }
+    }
+
+    public class Asistente
+    {
+        public string NombreCompleto { get; set; }
+        public string CargoCONCER { get; set; }
+        public string Asistencia { get; set; }
     }
 }

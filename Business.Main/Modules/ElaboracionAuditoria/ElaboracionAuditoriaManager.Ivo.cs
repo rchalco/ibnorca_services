@@ -85,7 +85,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 ///llenamos el reporte con la informacion de este ciclo
                 TCPREPNotaRetiroCertificacion praTCPREPNotaRetiroCertificacion = new TCPREPNotaRetiroCertificacion
                 {
-                    Fecha = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
+                    Fecha = DateTime.Now.ToString("dd/MM/yyyy"),
                     MarcaComercial = marcaComercial,
                     Sitio = sitios,
                     NumeroCertificado = numeroCertificado
@@ -159,11 +159,11 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 ///llenamos el reporte con la informacion de este ciclo
                 TCPREPNotaSuspencionCertificado praTCPREPNotaSuspencionCertificado = new TCPREPNotaSuspencionCertificado
                 {
-                    Fecha = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
+                    Fecha = DateTime.Now.ToString("dd/MM/yyyy"),
                     MarcaComercial = marcaComercial,
                     Sitio = sitios,
-                    NumeroCertificado = numeroCertificado
-
+                    NumeroCertificado = numeroCertificado,
+                    NombreEmpresa = ""
 
                 };
 
@@ -238,14 +238,12 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 TCPREPDecisionConformeReglamento praTCPREPDecisionConformeReglamento = new TCPREPDecisionConformeReglamento
                 {
 
-                    Fecha = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
+                    Fecha = DateTime.Now.ToString("dd/MM/yyyy"),
                     NombreEmpresa = cliente.NombreRazon,
                     MarcaComercial = marcaComercial,
                     Producto = producto,
                     Arancel = arancel,
                     Sitio = sitios
-
-
                 };
                 response.Object = new GlobalDataReport { data = praTCPREPDecisionConformeReglamento, HeadersTables = null };
             }
@@ -278,6 +276,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 praciclocronograma.Pracicloparticipantes = repositoryMySql.SimpleSelect<Pracicloparticipante>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
                 praciclocronograma.Pradireccionespaproductos = repositoryMySql.SimpleSelect<Pradireccionespaproducto>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
                 praciclocronograma.Pradireccionespasistemas = repositoryMySql.SimpleSelect<Pradireccionespasistema>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praprogramasdeauditorium.Praciclosprogauditoria = repositoryMySql.SimpleSelect<Praciclosprogauditorium>(y => y.IdPrAprogramaAuditoria == praprogramasdeauditorium.IdPrAprogramaAuditoria);
 
                 Cliente cliente = JsonConvert.DeserializeObject<Cliente>(praprogramasdeauditorium.OrganizacionContentWs);
 
@@ -317,13 +316,14 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 ///llenamos el reporte con la informacion de este ciclo
                 TCPREPDecisionCertificacion praTCPREPDecisionCertificacion = new TCPREPDecisionCertificacion
                 {
-                    Fecha = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
+                    Fecha = DateTime.Now.ToString("dd/MM/yyyy"),
                     TipoAuditoria = praciclocronograma.Referencia,
                     NumeroCertificado = numeroCertificado,
                     NombreEmpresa = cliente.NombreRazon,
-
+                    ListProductos = new List<TCPREPDecisionCertificacion.ProductoDecision>(),
+                    ListCalendario = new List<TCPREPDecisionCertificacion.Calendario>()
                 };
-                praTCPREPDecisionCertificacion.ListProductos = new List<TCPREPDecisionCertificacion.ProductoDecision>();
+
                 int cont = 1;
                 praciclocronograma.Pradireccionespaproductos.ToList().ForEach(x =>
                 {
@@ -337,12 +337,28 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     cont++;
                 });
 
+                praprogramasdeauditorium.Praciclosprogauditoria.ToList().Where(h => h.Anio > praciclocronograma.Anio).ToList().ForEach(z =>
+                {
+                    z.Praciclocronogramas = repositoryMySql.SimpleSelect<Praciclocronograma>(u => u.IdPrAcicloProgAuditoria == z.IdPrAcicloProgAuditoria);
+                    praTCPREPDecisionCertificacion.ListCalendario.Add(new TCPREPDecisionCertificacion.Calendario
+                    {
+                        Fecha = z.Praciclocronogramas.First().MesProgramado?.ToString("MM/yyyy"),
+                        Proceso = z.Referencia
+                    });
+                });
+
                 Dictionary<string, CellTitles[]> pTitles = new Dictionary<string, CellTitles[]>();
                 CellTitles[] cellTitlesTituloEquipoAuditor = new CellTitles[3];
                 cellTitlesTituloEquipoAuditor[0] = new CellTitles { Title = "Nro", Visible = true, Width = "50" };
                 cellTitlesTituloEquipoAuditor[1] = new CellTitles { Title = "Producto", Visible = true, Width = "120" };
                 cellTitlesTituloEquipoAuditor[2] = new CellTitles { Title = "Norma", Visible = true, Width = "50" };
                 pTitles.Add("ListProductos", cellTitlesTituloEquipoAuditor);
+
+                CellTitles[] cellTitlesCalendario = new CellTitles[2];
+                cellTitlesCalendario[0] = new CellTitles { Title = "Proceso", Visible = true, Width = "120" };
+                cellTitlesCalendario[1] = new CellTitles { Title = "Fecha", Visible = true, Width = "50" };
+
+                pTitles.Add("ListCalendario", cellTitlesCalendario);
 
                 response.Object = new GlobalDataReport { data = praTCPREPDecisionCertificacion, HeadersTables = pTitles };
             }
@@ -413,11 +429,20 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 TCPREPResolucionAdministrativa praTCPREPResolucionAdministrativa = new TCPREPResolucionAdministrativa
                 {
                     Acta = acta,
-                    Fecha = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy")
-
-
+                    Fecha = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
+                    ListaProductosResolucion = new List<ProductosResolucion>()
                 };
-                response.Object = new GlobalDataReport { data = praTCPREPResolucionAdministrativa, HeadersTables = null };
+                Dictionary<string, CellTitles[]> pTitles = new Dictionary<string, CellTitles[]>();
+                CellTitles[] cellTitlesTitulo = new CellTitles[5];
+                cellTitlesTitulo[0] = new CellTitles { Title = "Proceso", Visible = true, Width = "50" };
+                cellTitlesTitulo[1] = new CellTitles { Title = "Producto", Visible = true, Width = "80" };
+                cellTitlesTitulo[2] = new CellTitles { Title = "Norma", Visible = true, Width = "50" };
+                cellTitlesTitulo[3] = new CellTitles { Title = "Empresa", Visible = true, Width = "50" };
+                cellTitlesTitulo[4] = new CellTitles { Title = "Ubicacion", Visible = true, Width = "50" };
+
+                pTitles.Add("ListaProductosResolucion", cellTitlesTitulo);
+
+                response.Object = new GlobalDataReport { data = praTCPREPResolucionAdministrativa, HeadersTables = pTitles };
             }
             catch (Exception ex)
             {
@@ -488,11 +513,23 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     Acta = acta,
                     Fecha = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
                     Modalidad = $"Días insitu: {praciclocronograma.Praciclocronogramas.First().DiasInsitu}, días remoto: {praciclocronograma.Praciclocronogramas.First().DiasRemoto}",
-                    Hora = hora
-
+                    Hora = hora,
+                    ListaTemario = new List<TCPTemario>()
                 };
+                Dictionary<string, CellTitles[]> pTitles = new Dictionary<string, CellTitles[]>();
+                CellTitles[] cellTitlesTitulo = new CellTitles[9];
+                cellTitlesTitulo[0] = new CellTitles { Title = "No", Visible = true, Width = "30" };
+                cellTitlesTitulo[1] = new CellTitles { Title = "PROCESO", Visible = true, Width = "30" };
+                cellTitlesTitulo[2] = new CellTitles { Title = "COD. SERVICIO", Visible = true, Width = "30" };
+                cellTitlesTitulo[3] = new CellTitles { Title = "Nº EMPRESA", Visible = true, Width = "30" };
+                cellTitlesTitulo[4] = new CellTitles { Title = "PRODUCTO", Visible = true, Width = "30" };
+                cellTitlesTitulo[5] = new CellTitles { Title = "NORMA", Visible = true, Width = "30" };
+                cellTitlesTitulo[6] = new CellTitles { Title = "DESCRIPCIÓN DE LA REVISIÓN", Visible = true, Width = "50" };
+                cellTitlesTitulo[7] = new CellTitles { Title = "CONFIRMACIÓN DEL PRODUCTO", Visible = true, Width = "50" };
+                cellTitlesTitulo[8] = new CellTitles { Title = "RECOMENDACIÓN DEL CONCER", Visible = true, Width = "50" };
+                pTitles.Add("ListaTemario", cellTitlesTitulo);
 
-                response.Object = new GlobalDataReport { data = praTCPREPActaReunion, HeadersTables = null };
+                response.Object = new GlobalDataReport { data = praTCPREPActaReunion, HeadersTables = pTitles };
             }
             catch (Exception ex)
             {
@@ -564,10 +601,16 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     TipoReunion = tipoReunion,
                     Nombre = cliente.NombreRazon,
                     CargoConcer = cargoConcer,
-                    Asistencia = asistencia
-
+                    Asistencia = asistencia,
+                    ListAsistente = new List<Asistente>()
                 };
-                response.Object = new GlobalDataReport { data = praTCPREPListaAsistencia, HeadersTables = null };
+                Dictionary<string, CellTitles[]> pTitles = new Dictionary<string, CellTitles[]>();
+                CellTitles[] cellTitlesTitulo = new CellTitles[3];
+                cellTitlesTitulo[0] = new CellTitles { Title = "Nombre y Apellido", Visible = true, Width = "150" };
+                cellTitlesTitulo[1] = new CellTitles { Title = "Cargo de la directiva del CONCER", Visible = true, Width = "100" };
+                cellTitlesTitulo[2] = new CellTitles { Title = "Asistencia", Visible = true, Width = "50" };
+                pTitles.Add("ListAsistente", cellTitlesTitulo);
+                response.Object = new GlobalDataReport { data = praTCPREPListaAsistencia, HeadersTables = pTitles };
             }
             catch (Exception ex)
             {
@@ -2082,7 +2125,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     sitios += x.Direccion + WordHelper.GetCodeKey(WordHelper.keys.enter);
                 });
 
-                string fechaInicioFInal = $"{praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy")} a {praciclocronograma.Praciclocronogramas.First().FechaDeFinDeEjecucionAuditoria?.ToString("dd/MM/yyyy")} "; 
+                string fechaInicioFInal = $"{praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy")} a {praciclocronograma.Praciclocronogramas.First().FechaDeFinDeEjecucionAuditoria?.ToString("dd/MM/yyyy")} ";
                 ///llenamos el reporte con la informacion de este ciclo
                 REPEvaluacionYRecomendacionesParaProceso praEvaluacionYRecomendacionesParaProceso = new REPEvaluacionYRecomendacionesParaProceso
                 {
@@ -2139,7 +2182,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 cellTitlesTitulo[0] = new CellTitles { Title = "Fortaleza (F)", Visible = true, Width = "20" };
                 cellTitlesTitulo[1] = new CellTitles { Title = "Oportunidad de mejora (OM)", Visible = true, Width = "20" };
                 cellTitlesTitulo[2] = new CellTitles { Title = "No conformidad mayor (NCM)", Visible = true, Width = "20" };
-                cellTitlesTitulo[3] = new CellTitles { Title = "No conformidad menor (NCm)", Visible = true, Width = "20" };                
+                cellTitlesTitulo[3] = new CellTitles { Title = "No conformidad menor (NCm)", Visible = true, Width = "20" };
                 pTitles.Add("ListHallazgos", cellTitlesTitulo);
 
                 response.Object = new GlobalDataReport { data = praEvaluacionYRecomendacionesParaProceso, HeadersTables = pTitles };
@@ -2202,7 +2245,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 });
 
                 string sitios = "";
-                praciclocronograma.Pradireccionespaproductos.ToList().ForEach(x =>
+                praciclocronograma.Pradireccionespasistemas.ToList().ForEach(x =>
                 {
                     sitios += x.Direccion + WordHelper.GetCodeKey(WordHelper.keys.enter);
                 });
@@ -2329,7 +2372,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 {
 
                     FechaIbnorca = praciclocronograma.Praciclocronogramas.First().FechaInicioDeEjecucionDeAuditoria?.ToString("dd/MM/yyyy"),
-                    ReferenciaIbnorca = praciclocronograma.Referencia,
+                    //ReferenciaIbnorca = praciclocronograma.Referencia,
                     NombreApellidos = nombreApellidos,
                     Cargo = cargo,
                     Organizacion = cliente.NombreRazon,

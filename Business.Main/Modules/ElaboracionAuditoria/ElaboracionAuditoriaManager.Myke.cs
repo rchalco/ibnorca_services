@@ -94,10 +94,10 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     NombreEmpresaTexto = cliente.NombreRazon,
                     DescripcionOtrogado = alcance,
                     Sitios = sitios,
-                    FechaLiteral1 = "XXXXX", //TODO: Completar
+                    FechaLiteral1 = "", //TODO: Completar
                     Seguimiento = praciclocronograma.Referencia,
                     FechaLiteral2 = fechaLiteral,
-                    DirectorEjecutivo = "XXXXXX" //TODO: Completar
+                    DirectorEjecutivo = "" //TODO: Completar
 
                 };
                 response.Object = new GlobalDataReport { data = praSuspension, HeadersTables = null };
