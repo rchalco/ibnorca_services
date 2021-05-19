@@ -4,6 +4,7 @@ using Business.Main.DataMapping;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.ListarAuditoresxCargoCalificadoDTO;
 using Business.Main.Modules.ElaboracionAuditoria;
 using Business.Main.Modules.TomaDecision.DTO;
+using Business.Main.Modules.TomaDecision.DTOExternal;
 using CoreAccesLayer.Wraper;
 using Domain.Main.Wraper;
 using MySqlConnector;
@@ -197,8 +198,19 @@ namespace Business.Main.Modules.TomaDecision
             }
             return resul;
         }
-        
+        public ResponseObject<DTOspWSGetResumePrograma> GetResumePrograma()
+        {
+            ResponseObject<DTOspWSGetResumePrograma> resul = new ResponseObject<DTOspWSGetResumePrograma>();
+            try
+            {
 
+            }
+            catch (Exception ex)
+            {
+                ProcessError(ex, resul);
+            }
+            return resul;
+        }
     }
 
 }
