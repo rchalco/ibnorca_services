@@ -20,6 +20,8 @@ using Business.Main.Modules.ElaboracionAuditoria.Reportes.TCP;
 using static PlumbingProps.Document.WordHelper;
 using static Resportes.ReportDTO.TCPREPInforme;
 using Domain.Main.CrossEntities;
+using static Business.Main.Modules.ElaboracionAuditoria.Reportes.TCP.TCPRepOfertaContrato;
+using static Business.Main.Modules.ElaboracionAuditoria.Reportes.TCS.TCSRepOfertaContrato;
 
 namespace Business.Main.Modules.ElaboracionAuditoria
 {
@@ -933,6 +935,124 @@ namespace Business.Main.Modules.ElaboracionAuditoria
             }
             return response;
         }
+
+        public ResponseObject<GlobalDataReport> TCPRepOfertaContrato(RequestDataReport requestDataReport)
+        {
+            ResponseObject<GlobalDataReport> response = new ResponseObject<GlobalDataReport> { Message = "", State = ResponseType.Success };
+            try
+            {
+                int IdCiclo = requestDataReport.IdCiclo;
+                //datos no conectados
+                string fechaInicio = string.Empty;
+                ///Obtenemos la informacion del ciclo y del programa
+                Praciclosprogauditorium praciclocronograma = repositoryMySql.SimpleSelect<Praciclosprogauditorium>(x => x.IdPrAcicloProgAuditoria == IdCiclo).ToList().FirstOrDefault();
+                Praprogramasdeauditorium praprogramasdeauditorium = repositoryMySql.SimpleSelect<Praprogramasdeauditorium>(x => x.IdPrAprogramaAuditoria == praciclocronograma.IdPrAprogramaAuditoria).ToList().FirstOrDefault();
+                if (praciclocronograma == null)
+                {
+                    response.State = ResponseType.Warning;
+                    response.Message = "No se cuenta con informacion de este cilo en la BD";
+                    return response;
+                }
+
+                praciclocronograma.Praciclocronogramas = repositoryMySql.SimpleSelect<Praciclocronograma>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Praciclonormassistemas = repositoryMySql.SimpleSelect<Praciclonormassistema>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Pracicloparticipantes = repositoryMySql.SimpleSelect<Pracicloparticipante>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Pradireccionespaproductos = repositoryMySql.SimpleSelect<Pradireccionespaproducto>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Pradireccionespasistemas = repositoryMySql.SimpleSelect<Pradireccionespasistema>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+
+                Cliente cliente = JsonConvert.DeserializeObject<Cliente>(praprogramasdeauditorium.OrganizacionContentWs);
+
+                ///obtenemos los contactos del cliente
+                ClientHelper clientHelper = new ClientHelper();
+                ///TDO: obtenemos los datos del servicio
+                RequestListarContactosEmpresa requestDato = new RequestListarContactosEmpresa { accion = "ListarContactosEmpresa", sIdentificador = Global.IDENTIFICADOR, sKey = Global.KEY_SERVICES, IdCliente = cliente.IdCliente };
+                ResponseListarContactosEmpresa resulServices = clientHelper.Consume<ResponseListarContactosEmpresa>(Global.URIGLOBAL_SERVICES + Global.URI_CLIENTE_CONTACTO, requestDato).Result;
+                if (!resulServices.estado)
+                {
+                    response.State = ResponseType.Warning;
+                    response.Message = $"Existe problemas al consumir el servicio de ibnorca (estados): {resulServices.mensaje}";
+                    return response;
+                }
+                ContactoEmpresa contactoEmpresa = resulServices.lstContactos?.Count > 0 ? resulServices.lstContactos[0] : null;
+
+                string normas = "";
+
+
+                string productos = "";
+                praciclocronograma.Pradireccionespaproductos.ToList().ForEach(x =>
+                {
+                    normas += x.Norma + WordHelper.GetCodeKey(WordHelper.keys.enter);
+                    productos += x.Nombre + ",";
+                });
+
+
+                string sitios = "";
+                praciclocronograma.Pradireccionespasistemas.ToList().ForEach(x =>
+                {
+                    sitios += x.Direccion + WordHelper.GetCodeKey(WordHelper.keys.enter);
+                });
+
+                ///llenamos el reporte con la informacion de este ciclo
+                TCPRepOfertaContrato praTCPREPInforme = new TCPRepOfertaContrato
+                {
+                    Referencia = cliente.NombreRazon,
+                    FechaIbnorca = praciclocronograma.Referencia,
+                    Cliente = "", //TODO: Completar
+                    DireccionCliente = cliente.Direccion, //TODO: Completar
+                    Guia = normas,
+                    NombreGerente = "", //TODO: Completar
+                    mailIbnorca = "", //TODO: Completar
+
+                    //TODO: Completar Pradireccionespaproductos
+                    ListProductos = praciclocronograma.Pradireccionespaproductos.Select(x =>
+                    {
+                        ProductoOferta repRep = new ProductoOferta();
+                        repRep.Nombre = x.Nombre;
+                        repRep.Marca = x.Marca;
+                        repRep.Norma = x.Norma;
+                        repRep.NroSello = x.Sello;
+                        repRep.Direccion = x.Direccion;
+                        return repRep;
+                    }).ToList(),
+                    //TODO: Completar Pradireccionespaproductos
+                    ListPresupuesto = praciclocronograma.Pradireccionespaproductos.Select(x =>
+                    {
+                        PresupuestoOfertaTCP repRep = new PresupuestoOfertaTCP();
+                        repRep.Etapa = ""; //TODO: Completar
+                        repRep.Concepto = ""; //TODO: Completar
+                        repRep.DiasAuditor = ""; //TODO: Completar
+                        repRep.CostoUSD = ""; //TODO: Completar
+                        return repRep;
+                    }).ToList(),
+
+                };
+                Dictionary<string, CellTitles[]> pTitles = new Dictionary<string, CellTitles[]>();
+                CellTitles[] cellTitlesTitulo = new CellTitles[5];
+                cellTitlesTitulo[0] = new CellTitles { Title = "Producto", Visible = true, Width = "100" };
+                cellTitlesTitulo[1] = new CellTitles { Title = "Marca", Visible = true, Width = "100" };
+                cellTitlesTitulo[2] = new CellTitles { Title = "Norma", Visible = true, Width = "100" };
+                cellTitlesTitulo[3] = new CellTitles { Title = "Sello", Visible = true, Width = "100" };
+                cellTitlesTitulo[4] = new CellTitles { Title = "Direccion", Visible = true, Width = "100" };
+                pTitles.Add("ListProductos", cellTitlesTitulo);
+
+                cellTitlesTitulo = new CellTitles[4];
+                cellTitlesTitulo[0] = new CellTitles { Title = "Etapa", Visible = true, Width = "150" };
+                cellTitlesTitulo[1] = new CellTitles { Title = "Concepto", Visible = true, Width = "80" };
+                cellTitlesTitulo[2] = new CellTitles { Title = "DiasAuditoro", Visible = true, Width = "80" };
+                cellTitlesTitulo[3] = new CellTitles { Title = "CostoUSD", Visible = true, Width = "80" };
+                pTitles.Add("ListPresupuesto", cellTitlesTitulo);
+
+                response.Object = new GlobalDataReport { data = praTCPREPInforme, HeadersTables = pTitles };
+            }
+            catch (Exception ex)
+            {
+                ProcessError(ex, response);
+            }
+            return response;
+        }
+
+
+
         #endregion
 
         #region TCS
@@ -2309,6 +2429,113 @@ namespace Business.Main.Modules.ElaboracionAuditoria
 
                 };
                 response.Object = new GlobalDataReport { data = praNotaDeRetiroDeCertificacion, HeadersTables = null };
+            }
+            catch (Exception ex)
+            {
+                ProcessError(ex, response);
+            }
+            return response;
+        }
+
+        public ResponseObject<GlobalDataReport> TCSRepOfertaContrato(RequestDataReport requestDataReport)
+        {
+            ResponseObject<GlobalDataReport> response = new ResponseObject<GlobalDataReport> { Message = "", State = ResponseType.Success };
+            try
+            {
+                int IdCiclo = requestDataReport.IdCiclo;
+                //datos no conectados
+                string fechaInicio = string.Empty;
+                ///Obtenemos la informacion del ciclo y del programa
+                Praciclosprogauditorium praciclocronograma = repositoryMySql.SimpleSelect<Praciclosprogauditorium>(x => x.IdPrAcicloProgAuditoria == IdCiclo).ToList().FirstOrDefault();
+                Praprogramasdeauditorium praprogramasdeauditorium = repositoryMySql.SimpleSelect<Praprogramasdeauditorium>(x => x.IdPrAprogramaAuditoria == praciclocronograma.IdPrAprogramaAuditoria).ToList().FirstOrDefault();
+                if (praciclocronograma == null)
+                {
+                    response.State = ResponseType.Warning;
+                    response.Message = "No se cuenta con informacion de este cilo en la BD";
+                    return response;
+                }
+
+                praciclocronograma.Praciclocronogramas = repositoryMySql.SimpleSelect<Praciclocronograma>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Praciclonormassistemas = repositoryMySql.SimpleSelect<Praciclonormassistema>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Pracicloparticipantes = repositoryMySql.SimpleSelect<Pracicloparticipante>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Pradireccionespaproductos = repositoryMySql.SimpleSelect<Pradireccionespaproducto>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+                praciclocronograma.Pradireccionespasistemas = repositoryMySql.SimpleSelect<Pradireccionespasistema>(y => y.IdPrAcicloProgAuditoria == praciclocronograma.IdPrAcicloProgAuditoria);
+
+                Cliente cliente = JsonConvert.DeserializeObject<Cliente>(praprogramasdeauditorium.OrganizacionContentWs);
+
+                ///obtenemos los contactos del cliente
+                ClientHelper clientHelper = new ClientHelper();
+                ///TDO: obtenemos los datos del servicio
+                RequestListarContactosEmpresa requestDato = new RequestListarContactosEmpresa { accion = "ListarContactosEmpresa", sIdentificador = Global.IDENTIFICADOR, sKey = Global.KEY_SERVICES, IdCliente = cliente.IdCliente };
+                ResponseListarContactosEmpresa resulServices = clientHelper.Consume<ResponseListarContactosEmpresa>(Global.URIGLOBAL_SERVICES + Global.URI_CLIENTE_CONTACTO, requestDato).Result;
+                if (!resulServices.estado)
+                {
+                    response.State = ResponseType.Warning;
+                    response.Message = $"Existe problemas al consumir el servicio de ibnorca (estados): {resulServices.mensaje}";
+                    return response;
+                }
+                ContactoEmpresa contactoEmpresa = resulServices.lstContactos?.Count > 0 ? resulServices.lstContactos[0] : null;
+
+                string normas = "";
+
+
+                string productos = "";
+                praciclocronograma.Pradireccionespaproductos.ToList().ForEach(x =>
+                {
+                    normas += x.Norma + WordHelper.GetCodeKey(WordHelper.keys.enter);
+                    productos += x.Nombre + ",";
+                });
+
+
+                string sitios = "";
+                praciclocronograma.Pradireccionespasistemas.ToList().ForEach(x =>
+                {
+                    sitios += x.Direccion + WordHelper.GetCodeKey(WordHelper.keys.enter);
+                });
+
+                ///llenamos el reporte con la informacion de este ciclo
+                TCSRepOfertaContrato praTCPREPInforme = new TCSRepOfertaContrato
+                {
+                    Referencia = cliente.NombreRazon,
+                    FechaIbnorca = praciclocronograma.Referencia,
+                    Cliente = "", //TODO: Completar
+                    Norma = cliente.Direccion, //TODO: Completar
+                    Guia = normas,
+                    NombreGerente = "", //TODO: Completar
+                    Alcance = "", //TODO: Completar
+
+                    //TODO: Completar Pradireccionespaproductos
+                    ListSitios = praciclocronograma.Pradireccionespaproductos.Select(x =>
+                    {
+                        SitosOferta repRep = new SitosOferta();
+                        repRep.Sitio = x.Nombre;
+                        return repRep;
+                    }).ToList(),
+                    //TODO: Completar Pradireccionespaproductos
+                    ListPresupuesto = praciclocronograma.Pradireccionespaproductos.Select(x =>
+                    {
+                        PresupuestoOfertaTCS repRep = new PresupuestoOfertaTCS();
+                        repRep.Etapa = ""; //TODO: Completar
+                        repRep.Concepto = ""; //TODO: Completar
+                        repRep.DiasAuditor = ""; //TODO: Completar
+                        repRep.CostoUSD = ""; //TODO: Completar
+                        return repRep;
+                    }).ToList(),
+
+                };
+                Dictionary<string, CellTitles[]> pTitles = new Dictionary<string, CellTitles[]>();
+                CellTitles[] cellTitlesTitulo = new CellTitles[5];
+                cellTitlesTitulo[0] = new CellTitles { Title = "Sitio", Visible = true, Width = "100" };
+                pTitles.Add("ListSitios", cellTitlesTitulo);
+
+                cellTitlesTitulo = new CellTitles[4];
+                cellTitlesTitulo[0] = new CellTitles { Title = "Etapa", Visible = true, Width = "150" };
+                cellTitlesTitulo[1] = new CellTitles { Title = "Concepto", Visible = true, Width = "80" };
+                cellTitlesTitulo[2] = new CellTitles { Title = "DiasAuditoro", Visible = true, Width = "80" };
+                cellTitlesTitulo[3] = new CellTitles { Title = "CostoUSD", Visible = true, Width = "80" };
+                pTitles.Add("ListPresupuesto", cellTitlesTitulo);
+
+                response.Object = new GlobalDataReport { data = praTCPREPInforme, HeadersTables = pTitles };
             }
             catch (Exception ex)
             {
