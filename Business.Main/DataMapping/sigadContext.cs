@@ -157,7 +157,7 @@ namespace Business.Main.DataMapping
                     .HasCollation("utf8mb4_0900_ai_ci");
 
                 entity.Property(e => e.Contenido)
-                    .HasColumnType("varchar(1000)")
+                    .HasColumnType("varchar(2000)")
                     .HasColumnName("contenido")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
@@ -354,7 +354,7 @@ namespace Business.Main.DataMapping
                     .HasCollation("utf8mb4_0900_ai_ci");
 
                 entity.Property(e => e.Decripcion)
-                    .HasColumnType("varchar(1000)")
+                    .HasColumnType("varchar(2000)")
                     .HasColumnName("decripcion")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");

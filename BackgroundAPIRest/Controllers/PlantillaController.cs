@@ -36,22 +36,13 @@ namespace BackgroundAPIRest.Controllers
 
         [HttpPost("GetResumePrograma")]
         [EnableCors("MyPolicy")]
-        public ResponseQuery<DTOspWSGetResumePrograma> GetResumePrograma()
+        public ResponseQuery<DTOspWSGetResumePrograma> GetResumePrograma(RequestGetResumePrograma requestGetResumePrograma)
         {
             Binnacle.ProcessEvent(new Event { category = Event.Category.Information, description = $"Metodo GetResumePrograma llamado" });
             TomaDecisionManager tomaDecisionManager = new TomaDecisionManager();
-            var resul = tomaDecisionManager.GetResumePrograma();
+            var resul = tomaDecisionManager.GetResumePrograma(requestGetResumePrograma.tipo, requestGetResumePrograma.idCiclo);
             return resul;
         }
-
-        [HttpPost("GetResumeProgramaProducto")]
-        [EnableCors("MyPolicy")]
-        public ResponseQuery<DTOspWSGetResumeProgramaProducto> GetResumeProgramaProducto()
-        {
-            Binnacle.ProcessEvent(new Event { category = Event.Category.Information, description = $"Metodo GetResumePrograma llamado" });
-            TomaDecisionManager tomaDecisionManager = new TomaDecisionManager();
-            var resul = tomaDecisionManager.GetResumeProgramaProducto();
-            return resul;
-        }
+        
     }
 }

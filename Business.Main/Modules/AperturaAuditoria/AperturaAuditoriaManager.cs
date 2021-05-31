@@ -17,6 +17,7 @@ using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.ListaCertifica
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.ListarAuditoresxCargoCalificadoDTO;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.ListarCargosCalificadosDTO;
 using Business.Main.Modules.AperturaAuditoria.Domain.DTOWSIbnorca.ListarContactosEmpresaDTO;
+using Business.Main.Modules.AperturaAuditoria.Domain.SP.DTOs;
 using CoreAccesLayer.Wraper;
 using Domain.Main.AperturaAuditoria;
 using Domain.Main.Wraper;
@@ -111,6 +112,302 @@ namespace Business.Main.Modules.ApeeturaAuditoria
             }
             return response;
         }
+        //public ResponseObject<Praprogramasdeauditorium> ActualizarCicloAuditoria(int pIdCiclo, string pUsuario)
+        //{
+        //    ResponseObject<Praprogramasdeauditorium> resul = new ResponseObject<Praprogramasdeauditorium> { Object = new Praprogramasdeauditorium(), Code = "000", Message = "Programa obtenido correctamente", State = ResponseType.Success };
+        //    try
+        //    {
+        //        var vPraIdServicio = repositoryMySql.GetDataByProcedure<PraIdServicio>("GetIdServicioByIdCiclo", pIdCiclo);
+        //        if (vPraIdServicio.Count == 0)
+        //        {
+        //            resul.State = ResponseType.Warning;
+        //            resul.Message = $"Id de Ciclo no valido, no se cuenta con informacion del programa para: {pIdCiclo}";
+        //            return resul;
+        //        }
+        //        string pIdServicio = vPraIdServicio.First().IdServicio;
+        //        var resulDB = repositoryMySql.GetDataByProcedure<Praprogramasdeauditorium>("spGetProgramaAuditoriaByIdServicio", pIdServicio);
+        //        if (resulDB.Count == 0)
+        //        {
+        //            AperturaAuditoriaManager objProgramaAudi = new AperturaAuditoriaManager();
+        //            ComplexProgramaAuditoria objComplex = new ComplexProgramaAuditoria();
+
+        //            #region Consumo de servicios
+        //            ClientHelper clientHelper = new ClientHelper();
+
+        //            ///TDO: obtenemos los datos del servicio
+        //            RequestDatosServicio requestDato = new RequestDatosServicio { accion = "DatosServicio", IdServicio = (int)pIdServicio, sIdentificador = Global.IDENTIFICADOR, sKey = Global.KEY_SERVICES };
+        //            ResponseDatosServicio resulServices = clientHelper.Consume<ResponseDatosServicio>(Global.URIGLOBAL_SERVICES + Global.URI_SERVICIO, requestDato).Result;
+        //            if (!resulServices.estado)
+        //            {
+        //                resul.State = ResponseType.Warning;
+        //                resul.Message = $"Existe problemas al consumir el servicio de ibnorca (DatosServicio): {resulServices.mensaje}";
+        //                return resul;
+        //            }
+
+        //            ///TDO obtenemos los datos del cliente
+        //            RequestBusquedaCliente requestBusquedaCliente = new RequestBusquedaCliente { accion = "BuscarxIdClienteEmpresa", sIdentificador = Global.IDENTIFICADOR, sKey = Global.KEY_SERVICES, IdCliente = resulServices.DatosServicio.IdCliente };
+        //            ResponseBusquedaCliente responseBusquedaCliente = clientHelper.Consume<ResponseBusquedaCliente>(Global.URIGLOBAL_SERVICES + Global.URI_CLIENTE, requestBusquedaCliente).Result;
+        //            if (!responseBusquedaCliente.estado || responseBusquedaCliente.totalResultados <= 0)
+        //            {
+        //                resul.State = ResponseType.Warning;
+        //                resul.Message = $"Existe problemas al consumir el servicio de ibnorca (BuscarxIdClienteEmpresa): {responseBusquedaCliente.mensaje}";
+        //                return resul;
+        //            }
+
+        //            ///TDO obtenemos los datos de la propuesta para los ciclos
+        //            RequestDatosPropuestaDTO requestDatosPropuestaDTO = new RequestDatosPropuestaDTO { accion = "DatosPropuesta", sIdentificador = Global.IDENTIFICADOR, sKey = Global.KEY_SERVICES, IdPropuesta = resulServices.DatosServicio.idPropuesta };
+        //            ResponseDatosPropuestaDTO responseDatosPropuestaDTO = clientHelper.Consume<ResponseDatosPropuestaDTO>(Global.URIGLOBAL_SERVICES + Global.URI_SIMULACION, requestDatosPropuestaDTO).Result;
+        //            if (!responseDatosPropuestaDTO.estado)
+        //            {
+        //                resul.State = ResponseType.Warning;
+        //                resul.Message = $"Existe problemas al consumir el servicio de ibnorca (DatosPropuesta): {responseDatosPropuestaDTO.mensaje}";
+        //                return resul;
+        //            }
+
+        //            ///TDO obtenemos de los certificados del cliente
+        //            RequestListaCertificadosxClienteyTipo requestListaCertificadosxClienteyTipoDTO = new RequestListaCertificadosxClienteyTipo { accion = "ListaCertificadosxClienteyTipo", sIdentificador = Global.IDENTIFICADOR, sKey = Global.KEY_SERVICES, IdCliente = requestBusquedaCliente.IdCliente, Tipo = resulServices.DatosServicio.area };
+        //            ResponseListaCertificadosxClienteyTipo responseListaCertificadosxClienteyTipoDTO = clientHelper.Consume<ResponseListaCertificadosxClienteyTipo>(Global.URIGLOBAL_SERVICES + Global.URI_CERTIFICADO, requestListaCertificadosxClienteyTipoDTO).Result;
+        //            if (!responseListaCertificadosxClienteyTipoDTO.estado)
+        //            {
+        //                resul.State = ResponseType.Warning;
+        //                resul.Message = $"Existe problemas al consumir el servicio de ibnorca (ListaCertificadosxClienteyTipoDTO ): {responseListaCertificadosxClienteyTipoDTO.mensaje}";
+        //                return resul;
+        //            }
+
+        //            #endregion
+
+        //            ///TDO verificamos que exista certificados vigentes 
+        //            ///TCS
+        //            bool? existeCertificadosVigentes = responseListaCertificadosxClienteyTipoDTO.ListaCertifcados?.Any(x => x.idEstado == "474");
+        //            string alcance = string.Empty;
+        //            DateTime? fechaVencimientoCertificado = null;
+        //            DateTime? fechaEmisionCertificado = null;
+        //            string nroCertificado = string.Empty;
+        //            string nomreClienteCertificado = string.Empty;
+        //            List<ListaCertifcado> certificadosValidos = new List<ListaCertifcado>();
+
+        //            List<string> direcciones = new List<string>();
+        //            if (existeCertificadosVigentes == true && resulServices.DatosServicio.area == "TCS")
+        //            {
+        //                alcance = responseListaCertificadosxClienteyTipoDTO.ListaCertifcados.First(x => x.idEstado == "474").Alcance;
+        //                direcciones = responseListaCertificadosxClienteyTipoDTO.ListaCertifcados.First(x => x.idEstado == "474").ProductoServicio.Split('|').ToList();
+        //                fechaVencimientoCertificado = Convert.ToDateTime(responseListaCertificadosxClienteyTipoDTO.ListaCertifcados.First(x => x.idEstado == "474").FechaValido);
+        //                fechaEmisionCertificado = Convert.ToDateTime(responseListaCertificadosxClienteyTipoDTO.ListaCertifcados.First(x => x.idEstado == "474").FechaEmision);
+        //                nroCertificado = responseListaCertificadosxClienteyTipoDTO.ListaCertifcados.First(x => x.idEstado == "474").IdCertificadoServicios;
+        //                nomreClienteCertificado = responseListaCertificadosxClienteyTipoDTO.ListaCertifcados.First(x => x.idEstado == "474").cliente.ToUpper();
+        //            }
+        //            ///TCP
+        //            if (existeCertificadosVigentes == true && resulServices.DatosServicio.area == "TCP")
+        //            {
+        //                alcance = string.Empty;
+        //                direcciones = responseListaCertificadosxClienteyTipoDTO.ListaCertifcados.Where(x => x.idEstado == "474").Select(x => x.ProductoServicio
+        //                .Replace("Al Producto:", "")
+        //                .Replace("Marca Comercial:", "")
+        //                .Replace("Lugar de Fabricación:", "")
+        //                ).ToList();
+        //                fechaVencimientoCertificado = Convert.ToDateTime(responseListaCertificadosxClienteyTipoDTO.ListaCertifcados.First(x => x.idEstado == "474").FechaValido);
+        //                fechaEmisionCertificado = Convert.ToDateTime(responseListaCertificadosxClienteyTipoDTO.ListaCertifcados.First(x => x.idEstado == "474").FechaEmision);
+        //                nroCertificado = responseListaCertificadosxClienteyTipoDTO.ListaCertifcados.First(x => x.idEstado == "474").IdCertificadoServicios;
+        //                nomreClienteCertificado = responseListaCertificadosxClienteyTipoDTO.ListaCertifcados.First(x => x.idEstado == "474").cliente.ToUpper();
+        //                certificadosValidos = responseListaCertificadosxClienteyTipoDTO.ListaCertifcados.Where(x => x.idEstado == "474").ToList();
+        //            }
+
+        //            Praprogramasdeauditorium objPrograma = new Praprogramasdeauditorium
+        //            {
+        //                IdparamArea = Convert.ToInt32(resulServices.DatosServicio.IdArea),
+        //                DetalleServicioWs = JsonConvert.SerializeObject(resulServices.DatosServicio),
+        //                Fecha = resulServices.DatosServicio.fecharegistro,
+        //                Oficina = resulServices.DatosServicio.oficina,
+        //                IdOrganizacionWs = resulServices.DatosServicio.IdCliente,
+        //                OrganizacionContentWs = JsonConvert.SerializeObject(responseBusquedaCliente.resultados[0]),
+        //                Nit = responseBusquedaCliente.resultados[0].NIT,
+        //                CodigoServicioWs = resulServices.DatosServicio.Codigo,
+        //                IdparamTipoServicio = 1,/*CERTIFICACION - RENOVACION*///no se tiene del servicio
+        //                CodigoIafws = resulServices.DatosServicio.iaf_primario_codigo + " - " + resulServices.DatosServicio.iaf_primario_descripcion,
+        //                NumeroAnios = 0,
+        //                Estado = "INICIAL",
+        //                UsuarioRegistro = pUsuario,
+        //                FechaDesde = DateTime.Now,
+        //                FechaHasta = null
+        //            };
+        //            string mode = objPrograma.IdparamArea == 38 ? "TCS" : "TCP";
+        //            int cont = 0;
+        //            responseDatosPropuestaDTO.ListaServicios.ForEach(x =>
+        //            {
+        //                if (!objPrograma.Praciclosprogauditoria.Any(yy => yy.Anio == (short)Convert.ToInt32(x.cod_anio)))
+        //                {
+        //                    Praciclosprogauditorium ciclosprogauditorium = new Praciclosprogauditorium
+        //                    {
+        //                        UsuarioRegistro = pUsuario,
+        //                        FechaDesde = DateTime.Now,
+        //                        FechaHasta = null,
+        //                        Anio = (short)Convert.ToInt32(x.cod_anio),
+        //                        Referencia = x.descripcion,
+        //                        IdparamTipoAuditoria = 1,
+        //                        NombreOrganizacionCertificado = existeCertificadosVigentes == true ? nomreClienteCertificado : responseBusquedaCliente.resultados[0].NombreRazon,
+        //                        EstadoDescripcion = "SIN FECHA DE AUDITORIA"
+        //                    };
+
+        //                    ///TDO: TCP - Cert. de Productos 
+        //                    if (mode.Equals("TCP"))
+        //                    {
+        //                        ciclosprogauditorium.Pradireccionespaproductos = new List<Pradireccionespaproducto>();
+        //                        cont = 0;
+
+        //                        resulServices.DatosServicio.ListaProducto.ForEach(dir =>
+        //                        {
+        //                            Pradireccionespaproducto objDirProd = new Pradireccionespaproducto
+        //                            {
+        //                                Nombre = existeCertificadosVigentes == true && cont < direcciones.Count ? direcciones[cont].Split('|')[0] : dir.nombre,
+        //                                Direccion = existeCertificadosVigentes == true && cont < direcciones.Count ? direcciones[cont].Split('|')[2] : dir.direccion,
+        //                                Marca = existeCertificadosVigentes == true && cont < direcciones.Count ? direcciones[cont].Split('|')[1] : dir.marca,
+        //                                Sello = dir.nro_sello,
+        //                                Ciudad = dir.ciudad,
+        //                                Estado = dir.estado,
+        //                                Pais = dir.pais,
+        //                                Norma = dir.norma,
+        //                                FechaEmisionPrimerCertificado = cont < certificadosValidos.Count ? fechaEmisionCertificado : null,//////////////////////////////
+        //                                FechaVencimientoUltimoCertificado = cont < certificadosValidos.Count ? fechaVencimientoCertificado : null,
+        //                                FechaVencimientoCertificado = cont < certificadosValidos.Count ? fechaVencimientoCertificado : null,
+        //                                UsuarioRegistro = pUsuario,
+        //                                FechaDesde = DateTime.Now,
+        //                                FechaHasta = null,
+        //                                NumeroDeCertificacion = existeCertificadosVigentes == true
+        //                                && cont < certificadosValidos.Count ?
+        //                                certificadosValidos[cont].IdCertificadoServicios : "",
+        //                            };
+
+        //                            ciclosprogauditorium.Pradireccionespaproductos.Add(objDirProd);
+        //                            cont++;
+        //                        });
+
+        //                    }
+
+        //                    ///TDO: TCS - Cert.Sistemas de Gestion
+        //                    if (mode.Equals("TCS"))
+        //                    {
+        //                        cont = 0;
+        //                        ///TDO: direcciones
+        //                        ciclosprogauditorium.Pradireccionespasistemas = new List<Pradireccionespasistema>();
+        //                        string norma = string.Empty;
+        //                        resulServices.DatosServicio.ListaDireccion.ForEach(dir =>
+        //                        {
+        //                            Pradireccionespasistema objDirSis = new Pradireccionespasistema
+        //                            {
+        //                                Ciudad = dir.ciudad,
+        //                                Departamento = dir.estado,
+        //                                Dias = 0.00M,
+        //                                Direccion = existeCertificadosVigentes == true && cont < direcciones.Count ? direcciones[cont] : dir.direccion,
+        //                                FechaDesde = DateTime.Now,
+        //                                FechaHasta = null,
+        //                                Pais = dir.pais,
+        //                                UsuarioRegistro = pUsuario,
+        //                                Nombre = dir.nombre
+        //                            };
+        //                            norma = dir.norma;
+        //                            ciclosprogauditorium.Pradireccionespasistemas.Add(objDirSis);
+        //                            cont++;
+        //                        });
+
+        //                        ///TDO: normas
+        //                        ciclosprogauditorium.Praciclonormassistemas = new List<Praciclonormassistema>();
+        //                        ciclosprogauditorium.Praciclonormassistemas.Add(new Praciclonormassistema
+        //                        {
+        //                            Alcance = existeCertificadosVigentes == true ? alcance : resulServices.DatosServicio.alcance_propuesta,
+        //                            IdparamNorma = null,
+        //                            Norma = norma,
+        //                            FechaDesde = DateTime.Now,
+        //                            FechaEmisionPrimerCertificado = fechaEmisionCertificado,
+        //                            FechaHasta = null,
+        //                            FechaVencimientoUltimoCertificado = fechaVencimientoCertificado,
+        //                            NumeroDeCertificacion = nroCertificado,
+        //                            UsuarioRegistro = pUsuario
+        //                        });
+        //                    }
+
+        //                    ///TDO: Cronograma 
+        //                    Praciclocronograma cronograma = new Praciclocronograma
+        //                    {
+        //                        DiasPresupuesto = (decimal)Convert.ToDecimal(x.cantidad),
+        //                        DiasInsitu = 0.00M,
+        //                        DiasRemoto = 0.00M,
+        //                        FechaDeFinDeEjecucionAuditoria = null,
+        //                        FechaDesde = DateTime.Now,
+        //                        FechaHasta = null,
+        //                        FechaInicioDeEjecucionDeAuditoria = null,
+        //                        MesProgramado = CalcularMesProgramado(mode, Convert.ToInt32(x.cod_anio), fechaVencimientoCertificado),
+        //                        MesReprogramado = null,
+        //                        UsuarioRegistro = pUsuario
+        //                    };
+        //                    ciclosprogauditorium.Praciclocronogramas = new List<Praciclocronograma>();
+        //                    ciclosprogauditorium.Praciclocronogramas.Add(cronograma);
+
+        //                    ///TDO: lista de personal
+        //                    ciclosprogauditorium.Pracicloparticipantes = new List<Pracicloparticipante>();
+        //                    responseDatosPropuestaDTO.ListaAuditores.ForEach(auditor =>
+        //                    {
+        //                        if (Convert.ToInt32(auditor.cod_anio) == ciclosprogauditorium.Anio)
+        //                        {
+        //                            Pracicloparticipante participante = new Pracicloparticipante
+        //                            {
+        //                                FechaDesde = DateTime.Now,
+        //                                CargoDetalleWs = JsonConvert.SerializeObject(auditor),
+        //                                IdCargoWs = Convert.ToInt32(auditor.cod_tipoauditor),
+        //                                IdParticipanteWs = null,
+        //                                ParticipanteDetalleWs = null,
+        //                                UsuarioRegistro = pUsuario
+        //                            };
+        //                            ciclosprogauditorium.Pracicloparticipantes.Add(participante);
+        //                        }
+
+        //                    });
+        //                    objPrograma.Praciclosprogauditoria.Add(ciclosprogauditorium);
+        //                }
+        //            });
+
+        //            ///insertamos el ciclo final como año 4 renovacion
+        //            var cicloClonar = objPrograma.Praciclosprogauditoria.LastOrDefault();
+        //            if (cicloClonar != null)
+        //            {
+        //                var deserializeSettings = new JsonSerializerSettings { ObjectCreationHandling = ObjectCreationHandling.Replace };
+        //                var serializeSettings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
+        //                var cicloClonado = JsonConvert.DeserializeObject<Praciclosprogauditorium>(JsonConvert.SerializeObject(cicloClonar, serializeSettings), deserializeSettings);
+        //                cicloClonado.Anio = 4;
+        //                cicloClonado.Praciclocronogramas.First().MesProgramado = cicloClonado.Praciclocronogramas.First().MesProgramado?.AddYears(1);
+        //                cicloClonado.Referencia = "Renovacion";
+        //                objPrograma.Praciclosprogauditoria.Add(cicloClonado);
+        //            }
+
+        //            ///Inserta el programa de auditoria
+        //            Entity<Praprogramasdeauditorium> entity = new Entity<Praprogramasdeauditorium> { EntityDB = objPrograma, stateEntity = StateEntity.add };
+        //            repositoryMySql.SaveObject<Praprogramasdeauditorium>(entity);
+        //            objPrograma.IdPrAprogramaAuditoria = entity.EntityDB.IdPrAprogramaAuditoria;
+        //            resul.Object = objPrograma;
+        //        }
+        //        else
+        //        {
+        //            resul.Object = resulDB[0];
+        //            resul.Object.Praciclosprogauditoria = repositoryMySql.SimpleSelect<Praciclosprogauditorium>(x => x.IdPrAprogramaAuditoria == resul.Object.IdPrAprogramaAuditoria);
+        //            List<Praciclosprogauditorium> lAuxiliar = resul.Object.Praciclosprogauditoria.ToList();
+        //            lAuxiliar.ForEach(x =>
+        //            {
+        //                x.Praciclocronogramas = repositoryMySql.SimpleSelect<Praciclocronograma>(y => y.IdPrAcicloProgAuditoria == x.IdPrAcicloProgAuditoria);
+        //                x.Praciclonormassistemas = repositoryMySql.SimpleSelect<Praciclonormassistema>(y => y.IdPrAcicloProgAuditoria == x.IdPrAcicloProgAuditoria);
+        //                x.Pracicloparticipantes = repositoryMySql.SimpleSelect<Pracicloparticipante>(y => y.IdPrAcicloProgAuditoria == x.IdPrAcicloProgAuditoria);
+        //                x.Pradireccionespaproductos = repositoryMySql.SimpleSelect<Pradireccionespaproducto>(y => y.IdPrAcicloProgAuditoria == x.IdPrAcicloProgAuditoria);
+        //                x.Pradireccionespasistemas = repositoryMySql.SimpleSelect<Pradireccionespasistema>(y => y.IdPrAcicloProgAuditoria == x.IdPrAcicloProgAuditoria);
+        //            });
+        //            resul.Object.Praciclosprogauditoria = lAuxiliar;
+        //        }
+        //        resul.State = ResponseType.Success;
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ProcessError(ex, resul);
+        //    }
+        //    return resul;
+        //}
         public ResponseObject<Praprogramasdeauditorium> ObtenerProgramaAuditoria(int pIdServicio, string pUsuario)
         {
             ResponseObject<Praprogramasdeauditorium> resul = new ResponseObject<Praprogramasdeauditorium> { Object = new Praprogramasdeauditorium(), Code = "000", Message = "Programa obtenido correctamente", State = ResponseType.Success };

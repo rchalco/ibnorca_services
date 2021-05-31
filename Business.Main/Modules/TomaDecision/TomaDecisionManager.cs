@@ -204,12 +204,61 @@ namespace Business.Main.Modules.TomaDecision
             }
             return resul;
         }
-        public ResponseQuery<DTOspWSGetResumePrograma> GetResumePrograma()
+        public ResponseQuery<DTOspWSGetResumePrograma> GetResumePrograma(string tipo, int idCiclo)
         {
             ResponseQuery<DTOspWSGetResumePrograma> resul = new ResponseQuery<DTOspWSGetResumePrograma> { State = ResponseType.Success, Message = "Programas obtenidos correctamente" };
             try
             {
-                resul.ListEntities = repositoryMySql.GetDataByProcedure<DTOspWSGetResumePrograma>("spWSGetResumePrograma");
+                resul.ListEntities = repositoryMySql.GetDataByProcedure<DTOspWSGetResumePrograma>("spWSGetResumePrograma", tipo, idCiclo);
+                resul.ListEntities.ForEach(x =>
+                {
+                    x.detalle = new DTOspWSGetResumePrograma.Detalle();
+                    if (x.area == "TCS")
+                    {
+                        x.detalle.detalleTCS = repositoryMySql.SimpleSelect<Praciclonormassistema>(yy => yy.IdPrAcicloProgAuditoria == x.idCiclo).Select(
+                            zz =>
+                            {
+                                return new DTOspWSGetResumePrograma.DetalleTCS
+                                {
+                                    Alcance = zz.Alcance,
+                                    IdCicloNormaSistema = (int)zz.IdCicloNormaSistema,
+                                    IdPrAcicloProgAuditoria = (int)zz.IdPrAcicloProgAuditoria,
+                                    Norma = zz.Norma,
+                                    NumeroDeCertificacion = zz.NumeroDeCertificacion
+                                };
+                            }).ToList();
+
+                        string direcciones = string.Empty;
+
+                        repositoryMySql.SimpleSelect<Pradireccionespasistema>(hh => hh.IdPrAcicloProgAuditoria == x.idCiclo).ForEach(jj =>
+                        {
+                            direcciones += jj.Direccion + "|";
+                        });
+
+                        x.detalle.detalleTCS.ForEach(ff =>
+                        {
+                            ff.Direcciones = direcciones;
+                        });
+                    }
+                    else
+                    {
+                        x.detalle.detalleTCP = repositoryMySql.SimpleSelect<Pradireccionespaproducto>(yy => yy.IdPrAcicloProgAuditoria == x.idCiclo).Select(
+                            zz =>
+                            {
+                                return new DTOspWSGetResumePrograma.DetalleTCP
+                                {
+                                    IdPrAcicloProgAuditoria = (int)zz.IdPrAcicloProgAuditoria,
+                                    Norma = zz.Norma,
+                                    NumeroDeCertificacion = zz.NumeroDeCertificacion,
+                                    Direccion = zz.Direccion,
+                                    IdDireccionPaproducto = zz.IdDireccionPaproducto,
+                                    Marca = zz.Marca,
+                                    Nombre = zz.Nombre,
+                                    Sello = zz.Sello
+                                };
+                            }).ToList();
+                    }
+                });
             }
             catch (Exception ex)
             {

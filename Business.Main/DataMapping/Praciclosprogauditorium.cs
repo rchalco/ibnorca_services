@@ -29,6 +29,7 @@ namespace Business.Main.DataMapping
         public DateTime? FechaDesde { get; set; }
         public DateTime? FechaHasta { get; set; }
         public int? IdParametapaauditoria { get; set; }
+        public int? IdEtapaDocumento { get; set; }
 
         public virtual Parametapaauditorium IdParametapaauditoriaNavigation { get; set; }
         public virtual Praprogramasdeauditorium IdPrAprogramaAuditoriaNavigation { get; set; }
