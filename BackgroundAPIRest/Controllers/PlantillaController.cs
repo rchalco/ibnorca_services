@@ -43,6 +43,26 @@ namespace BackgroundAPIRest.Controllers
             var resul = tomaDecisionManager.GetResumePrograma(requestGetResumePrograma.tipo, requestGetResumePrograma.idCiclo);
             return resul;
         }
-        
+
+        [HttpPost("GetDetalleProgramaTCP")]
+        [EnableCors("MyPolicy")]
+        public ResponseQuery<DTOspWSGetDetalleProgramaTCP> GetDetalleProgramaTCP(RequestGetDetalleProgramaTCP requestGetDetalleProgramaTCP)
+        {
+            Binnacle.ProcessEvent(new Event { category = Event.Category.Information, description = $"Metodo GetDetalleProgramaTCP llamado" });
+            TomaDecisionManager tomaDecisionManager = new TomaDecisionManager();
+            var resul = tomaDecisionManager.GetDetalleProgramaTCP(requestGetDetalleProgramaTCP.idProducto);
+            return resul;
+        }
+
+        [HttpPost("GetDetalleProgramaTCS")]
+        [EnableCors("MyPolicy")]
+        public ResponseQuery<DTOspWSGetDetalleProgramaTCS> GetDetalleProgramaTCS(RequestGetDetalleProgramaTCS requestGetDetalleProgramaTCS)
+        {
+            Binnacle.ProcessEvent(new Event { category = Event.Category.Information, description = $"Metodo GetDetalleProgramaTCS llamado" });
+            TomaDecisionManager tomaDecisionManager = new TomaDecisionManager();
+            var resul = tomaDecisionManager.GetDetalleProgramaTCS(requestGetDetalleProgramaTCS.idSistema);
+            return resul;
+        }
+
     }
 }

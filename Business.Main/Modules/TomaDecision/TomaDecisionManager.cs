@@ -280,6 +280,34 @@ namespace Business.Main.Modules.TomaDecision
             }
             return resul;
         }
+
+        public ResponseQuery<DTOspWSGetDetalleProgramaTCP> GetDetalleProgramaTCP(int idProducto)
+        {
+            ResponseQuery<DTOspWSGetDetalleProgramaTCP> resul = new ResponseQuery<DTOspWSGetDetalleProgramaTCP> { State = ResponseType.Success, Message = "detalles obtenidos correctamente" };
+            try
+            {
+                resul.ListEntities = repositoryMySql.GetDataByProcedure<DTOspWSGetDetalleProgramaTCP>("spWSGetDetalleProgramaTCP", idProducto);
+            }
+            catch (Exception ex)
+            {
+                ProcessError(ex, resul);
+            }
+            return resul;
+        }
+
+        public ResponseQuery<DTOspWSGetDetalleProgramaTCS> GetDetalleProgramaTCS(int idSistema)
+        {
+            ResponseQuery<DTOspWSGetDetalleProgramaTCS> resul = new ResponseQuery<DTOspWSGetDetalleProgramaTCS> { State = ResponseType.Success, Message = "detalles obtenidos correctamente" };
+            try
+            {
+                resul.ListEntities = repositoryMySql.GetDataByProcedure<DTOspWSGetDetalleProgramaTCS>("spWSGetDetalleProgramaTCS", idSistema);
+            }
+            catch (Exception ex)
+            {
+                ProcessError(ex, resul);
+            }
+            return resul;
+        }
     }
 
 }
