@@ -20,6 +20,6 @@ namespace Business.Main.Modules.TomaDecision.DTOExternal
         public int idSistema { get; set; }
         public string norma { get; set; }
         public string alcance { get; set; }
-        public int numeroDeCertificacion { get; set; }
+        public string numeroDeCertificacion { get; set; }
     }
 }
