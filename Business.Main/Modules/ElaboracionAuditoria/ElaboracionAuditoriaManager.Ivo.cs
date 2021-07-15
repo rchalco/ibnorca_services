@@ -978,7 +978,6 @@ namespace Business.Main.Modules.ElaboracionAuditoria
             }
             return response;
         }
-
         public ResponseObject<GlobalDataReport> TCPRepOfertaContrato(RequestDataReport requestDataReport)
         {
             ResponseObject<GlobalDataReport> response = new ResponseObject<GlobalDataReport> { Message = "", State = ResponseType.Success };
@@ -1040,7 +1039,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 {
                     Referencia = cliente.NombreRazon,
                     FechaIbnorca = praciclocronograma.Referencia,
-                    Cliente = "", //TODO: Completar
+                    Cliente = cliente.NombreRazon, //TODO: Completar
                     DireccionCliente = cliente.Direccion, //TODO: Completar
                     Guia = normas,
                     NombreGerente = "", //TODO: Completar
@@ -1069,6 +1068,10 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                     }).ToList(),
 
                 };
+
+                //praTCPREPInforme.ListPresupuesto = null;
+                //praTCPREPInforme.ListProductos = null;
+
                 Dictionary<string, CellTitles[]> pTitles = new Dictionary<string, CellTitles[]>();
                 CellTitles[] cellTitlesTitulo = new CellTitles[5];
                 cellTitlesTitulo[0] = new CellTitles { Title = "Producto", Visible = true, Width = "100" };
@@ -1078,12 +1081,12 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 cellTitlesTitulo[4] = new CellTitles { Title = "Direccion", Visible = true, Width = "100" };
                 pTitles.Add("ListProductos", cellTitlesTitulo);
 
-                cellTitlesTitulo = new CellTitles[4];
-                cellTitlesTitulo[0] = new CellTitles { Title = "Etapa", Visible = true, Width = "150" };
-                cellTitlesTitulo[1] = new CellTitles { Title = "Concepto", Visible = true, Width = "80" };
-                cellTitlesTitulo[2] = new CellTitles { Title = "DiasAuditoro", Visible = true, Width = "80" };
-                cellTitlesTitulo[3] = new CellTitles { Title = "CostoUSD", Visible = true, Width = "80" };
-                pTitles.Add("ListPresupuesto", cellTitlesTitulo);
+                CellTitles[] cellTitlesTitulo2 = new CellTitles[4];
+                cellTitlesTitulo2[0] = new CellTitles { Title = "Etapa", Visible = true, Width = "150" };
+                cellTitlesTitulo2[1] = new CellTitles { Title = "Concepto", Visible = true, Width = "80" };
+                cellTitlesTitulo2[2] = new CellTitles { Title = "DiasAuditoro", Visible = true, Width = "80" };
+                cellTitlesTitulo2[3] = new CellTitles { Title = "CostoUSD", Visible = true, Width = "80" };
+                pTitles.Add("ListPresupuesto", cellTitlesTitulo2);
 
                 response.Object = new GlobalDataReport { data = praTCPREPInforme, HeadersTables = pTitles };
             }
@@ -2567,8 +2570,8 @@ namespace Business.Main.Modules.ElaboracionAuditoria
 
                 };
                 Dictionary<string, CellTitles[]> pTitles = new Dictionary<string, CellTitles[]>();
-                CellTitles[] cellTitlesTitulo = new CellTitles[5];
-                cellTitlesTitulo[0] = new CellTitles { Title = "Sitio", Visible = true, Width = "100" };
+                CellTitles[] cellTitlesTitulo = new CellTitles[1];
+                cellTitlesTitulo[0] = new CellTitles { Title = "Sitio", Visible = true, Width = "300" };
                 pTitles.Add("ListSitios", cellTitlesTitulo);
 
                 cellTitlesTitulo = new CellTitles[4];

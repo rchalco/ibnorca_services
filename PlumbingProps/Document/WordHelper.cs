@@ -122,7 +122,8 @@ namespace PlumbingProps.Document
                                 if (vCurrentTitles[i].Visible)
                                 {
                                     var itemProp = itemElementos.GetType().GetProperties()[i];
-                                    tabalHtml += String.Format(WordParts.tagGridCellValue, Convert.ToString(itemProp.GetValue(itemElementos, null)));
+                                    string valCell = Convert.ToString(itemProp.GetValue(itemElementos, null)).Replace("\n", WordParts.tagEnter);
+                                    tabalHtml += String.Format(WordParts.tagGridCellValue, valCell);
                                 }
                             }
                             tabalHtml += WordParts.tagGridRowEnd;
@@ -163,11 +164,12 @@ namespace PlumbingProps.Document
             {
                 Dictionary<string, Object> values = new Dictionary<string, object>();
 
-                valuesToReplace.ForEach(x => {
+                valuesToReplace.ForEach(x =>
+                {
                     values.Add(x.key, x.values);
                 });
 
-                
+
 
                 file.createFile();
 
