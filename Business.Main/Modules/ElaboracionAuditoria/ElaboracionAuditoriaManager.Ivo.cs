@@ -22,6 +22,7 @@ using static Resportes.ReportDTO.TCPREPInforme;
 using Domain.Main.CrossEntities;
 using static Business.Main.Modules.ElaboracionAuditoria.Reportes.TCP.TCPRepOfertaContrato;
 using static Business.Main.Modules.ElaboracionAuditoria.Reportes.TCS.TCSRepOfertaContrato;
+using Business.Main.Modules.ElaboracionAuditoria.DTO;
 
 namespace Business.Main.Modules.ElaboracionAuditoria
 {
@@ -2074,7 +2075,13 @@ namespace Business.Main.Modules.ElaboracionAuditoria
             ResponseObject<GlobalDataReport> response = new ResponseObject<GlobalDataReport> { Message = "", State = ResponseType.Success };
             try
             {
-                int IdCiclo = requestDataReport.IdCiclo;
+                ///TODO FIX WS Integración con INTRANET
+                ///obtemos el id de ciclo a partir del Id de sistema
+
+                int idCicloReal = (int)repositoryMySql.SimpleSelect<Praciclonormassistema>(x => x.IdCicloNormaSistema == requestDataReport.IdCiclo).First().IdPrAcicloProgAuditoria;
+
+                //int IdCiclo = requestDataReport.IdCiclo;
+                int IdCiclo = idCicloReal;
                 string expertoCertificacion = string.Empty, fechaAsignacionProceso = string.Empty, redaccionSugerida = string.Empty;
                 ///Obtenemos la informacion del ciclo y del programa
                 Praciclosprogauditorium praciclocronograma = repositoryMySql.SimpleSelect<Praciclosprogauditorium>(x => x.IdPrAcicloProgAuditoria == IdCiclo).ToList().FirstOrDefault();
