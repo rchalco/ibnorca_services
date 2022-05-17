@@ -1,9 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using PlumbingProps.Config;
-
-#nullable disable
 
 namespace Business.Main.DataMapping
 {
@@ -55,12 +53,16 @@ namespace Business.Main.DataMapping
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseMySql(ConfigManager.GetConfiguration().GetSection("conexionString").Value, Microsoft.EntityFrameworkCore.ServerVersion.FromString("8.0.22-mysql"));
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseMySql("server=localhost;user=root;password=admin.123;database=sigad", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.22-mysql"));
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.UseCollation("utf8mb4_0900_ai_ci")
+                .HasCharSet("utf8mb4");
+
             modelBuilder.Entity<Elaadp>(entity =>
             {
                 entity.HasKey(e => e.Idelaadp)
@@ -75,30 +77,22 @@ namespace Business.Main.DataMapping
                 entity.Property(e => e.Idelaadp).HasColumnName("idelaadp");
 
                 entity.Property(e => e.Area)
-                    .HasColumnType("varchar(100)")
-                    .HasColumnName("area")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .HasMaxLength(100)
+                    .HasColumnName("area");
 
                 entity.Property(e => e.Descripcion)
-                    .HasColumnType("varchar(1000)")
-                    .HasColumnName("descripcion")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .HasMaxLength(1000)
+                    .HasColumnName("descripcion");
 
                 entity.Property(e => e.Fecha)
-                    .HasColumnType("varchar(45)")
-                    .HasColumnName("fecha")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .HasMaxLength(45)
+                    .HasColumnName("fecha");
 
                 entity.Property(e => e.IdelaAuditoria).HasColumnName("idelaAuditoria");
 
                 entity.Property(e => e.Usuario)
-                    .HasColumnType("varchar(100)")
-                    .HasColumnName("usuario")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .HasMaxLength(100)
+                    .HasColumnName("usuario");
 
                 entity.HasOne(d => d.IdelaAuditoriaNavigation)
                     .WithMany(p => p.Elaadps)
@@ -121,10 +115,7 @@ namespace Business.Main.DataMapping
 
                 entity.Property(e => e.IdPrAcicloProgAuditoria).HasColumnName("idPrACicloProgAuditoria");
 
-                entity.Property(e => e.UsuarioRegistro)
-                    .HasColumnType("varchar(100)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.UsuarioRegistro).HasMaxLength(100);
 
                 entity.HasOne(d => d.IdPrAcicloProgAuditoriaNavigation)
                     .WithMany(p => p.Elaauditoria)
@@ -145,46 +136,34 @@ namespace Business.Main.DataMapping
                 entity.Property(e => e.IdelaContenidoauditoria).HasColumnName("idela_contenidoauditoria");
 
                 entity.Property(e => e.Area)
-                    .HasColumnType("varchar(45)")
-                    .HasColumnName("area")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .HasMaxLength(45)
+                    .HasColumnName("area");
 
                 entity.Property(e => e.Categoria)
-                    .HasColumnType("varchar(50)")
-                    .HasColumnName("categoria")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .HasMaxLength(50)
+                    .HasColumnName("categoria");
 
                 entity.Property(e => e.Contenido)
-                    .HasColumnType("varchar(2000)")
-                    .HasColumnName("contenido")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .HasMaxLength(2000)
+                    .HasColumnName("contenido");
 
                 entity.Property(e => e.Endocumento).HasColumnName("endocumento");
 
                 entity.Property(e => e.IdelaAuditoria).HasColumnName("idelaAuditoria");
 
                 entity.Property(e => e.Label)
-                    .HasColumnType("varchar(500)")
-                    .HasColumnName("label")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .HasMaxLength(500)
+                    .HasColumnName("label");
 
                 entity.Property(e => e.Nemotico)
-                    .HasColumnType("varchar(100)")
-                    .HasColumnName("nemotico")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .HasMaxLength(100)
+                    .HasColumnName("nemotico");
 
                 entity.Property(e => e.Seleccionado).HasColumnName("seleccionado");
 
                 entity.Property(e => e.Titulo)
-                    .HasColumnType("varchar(300)")
-                    .HasColumnName("titulo")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .HasMaxLength(300)
+                    .HasColumnName("titulo");
 
                 entity.HasOne(d => d.IdelaAuditoriaNavigation)
                     .WithMany(p => p.Elacontenidoauditoria)
@@ -203,61 +182,31 @@ namespace Business.Main.DataMapping
 
                 entity.Property(e => e.IdElAcronograma).HasColumnName("idElACronograma");
 
-                entity.Property(e => e.Auditor)
-                    .HasColumnType("varchar(100)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.Auditor).HasMaxLength(100);
 
-                entity.Property(e => e.Cargo)
-                    .HasColumnType("varchar(100)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.Cargo).HasMaxLength(100);
 
-                entity.Property(e => e.Direccion)
-                    .HasColumnType("varchar(500)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.Direccion).HasMaxLength(500);
 
-                entity.Property(e => e.FechaFin)
-                    .HasColumnType("varchar(50)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.FechaFin).HasMaxLength(50);
 
-                entity.Property(e => e.FechaInicio)
-                    .HasColumnType("varchar(50)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.FechaInicio).HasMaxLength(50);
 
                 entity.Property(e => e.FechaRegistro).HasColumnType("datetime");
 
-                entity.Property(e => e.Horario)
-                    .HasColumnType("varchar(100)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.Horario).HasMaxLength(100);
 
                 entity.Property(e => e.IdDireccionPaproducto).HasColumnName("idDireccionPAProducto");
 
                 entity.Property(e => e.IdDireccionPasistema).HasColumnName("idDireccionPASistema");
 
-                entity.Property(e => e.PersonaEntrevistadaCargo)
-                    .HasColumnType("varchar(200)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.PersonaEntrevistadaCargo).HasMaxLength(200);
 
-                entity.Property(e => e.ProcesoArea)
-                    .HasColumnType("varchar(100)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.ProcesoArea).HasMaxLength(100);
 
-                entity.Property(e => e.RequisitosEsquema)
-                    .HasColumnType("varchar(500)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.RequisitosEsquema).HasMaxLength(500);
 
-                entity.Property(e => e.UsuarioRegistro)
-                    .HasColumnType("varchar(50)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.UsuarioRegistro).HasMaxLength(50);
 
                 entity.HasOne(d => d.IdelaauditoriaNavigation)
                     .WithMany(p => p.Elacronogamas)
@@ -277,54 +226,38 @@ namespace Business.Main.DataMapping
                 entity.Property(e => e.Idelahallazgo).HasColumnName("idelahallazgo");
 
                 entity.Property(e => e.Fecha)
-                    .HasColumnType("varchar(50)")
-                    .HasColumnName("fecha")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .HasMaxLength(50)
+                    .HasColumnName("fecha");
 
                 entity.Property(e => e.Hallazgo)
-                    .HasColumnType("varchar(1000)")
-                    .HasColumnName("hallazgo")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .HasMaxLength(1000)
+                    .HasColumnName("hallazgo");
 
                 entity.Property(e => e.IdelaAuditoria).HasColumnName("idelaAuditoria");
 
                 entity.Property(e => e.Normas)
-                    .HasColumnType("varchar(500)")
-                    .HasColumnName("normas")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .HasMaxLength(500)
+                    .HasColumnName("normas");
 
                 entity.Property(e => e.Proceso)
-                    .HasColumnType("varchar(200)")
-                    .HasColumnName("proceso")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .HasMaxLength(200)
+                    .HasColumnName("proceso");
 
                 entity.Property(e => e.Sitio)
-                    .HasColumnType("varchar(200)")
-                    .HasColumnName("sitio")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .HasMaxLength(200)
+                    .HasColumnName("sitio");
 
                 entity.Property(e => e.Tipo)
-                    .HasColumnType("varchar(45)")
-                    .HasColumnName("tipo")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .HasMaxLength(45)
+                    .HasColumnName("tipo");
 
                 entity.Property(e => e.TipoNemotico)
-                    .HasColumnType("varchar(45)")
-                    .HasColumnName("tipo_nemotico")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .HasMaxLength(45)
+                    .HasColumnName("tipo_nemotico");
 
                 entity.Property(e => e.Usuario)
-                    .HasColumnType("varchar(100)")
-                    .HasColumnName("usuario")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .HasMaxLength(100)
+                    .HasColumnName("usuario");
 
                 entity.HasOne(d => d.IdelaAuditoriaNavigation)
                     .WithMany(p => p.Elahallazgos)
@@ -342,44 +275,32 @@ namespace Business.Main.DataMapping
                 entity.Property(e => e.Idelalistaspredefinidas).HasColumnName("idelalistaspredefinidas");
 
                 entity.Property(e => e.Area)
-                    .HasColumnType("varchar(45)")
-                    .HasColumnName("area")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .HasMaxLength(45)
+                    .HasColumnName("area");
 
                 entity.Property(e => e.Categoria)
-                    .HasColumnType("varchar(50)")
-                    .HasColumnName("categoria")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .HasMaxLength(50)
+                    .HasColumnName("categoria");
 
                 entity.Property(e => e.Decripcion)
-                    .HasColumnType("varchar(2000)")
-                    .HasColumnName("decripcion")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .HasMaxLength(2000)
+                    .HasColumnName("decripcion");
 
                 entity.Property(e => e.Endocumento).HasColumnName("endocumento");
 
                 entity.Property(e => e.Label)
-                    .HasColumnType("varchar(500)")
-                    .HasColumnName("label")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .HasMaxLength(500)
+                    .HasColumnName("label");
 
                 entity.Property(e => e.Nemotico)
-                    .HasColumnType("varchar(100)")
-                    .HasColumnName("nemotico")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .HasMaxLength(100)
+                    .HasColumnName("nemotico");
 
                 entity.Property(e => e.Orden).HasColumnName("orden");
 
                 entity.Property(e => e.Titulo)
-                    .HasColumnType("varchar(300)")
-                    .HasColumnName("titulo")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .HasMaxLength(300)
+                    .HasColumnName("titulo");
             });
 
             modelBuilder.Entity<Importacionsolicitud>(entity =>
@@ -389,13 +310,14 @@ namespace Business.Main.DataMapping
 
                 entity.ToTable("importacionsolicitud");
 
+                entity.HasCharSet("utf8")
+                    .UseCollation("utf8_general_ci");
+
                 entity.Property(e => e.IdimportacionSolicitud).HasColumnName("idimportacionSolicitud");
 
                 entity.Property(e => e.Cliente)
-                    .HasColumnType("varchar(500)")
-                    .HasColumnName("cliente")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
+                    .HasMaxLength(500)
+                    .HasColumnName("cliente");
 
                 entity.Property(e => e.Detalle)
                     .HasColumnType("json")
@@ -406,10 +328,8 @@ namespace Business.Main.DataMapping
                     .HasColumnName("fecha_registro");
 
                 entity.Property(e => e.Nit)
-                    .HasColumnType("varchar(100)")
-                    .HasColumnName("nit")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
+                    .HasMaxLength(100)
+                    .HasColumnName("nit");
             });
 
             modelBuilder.Entity<Paramarea>(entity =>
@@ -421,10 +341,7 @@ namespace Business.Main.DataMapping
 
                 entity.Property(e => e.IdparamArea).HasColumnName("idparamArea");
 
-                entity.Property(e => e.Area)
-                    .HasColumnType("varchar(50)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.Area).HasMaxLength(50);
 
                 entity.Property(e => e.FechaRegistro).HasColumnType("datetime");
             });
@@ -438,10 +355,7 @@ namespace Business.Main.DataMapping
 
                 entity.Property(e => e.IdparamCargoParticipante).HasColumnName("idparamCargoParticipante");
 
-                entity.Property(e => e.CargoParticipante)
-                    .HasColumnType("varchar(100)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.CargoParticipante).HasMaxLength(100);
 
                 entity.Property(e => e.FechaRegistro)
                     .HasColumnType("datetime")
@@ -459,10 +373,7 @@ namespace Business.Main.DataMapping
 
                 entity.Property(e => e.IdparamDepartamento).HasColumnName("idparamDepartamento");
 
-                entity.Property(e => e.Departamento)
-                    .HasColumnType("varchar(150)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.Departamento).HasMaxLength(150);
 
                 entity.Property(e => e.FechaRegistro).HasColumnType("datetime");
 
@@ -478,35 +389,17 @@ namespace Business.Main.DataMapping
 
                 entity.Property(e => e.Idparamdocumentos).HasColumnName("idparamdocumentos");
 
-                entity.Property(e => e.Area)
-                    .HasColumnType("varchar(20)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.Area).HasMaxLength(20);
 
-                entity.Property(e => e.Descripcion)
-                    .HasColumnType("varchar(100)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.Descripcion).HasMaxLength(100);
 
-                entity.Property(e => e.Method)
-                    .HasColumnType("varchar(500)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.Method).HasMaxLength(500);
 
-                entity.Property(e => e.NombrePlantilla)
-                    .HasColumnType("varchar(100)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.NombrePlantilla).HasMaxLength(100);
 
-                entity.Property(e => e.Path)
-                    .HasColumnType("varchar(300)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.Path).HasMaxLength(300);
 
-                entity.Property(e => e.Proceso)
-                    .HasColumnType("varchar(70)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.Proceso).HasMaxLength(70);
             });
 
             modelBuilder.Entity<Paramestadosparticipante>(entity =>
@@ -518,10 +411,7 @@ namespace Business.Main.DataMapping
 
                 entity.Property(e => e.IdparamEstadoParticipante).HasColumnName("idparamEstadoParticipante");
 
-                entity.Property(e => e.EstadoParticipante)
-                    .HasColumnType("varchar(30)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.EstadoParticipante).HasMaxLength(30);
 
                 entity.Property(e => e.FechaRegistro).HasColumnType("datetime");
             });
@@ -535,10 +425,7 @@ namespace Business.Main.DataMapping
 
                 entity.Property(e => e.IdparamEstadosProgAuditoria).HasColumnName("idparamEstadosProgAuditoria");
 
-                entity.Property(e => e.EstadosProgAuditoria)
-                    .HasColumnType("varchar(50)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.EstadosProgAuditoria).HasMaxLength(50);
 
                 entity.Property(e => e.FechaRegistro).HasColumnType("datetime");
             });
@@ -554,10 +441,7 @@ namespace Business.Main.DataMapping
                     .ValueGeneratedNever()
                     .HasColumnName("idParametapaauditoria");
 
-                entity.Property(e => e.Descripcion)
-                    .HasColumnType("varchar(200)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.Descripcion).HasMaxLength(200);
             });
 
             modelBuilder.Entity<Paramitemselect>(entity =>
@@ -574,14 +458,11 @@ namespace Business.Main.DataMapping
                 entity.Property(e => e.IdParamListaItemSelect).HasColumnName("idParamListaItemSelect");
 
                 entity.Property(e => e.ItemSelect)
-                    .HasColumnType("varchar(2000)")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
+                    .HasMaxLength(2000)
+                    .UseCollation("utf8_general_ci")
+                    .HasCharSet("utf8");
 
-                entity.Property(e => e.UsuarioRegistro)
-                    .HasColumnType("varchar(50)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.UsuarioRegistro).HasMaxLength(50);
             });
 
             modelBuilder.Entity<Paramlistasitemselect>(entity =>
@@ -596,15 +477,10 @@ namespace Business.Main.DataMapping
                 entity.Property(e => e.FechaRegistro).HasColumnType("datetime");
 
                 entity.Property(e => e.Lista)
-                    .HasColumnType("varchar(100)")
-                    .HasColumnName("lista")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .HasMaxLength(100)
+                    .HasColumnName("lista");
 
-                entity.Property(e => e.UsuarioRegistro)
-                    .HasColumnType("varchar(50)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.UsuarioRegistro).HasMaxLength(50);
             });
 
             modelBuilder.Entity<Paramnorma>(entity =>
@@ -616,25 +492,17 @@ namespace Business.Main.DataMapping
 
                 entity.Property(e => e.IdparamNorma).HasColumnName("idparamNorma");
 
-                entity.Property(e => e.CodigoDeNorma)
-                    .HasColumnType("varchar(30)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.CodigoDeNorma).HasMaxLength(30);
 
                 entity.Property(e => e.FechaRegistro).HasColumnType("datetime");
 
                 entity.Property(e => e.IdpArea).HasColumnName("idpArea");
 
-                entity.Property(e => e.Norma)
-                    .HasColumnType("varchar(500)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.Norma).HasMaxLength(500);
 
                 entity.Property(e => e.PathNorma)
-                    .HasColumnType("varchar(300)")
-                    .HasColumnName("pathNorma")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .HasMaxLength(300)
+                    .HasColumnName("pathNorma");
             });
 
             modelBuilder.Entity<Parampaise>(entity =>
@@ -648,10 +516,7 @@ namespace Business.Main.DataMapping
 
                 entity.Property(e => e.FechaRegistro).HasColumnType("datetime");
 
-                entity.Property(e => e.Pais)
-                    .HasColumnType("varchar(150)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.Pais).HasMaxLength(150);
             });
 
             modelBuilder.Entity<Paramtipoauditorium>(entity =>
@@ -667,10 +532,7 @@ namespace Business.Main.DataMapping
 
                 entity.Property(e => e.IdpTipoCertificacion).HasColumnName("idpTipoCertificacion");
 
-                entity.Property(e => e.TipoAuditoria)
-                    .HasColumnType("varchar(50)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.TipoAuditoria).HasMaxLength(50);
             });
 
             modelBuilder.Entity<Paramtiposervicio>(entity =>
@@ -684,10 +546,7 @@ namespace Business.Main.DataMapping
 
                 entity.Property(e => e.FechaRegistro).HasColumnType("datetime");
 
-                entity.Property(e => e.TipoServicio)
-                    .HasColumnType("varchar(50)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.TipoServicio).HasMaxLength(50);
             });
 
             modelBuilder.Entity<Person>(entity =>
@@ -701,17 +560,13 @@ namespace Business.Main.DataMapping
 
                 entity.Property(e => e.Lastname)
                     .IsRequired()
-                    .HasColumnType("varchar(250)")
-                    .HasColumnName("lastname")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .HasMaxLength(250)
+                    .HasColumnName("lastname");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
-                    .HasColumnType("varchar(250)")
-                    .HasColumnName("name")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .HasMaxLength(250)
+                    .HasColumnName("name");
             });
 
             modelBuilder.Entity<Plaauditorium>(entity =>
@@ -727,10 +582,7 @@ namespace Business.Main.DataMapping
 
                 entity.Property(e => e.IidPrAcicloProgAuditoria).HasColumnName("iidPrACicloProgAuditoria");
 
-                entity.Property(e => e.UsuarioRegistro)
-                    .HasColumnType("varchar(50)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.UsuarioRegistro).HasMaxLength(50);
             });
 
             modelBuilder.Entity<Placronoequipo>(entity =>
@@ -748,10 +600,7 @@ namespace Business.Main.DataMapping
 
                 entity.Property(e => e.IdPlAcronograma).HasColumnName("idPlACronograma");
 
-                entity.Property(e => e.UsuarioRegistro)
-                    .HasColumnType("varchar(50)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.UsuarioRegistro).HasMaxLength(50);
             });
 
             modelBuilder.Entity<Pladiasequipo>(entity =>
@@ -767,10 +616,7 @@ namespace Business.Main.DataMapping
 
                 entity.Property(e => e.IdCicloParticipante).HasColumnName("idCicloParticipante");
 
-                entity.Property(e => e.UsuarioRegistro)
-                    .HasColumnType("varchar(50)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.UsuarioRegistro).HasMaxLength(50);
             });
 
             modelBuilder.Entity<Praciclocronograma>(entity =>
@@ -798,10 +644,7 @@ namespace Business.Main.DataMapping
 
                 entity.Property(e => e.FechaInicioDeEjecucionDeAuditoria).HasColumnType("datetime");
 
-                entity.Property(e => e.HorarioTrabajo)
-                    .HasColumnType("varchar(100)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.HorarioTrabajo).HasMaxLength(100);
 
                 entity.Property(e => e.IdPrAcicloProgAuditoria).HasColumnName("idPrACicloProgAuditoria");
 
@@ -809,10 +652,7 @@ namespace Business.Main.DataMapping
 
                 entity.Property(e => e.MesReprogramado).HasColumnType("datetime");
 
-                entity.Property(e => e.UsuarioRegistro)
-                    .HasColumnType("varchar(50)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.UsuarioRegistro).HasMaxLength(50);
 
                 entity.HasOne(d => d.IdPrAcicloProgAuditoriaNavigation)
                     .WithMany(p => p.Praciclocronogramas)
@@ -831,10 +671,7 @@ namespace Business.Main.DataMapping
 
                 entity.Property(e => e.IdCicloNormaSistema).HasColumnName("idCicloNormaSistema");
 
-                entity.Property(e => e.Alcance)
-                    .HasColumnType("varchar(500)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.Alcance).HasMaxLength(500);
 
                 entity.Property(e => e.FechaDesde).HasColumnType("datetime");
 
@@ -848,20 +685,11 @@ namespace Business.Main.DataMapping
 
                 entity.Property(e => e.IdparamNorma).HasColumnName("idparamNorma");
 
-                entity.Property(e => e.Norma)
-                    .HasColumnType("varchar(1000)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.Norma).HasMaxLength(1000);
 
-                entity.Property(e => e.NumeroDeCertificacion)
-                    .HasColumnType("varchar(100)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.NumeroDeCertificacion).HasMaxLength(100);
 
-                entity.Property(e => e.UsuarioRegistro)
-                    .HasColumnType("varchar(50)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.UsuarioRegistro).HasMaxLength(50);
 
                 entity.HasOne(d => d.IdPrAcicloProgAuditoriaNavigation)
                     .WithMany(p => p.Praciclonormassistemas)
@@ -900,10 +728,7 @@ namespace Business.Main.DataMapping
                     .HasColumnType("json")
                     .HasColumnName("ParticipanteDetalle_ws");
 
-                entity.Property(e => e.UsuarioRegistro)
-                    .HasColumnType("varchar(50)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.UsuarioRegistro).HasMaxLength(50);
 
                 entity.HasOne(d => d.IdPrAcicloProgAuditoriaNavigation)
                     .WithMany(p => p.Pracicloparticipantes)
@@ -924,10 +749,7 @@ namespace Business.Main.DataMapping
 
                 entity.Property(e => e.IdPrAcicloProgAuditoria).HasColumnName("idPrACicloProgAuditoria");
 
-                entity.Property(e => e.EstadoDescripcion)
-                    .HasColumnType("varchar(100)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.EstadoDescripcion).HasMaxLength(100);
 
                 entity.Property(e => e.FechaDesde).HasColumnType("datetime");
 
@@ -941,20 +763,11 @@ namespace Business.Main.DataMapping
 
                 entity.Property(e => e.IdparamTipoAuditoria).HasColumnName("idparamTipoAuditoria");
 
-                entity.Property(e => e.NombreOrganizacionCertificado)
-                    .HasColumnType("varchar(150)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.NombreOrganizacionCertificado).HasMaxLength(150);
 
-                entity.Property(e => e.Referencia)
-                    .HasColumnType("varchar(500)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.Referencia).HasMaxLength(500);
 
-                entity.Property(e => e.UsuarioRegistro)
-                    .HasColumnType("varchar(50)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.UsuarioRegistro).HasMaxLength(50);
 
                 entity.HasOne(d => d.IdParametapaauditoriaNavigation)
                     .WithMany(p => p.Praciclosprogauditoria)
@@ -978,26 +791,15 @@ namespace Business.Main.DataMapping
 
                 entity.Property(e => e.IdDireccionPaproducto).HasColumnName("idDireccionPAProducto");
 
-                entity.Property(e => e.Ciudad)
-                    .HasColumnType("varchar(100)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.Ciudad).HasMaxLength(100);
 
-                entity.Property(e => e.Direccion)
-                    .HasColumnType("varchar(1000)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.Direccion).HasMaxLength(1000);
 
-                entity.Property(e => e.Estado)
-                    .HasColumnType("varchar(45)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.Estado).HasMaxLength(45);
 
                 entity.Property(e => e.EstadoConcer)
-                    .HasColumnType("varchar(100)")
-                    .HasColumnName("EstadoCONCER")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .HasMaxLength(100)
+                    .HasColumnName("EstadoCONCER");
 
                 entity.Property(e => e.FechaDesde).HasColumnType("datetime");
 
@@ -1011,46 +813,23 @@ namespace Business.Main.DataMapping
 
                 entity.Property(e => e.IdPrAcicloProgAuditoria).HasColumnName("idPrACicloProgAuditoria");
 
-                entity.Property(e => e.Marca)
-                    .HasColumnType("varchar(50)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.Marca).HasMaxLength(50);
 
-                entity.Property(e => e.Nombre)
-                    .HasColumnType("varchar(1000)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.Nombre).HasMaxLength(1000);
 
-                entity.Property(e => e.Norma)
-                    .HasColumnType("varchar(100)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.Norma).HasMaxLength(100);
 
-                entity.Property(e => e.NumeroDeCertificacion)
-                    .HasColumnType("varchar(100)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.NumeroDeCertificacion).HasMaxLength(100);
 
-                entity.Property(e => e.Pais)
-                    .HasColumnType("varchar(45)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.Pais).HasMaxLength(45);
 
                 entity.Property(e => e.ReivsionConcer)
-                    .HasColumnType("varchar(600)")
-                    .HasColumnName("ReivsionCONCER")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .HasMaxLength(600)
+                    .HasColumnName("ReivsionCONCER");
 
-                entity.Property(e => e.Sello)
-                    .HasColumnType("varchar(50)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.Sello).HasMaxLength(50);
 
-                entity.Property(e => e.UsuarioRegistro)
-                    .HasColumnType("varchar(50)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.UsuarioRegistro).HasMaxLength(50);
 
                 entity.HasOne(d => d.IdPrAcicloProgAuditoriaNavigation)
                     .WithMany(p => p.Pradireccionespaproductos)
@@ -1069,22 +848,13 @@ namespace Business.Main.DataMapping
 
                 entity.Property(e => e.IdDireccionPasistema).HasColumnName("idDireccionPASistema");
 
-                entity.Property(e => e.Ciudad)
-                    .HasColumnType("varchar(100)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.Ciudad).HasMaxLength(100);
 
-                entity.Property(e => e.Departamento)
-                    .HasColumnType("varchar(100)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.Departamento).HasMaxLength(100);
 
                 entity.Property(e => e.Dias).HasPrecision(10, 2);
 
-                entity.Property(e => e.Direccion)
-                    .HasColumnType("varchar(150)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.Direccion).HasMaxLength(150);
 
                 entity.Property(e => e.FechaDesde).HasColumnType("datetime");
 
@@ -1092,20 +862,11 @@ namespace Business.Main.DataMapping
 
                 entity.Property(e => e.IdPrAcicloProgAuditoria).HasColumnName("idPrACicloProgAuditoria");
 
-                entity.Property(e => e.Nombre)
-                    .HasColumnType("varchar(150)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.Nombre).HasMaxLength(150);
 
-                entity.Property(e => e.Pais)
-                    .HasColumnType("varchar(100)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.Pais).HasMaxLength(100);
 
-                entity.Property(e => e.UsuarioRegistro)
-                    .HasColumnType("varchar(50)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.UsuarioRegistro).HasMaxLength(50);
 
                 entity.HasOne(d => d.IdPrAcicloProgAuditoriaNavigation)
                     .WithMany(p => p.Pradireccionespasistemas)
@@ -1123,69 +884,46 @@ namespace Business.Main.DataMapping
                 entity.Property(e => e.IdPrAprogramaAuditoria).HasColumnName("idPrAProgramaAuditoria");
 
                 entity.Property(e => e.CodigoIafws)
-                    .HasColumnType("varchar(60)")
-                    .HasColumnName("CodigoIAFWS")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .HasMaxLength(60)
+                    .HasColumnName("CodigoIAFWS");
 
                 entity.Property(e => e.CodigoServicioWs)
-                    .HasColumnType("varchar(50)")
-                    .HasColumnName("CodigoServicioWS")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .HasMaxLength(50)
+                    .HasColumnName("CodigoServicioWS");
 
                 entity.Property(e => e.DetalleServicioWs)
                     .HasColumnType("json")
                     .HasColumnName("DetalleServicioWS");
 
-                entity.Property(e => e.Estado)
-                    .HasColumnType("varchar(100)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.Estado).HasMaxLength(100);
 
-                entity.Property(e => e.Fecha)
-                    .HasColumnType("varchar(20)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.Fecha).HasMaxLength(20);
 
                 entity.Property(e => e.FechaDesde).HasColumnType("datetime");
 
                 entity.Property(e => e.FechaHasta).HasColumnType("datetime");
 
                 entity.Property(e => e.IdOrganizacionWs)
-                    .HasColumnType("varchar(20)")
-                    .HasColumnName("IdOrganizacionWS")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .HasMaxLength(20)
+                    .HasColumnName("IdOrganizacionWS");
 
                 entity.Property(e => e.IdparamArea).HasColumnName("idparamArea");
 
                 entity.Property(e => e.IdparamTipoServicio).HasColumnName("idparamTipoServicio");
 
                 entity.Property(e => e.Nit)
-                    .HasColumnType("varchar(10)")
-                    .HasColumnName("NIT")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .HasMaxLength(10)
+                    .HasColumnName("NIT");
 
-                entity.Property(e => e.Oficina)
-                    .HasColumnType("varchar(50)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.Oficina).HasMaxLength(50);
 
-                entity.Property(e => e.OrganismoCertificador)
-                    .HasColumnType("varchar(200)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.OrganismoCertificador).HasMaxLength(200);
 
                 entity.Property(e => e.OrganizacionContentWs)
                     .HasColumnType("json")
                     .HasColumnName("OrganizacionContentWS");
 
-                entity.Property(e => e.UsuarioRegistro)
-                    .HasColumnType("varchar(50)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                entity.Property(e => e.UsuarioRegistro).HasMaxLength(50);
             });
 
             modelBuilder.Entity<Tmddocumentacionauditorium>(entity =>
@@ -1202,10 +940,8 @@ namespace Business.Main.DataMapping
                     .HasColumnName("idTmdDocumentacionAuditoria");
 
                 entity.Property(e => e.CiteDocumento)
-                    .HasColumnType("varchar(200)")
-                    .HasColumnName("citeDocumento")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .HasMaxLength(200)
+                    .HasColumnName("citeDocumento");
 
                 entity.Property(e => e.CorrelativoDocumento).HasColumnName("correlativoDocumento");
 
@@ -1218,16 +954,14 @@ namespace Business.Main.DataMapping
                 entity.Property(e => e.IdparamDocumentos).HasColumnName("idparamDocumentos");
 
                 entity.Property(e => e.TmdDocumentoAuditoria)
-                    .HasColumnType("varchar(3200)")
+                    .HasMaxLength(3200)
                     .HasColumnName("tmdDocumentoAuditoria")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
+                    .UseCollation("utf8_general_ci")
+                    .HasCharSet("utf8");
 
                 entity.Property(e => e.Usuario)
-                    .HasColumnType("varchar(100)")
-                    .HasColumnName("usuario")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
+                    .HasMaxLength(100)
+                    .HasColumnName("usuario");
 
                 entity.HasOne(d => d.IdElaAuditoriaNavigation)
                     .WithMany(p => p.Tmddocumentacionauditoria)

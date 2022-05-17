@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-#nullable disable
-
 namespace Business.Main.DataMapping
 {
+    /// <summary>
+    /// registro de areas de preocupacion	
+    /// </summary>
     public partial class Elaadp
     {
         public int Idelaadp { get; set; }
