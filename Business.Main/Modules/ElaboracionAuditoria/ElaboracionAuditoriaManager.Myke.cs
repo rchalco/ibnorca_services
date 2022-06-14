@@ -342,7 +342,7 @@ namespace Business.Main.Modules.ElaboracionAuditoria
                 });
 
                 ListaCalificado auditoriLider = new ListaCalificado();
-                if (praciclocronograma.Pracicloparticipantes.Any(x => x.ParticipanteDetalleWs.ToLower().Contains("lider")))
+                if (praciclocronograma.Pracicloparticipantes.Any(x => x.ParticipanteDetalleWs?.ToLower().Contains("lider") == true))
                 {
                     auditoriLider = JsonConvert.DeserializeObject<ListaCalificado>(praciclocronograma.Pracicloparticipantes.First(x => x.ParticipanteDetalleWs.ToLower().Contains("lider")).ParticipanteDetalleWs);
                 }
