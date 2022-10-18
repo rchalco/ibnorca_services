@@ -64,7 +64,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                     if (totalDiasCronograma != totalDiasAuditor)
                     {
                         response.State = ResponseType.Warning;
-                        response.Message = $"Los dias del cronograma no coinciden con los del auditor en el año {x.Anio }";
+                        response.Message = $"Los dias del cronograma no coinciden con los del auditor en el año {x.Anio}";
 
                     }
                 });
@@ -683,6 +683,7 @@ namespace Business.Main.Modules.ApeeturaAuditoria
                         x.Pracicloparticipantes = repositoryMySql.SimpleSelect<Pracicloparticipante>(y => y.IdPrAcicloProgAuditoria == x.IdPrAcicloProgAuditoria);
                         x.Pradireccionespaproductos = repositoryMySql.SimpleSelect<Pradireccionespaproducto>(y => y.IdPrAcicloProgAuditoria == x.IdPrAcicloProgAuditoria);
                         x.Pradireccionespasistemas = repositoryMySql.SimpleSelect<Pradireccionespasistema>(y => y.IdPrAcicloProgAuditoria == x.IdPrAcicloProgAuditoria);
+                        x.Pracicloparticipantes = x.Pracicloparticipantes.OrderByDescending(yy => yy.IdCargoWs).ToList();
                     });
                     resul.Object.Praciclosprogauditoria = lAuxiliar;
                 }
